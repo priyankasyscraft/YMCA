@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:weightSum="1.5">
+
+        <LinearLayout
+            android:id="@+id/dateTab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:background="@color/colorScheduleBottomSelect"
+            android:paddingBottom="@dimen/padding_common_5">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorScheduleTab"
+                android:gravity="center"
+                android:padding="@dimen/padding_common_10"
+                android:text="@string/date"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_common_14" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/black" />
+
+        <LinearLayout
+            android:id="@+id/classTab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:background="@color/colorScheduleBottomUnSelect"
+            android:paddingBottom="@dimen/padding_common_5">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorScheduleTab"
+                android:gravity="center"
+                android:padding="@dimen/padding_common_10"
+                android:text="@string/classe"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_common_14" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/black" />
+
+        <LinearLayout
+            android:id="@+id/instructorTab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:background="@color/colorScheduleBottomUnSelect"
+            android:paddingBottom="@dimen/padding_common_5">
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorScheduleTab"
+                android:gravity="center"
+                android:padding="@dimen/padding_common_10"
+                android:text="@string/instructor"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_common_14" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/content_child_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
