@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/padding_common_10"
+            android:text="@string/classes"
+            android:textAllCaps="true"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorScheduleBottomUnSelect"
+            android:textSize="@dimen/margin_common_25"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:padding="@dimen/padding_common_10"
+            android:weightSum="1"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_menu_send"
+                android:padding="@dimen/padding_common_10"
+                android:id="@+id/prevButton"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="1"
+                android:layout_weight=".15">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:text="Sat"
+                    android:textSize="@dimen/text_size_common_16"
+                    android:layout_weight=".5"
+                    android:gravity="center"
+                    android:id="@+id/dayTv"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight=".5"
+                    android:text="AUG 22"
+                    android:textSize="@dimen/text_size_common_14"
+                    android:id="@+id/dateTv"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_menu_send"
+                android:padding="@dimen/padding_common_10"
+                android:id="@+id/forwadButton"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/no_record"
+            android:textSize="@dimen/text_size_common_25"
+            android:textStyle="bold" />
+
+        <com.example.ymca.PullListLoader.XListView
+            android:id="@+id/dateScheduleListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:choiceMode="singleChoice"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:smoothScrollbar="true" />
+
+
+    </RelativeLayout>
+</LinearLayout>

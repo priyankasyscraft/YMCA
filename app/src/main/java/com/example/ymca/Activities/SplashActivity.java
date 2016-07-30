@@ -1,6 +1,7 @@
 package com.example.ymca.Activities;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.ymca.AppManager.DataManager;
+import com.example.ymca.AppManager.MarshMallowPermission;
 import com.example.ymca.R;
 
 /**
@@ -17,23 +19,97 @@ import com.example.ymca.R;
 public class SplashActivity extends BaseActivity {
 
     private long SPLASH_DISPLAY_LENGTH = 2000;
+    MarshMallowPermission marshMallowPermission;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        marshMallowPermission = new MarshMallowPermission(this);
 
-//        if (DataManager.chkStatus()) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
+        if (marshMallowPermission.checkPermissionsLocation()) {
+            if (marshMallowPermission.checkPermissionsExternalStorage()) {
+                setUpPane();
+            } else {
+                marshMallowPermission.requestPermissionForExternalStorage();
+            }
+        } else {
+            marshMallowPermission.requestPermissionForLocation();
+        }
+    }
+
+    private void setUpPane() {
+
+        if (marshMallowPermission.checkPermissionsLocation()) {
+            if (marshMallowPermission.checkPermissionsExternalStorage()) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                    Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
-                    startActivity(mainIntent);
-                    finish();
-                }
-            }, SPLASH_DISPLAY_LENGTH);
+                        Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+                        startActivity(mainIntent);
+                        finish();
+                    }
+                }, SPLASH_DISPLAY_LENGTH);
+            } else {
+                marshMallowPermission.requestPermissionForExternalStorage();
+            }
+        } else {
+            marshMallowPermission.requestPermissionForLocation();
+        }
 
-//        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MarshMallowPermission.LOCATION_REQUEST_PERMISSION:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    if (marshMallowPermission.checkPermissionsExternalStorage()) {
+                        setUpPane();
+                    } else {
+                        marshMallowPermission.requestPermissionForExternalStorage();
+                    }
+
+                } else {
+                    if (marshMallowPermission.checkPermissionsLocation()) {
+                        if (marshMallowPermission.checkPermissionsExternalStorage()) {
+                            setUpPane();
+                        } else {
+                            marshMallowPermission.requestPermissionForExternalStorage();
+                        }
+                    } else {
+                        marshMallowPermission.requestPermissionForLocation();
+                    }
+                }
+                break;
+            case MarshMallowPermission.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+//                    if(marshMallowPermission.checkPermissionsExternalStorage()){
+                    setUpPane();
+//                    }else {
+//                        marshMallowPermission.requestPermissionForExternalStorage();
+//                    }
+
+                } else {
+                    if (marshMallowPermission.checkPermissionsLocation()) {
+                        if (marshMallowPermission.checkPermissionsExternalStorage()) {
+                            setUpPane();
+                        } else {
+                            marshMallowPermission.requestPermissionForExternalStorage();
+                        }
+                    } else {
+                        marshMallowPermission.requestPermissionForLocation();
+                    }
+                }
+                break;
+        }
     }
 }

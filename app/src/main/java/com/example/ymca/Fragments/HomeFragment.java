@@ -28,6 +28,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     LinearLayout scheduleLayout, myCardLayout, locationLayout, programLayout, classLayout, blogLayout;
     private boolean isCheck = false;
     private ScheduleFragment scheduleFragment = new ScheduleFragment();
+    private HomeClassesFragment homeClassesFragment = new HomeClassesFragment();
 
     @Nullable
     @Override
@@ -119,6 +120,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.programLayout:
                 break;
             case R.id.classLayout:
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame,homeClassesFragment, Constant.homeClassFragment)
+                        .addToBackStack(getFragmentManager().getClass().getName())
+                        .commit();
+
                 break;
             case R.id.blogLayout:
                 break;

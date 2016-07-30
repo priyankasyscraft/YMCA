@@ -9,4 +9,5 @@ public class Constant {
     public static String scheduleFragment = "schedule_fragment";
     public static String dateFragment = "date_fragment";
     public static String instructorFragment = "instructor_fragment";
+    public static String homeClassFragment = "home_class_fragment";
 }
