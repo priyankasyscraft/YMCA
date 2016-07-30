@@ -20,7 +20,7 @@ public class ClassFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.date_fragment,container,false );
+        view = inflater.inflate(R.layout.class_fragment,container,false );
         return view;
     }
 }

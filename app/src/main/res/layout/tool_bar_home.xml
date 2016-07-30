@@ -10,18 +10,25 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:layout_marginRight="-10dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tool_bar_height"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <!--<ImageView-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@drawable/icon_menu"-->
+                <!--android:id="@+id/customButton"/>-->
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_home" />
-
 
 
 </android.support.design.widget.CoordinatorLayout>

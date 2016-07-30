@@ -11,6 +11,7 @@
     <dimen name="tool_bar_height">95dp</dimen>
 
     <!--Common Padding-->
+    <dimen name="padding_common_2">2dp</dimen>
     <dimen name="padding_common_5">5dp</dimen>
     <dimen name="padding_common_8">8dp</dimen>
     <dimen name="padding_common_10">10dp</dimen>

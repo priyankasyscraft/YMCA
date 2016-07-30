@@ -21,6 +21,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
 
     private DateFragment dateFragment = new DateFragment();
     private InstructorFragment instructorFragment = new InstructorFragment();
+    private ClassFragment classFragment = new ClassFragment();
 
     @Nullable
     @Override
@@ -62,7 +63,10 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
                 dateTab.setBackgroundColor(getResources().getColor(R.color.colorScheduleBottomUnSelect));
                 classTab.setBackgroundColor(getResources().getColor(R.color.colorScheduleBottomSelect));
                 instructorTab.setBackgroundColor(getResources().getColor(R.color.colorScheduleBottomUnSelect));
-
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_child_frame, classFragment, Constant.instructorFragment)
+                        .commit();
                 break;
             case R.id.instructorTab:
 

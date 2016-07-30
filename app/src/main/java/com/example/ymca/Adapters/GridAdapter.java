@@ -10,8 +10,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ymca.AppManager.DataManager;
+import com.example.ymca.ImageCache.ImageLoader;
 import com.example.ymca.ModelClass.InstructorModelClass;
 import com.example.ymca.R;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.List;
 
@@ -20,12 +22,14 @@ import java.util.List;
  */
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.RecyclerViewHolders> {
 
+    private final ImageLoader imageLoader;
     private List<InstructorModelClass> itemList;
     private Context context;
 
     public GridAdapter(Context context, List<InstructorModelClass> itemList) {
         this.itemList = itemList;
         this.context = context;
+        imageLoader = new ImageLoader(context);
     }
 
     @Override
@@ -39,8 +43,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.RecyclerViewHo
     @Override
     public void onBindViewHolder(RecyclerViewHolders holder, int position) {
         holder.instructorName.setText(itemList.get(position).getInstructorName());
-
-        DataManager.getInstance().uniImageLoader(context,itemList.get(position).getInstructorImg(),holder.instructorImg);
+        imageLoader.DisplayImage(itemList.get(position).getInstructorImg(), holder.instructorImg);
     }
 
     @Override

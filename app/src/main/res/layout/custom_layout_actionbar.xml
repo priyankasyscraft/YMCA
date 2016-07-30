@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="@dimen/padding_common_2"
         >
 
         <RelativeLayout
@@ -28,7 +29,7 @@
                 android:text="25"
                 android:gravity="center"
                 android:layout_marginLeft="-10dp"
-                android:background="@drawable/dot_blue"
+                android:background="@drawable/bg_dot"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/notificationBell"
                 android:layout_toEndOf="@+id/notificationBell" />

@@ -66,6 +66,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         actionBar.setHomeAsUpIndicator(R.drawable.icon_menu);
         actionBar.setDisplayShowTitleEnabled(true);
 
+
         // TODO: 28-Jul-16 set action bar background
         Drawable actionBar_bg = getResources().getDrawable(R.drawable.header_bg);
         actionBar.setBackgroundDrawable(actionBar_bg);
@@ -73,7 +74,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
                 ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT);
-        layoutParams.gravity = Gravity.CENTER;
+
         // layoutParams.rightMargin = 20;
 
         LayoutInflater inflator = getActivity().getLayoutInflater();

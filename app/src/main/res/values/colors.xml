@@ -9,4 +9,5 @@
     <color name="colorDateListTime">#00A4E5</color>
     <color name="colorTransParent">#BB000000</color>
     <color name="colorGray">#BCBEC0</color>
+    <color name="colorTextGray">#8A8A8C</color>
 </resources>

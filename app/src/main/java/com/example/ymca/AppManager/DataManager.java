@@ -39,7 +39,7 @@ public class DataManager {
     }
 
     private ImageLoader imageLoader;
-    private AppCompatActivity appCompatActivity;
+    private Activity appCompatActivity;
     private boolean isProgressDialogRunning = false;
 
     private ArrayList<InstructorModelClass> instructorModelClassArrayList = new ArrayList<>();
@@ -77,17 +77,17 @@ public class DataManager {
         }
     }
 
-    public AppCompatActivity getAppCompatActivity() {
+    public Activity getAppCompatActivity() {
         return appCompatActivity;
     }
 
-    public void setAppCompatActivity(AppCompatActivity appCompatActivity) {
+    public void setAppCompatActivity(Activity appCompatActivity) {
         this.appCompatActivity = appCompatActivity;
     }
 
 
     // region progress dialog..
-    public void showProgressMessage(AppCompatActivity dialogActivity, String msg) {
+    public void showProgressMessage(Activity dialogActivity, String msg) {
         if (isProgressDialogRunning) {
             hideProgressMessage();
         }

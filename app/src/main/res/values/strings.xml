@@ -16,4 +16,15 @@
     <string name="program">Programs</string>
     <string name="blog">Blog</string>
     <string name="no_record">No Record Found</string>
+    <string name="home">Home</string>
+    <string name="check_in">Check-In</string>
+    <string name="announcement">Announcements</string>
+    <string name="program_register">Programs/Register</string>
+    <string name="event">Events</string>
+    <string name="donate">Donate</string>
+    <string name="contact">Contact</string>
+    <string name="setting">Settings</string>
+    <string name="name">NAME</string>
+    <string name="code">CODE</string>
+    <string name="update_card">UPDATE CARD</string>
 </resources>
