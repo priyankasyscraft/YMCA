@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ymca.ModelClass.EventModelClass;
 import com.example.ymca.ModelClass.InstructorModelClass;
 import com.example.ymca.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -43,6 +44,7 @@ public class DataManager {
     private boolean isProgressDialogRunning = false;
 
     private ArrayList<InstructorModelClass> instructorModelClassArrayList = new ArrayList<>();
+    private ArrayList<EventModelClass> eventModelClasses = new ArrayList<>();
 
     public static boolean chkStatus() {
         // TODO Auto-generated method stub
@@ -156,5 +158,21 @@ public class DataManager {
 
     public void clearInstructorModelClassArrayList() {
         this.instructorModelClassArrayList.clear();
+    }
+
+    public ArrayList<EventModelClass> getEventModelClasses() {
+        return eventModelClasses;
+    }
+
+    public void setEventModelClasses(ArrayList<EventModelClass> eventModelClasses) {
+        this.eventModelClasses = eventModelClasses;
+    }
+
+    public void addEventModelClasses(EventModelClass eventModelClasses) {
+        this.eventModelClasses.add(eventModelClasses);
+    }
+
+    public void clearEventModelClasses() {
+        this.eventModelClasses.clear();
     }
 }

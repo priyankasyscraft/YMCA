@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:padding="@dimen/padding_common_5"
         android:weightSum="1">
 
         <TextView
@@ -15,16 +16,27 @@
             android:layout_height="match_parent"
             android:layout_weight=".8"
             android:padding="@dimen/padding_common_10"
-            android:textColor="@android:color/black"
             android:text="XXXXXX"
-            android:textSize="@dimen/text_size_common_16"
-            />
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_common_16" />
 
-        <ImageButton
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".2"
             android:background="@null"
-            android:src="@drawable/ic_menu_send" />
+            android:gravity="center">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:src="@drawable/arrow_gray" />
+        </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/line" />
 </LinearLayout>

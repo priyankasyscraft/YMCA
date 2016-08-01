@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PrimaryFontText">
+        <attr name="fontName" format="string" />
+    </declare-styleable>
+    <declare-styleable name="SecondaryFontText">
+        <attr name="fontNames" format="string" />
+    </declare-styleable>
+</resources>

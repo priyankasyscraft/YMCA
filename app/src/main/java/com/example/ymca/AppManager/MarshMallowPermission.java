@@ -53,6 +53,6 @@ public class MarshMallowPermission {
 
     // TODO: 30-Jul-16 Request WRITE_EXTERNAL_STORAGE
     public void requestPermissionForExternalStorage() {
-        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_REQUEST_PERMISSION);
+        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, LOCATION_REQUEST_PERMISSION);
     }
 }

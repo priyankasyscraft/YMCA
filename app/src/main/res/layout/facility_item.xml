@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/classes_bg">
+
+    <com.example.ymca.CustomFont.PrimaryFontText
+        android:id="@+id/facilityName"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_common_5"
+        android:text="DOWNTOWN FACILITY"
+        android:textAllCaps="true"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:fontName="@string/custom_primary_font"/>
+
+    <TextView
+        android:id="@+id/facilityAddress"
+        android:textSize="@dimen/text_size_common_12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_common_5"
+        android:text="601,South 4th spreed filed"
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/facilitystatus"
+            android:textSize="@dimen/text_size_common_12"
+            android:layout_width="0dp"
+            android:layout_weight=".8"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_common_5"
+            android:text="we are open"
+            android:textColor="@color/colorPrimary" />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
+            android:src="@drawable/event_forwd_aarow"
+            android:id="@+id/statusImg"/>
+    </LinearLayout>
+
+</LinearLayout>

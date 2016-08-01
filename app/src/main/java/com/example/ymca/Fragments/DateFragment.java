@@ -27,6 +27,8 @@ public class DateFragment extends Fragment implements View.OnClickListener {
     Calendar c;
     SimpleDateFormat df;
     String formattedDate;
+    private SimpleDateFormat outFormat,outFormat1;
+
 
     @Nullable
     @Override
@@ -34,14 +36,17 @@ public class DateFragment extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.date_fragment,container,false );
         c = Calendar.getInstance();
         df = new SimpleDateFormat("dd-MMM-yyyy");
-
+        outFormat = new SimpleDateFormat("EEE");
+        outFormat1 = new SimpleDateFormat("MMM dd");
         formattedDate = df.format(c.getTime());
 
         dateTv = (TextView) view.findViewById(R.id.dateTv);
         dayTv = (TextView) view.findViewById(R.id.dayTv);
         prevButton   = (ImageView)view.findViewById(R.id.prevButton);
         forwadButton = (ImageView)view.findViewById(R.id.forwadButton);
-
+        formattedDate = df.format(c.getTime());
+        dateTv.setText(outFormat1.format(new Date(formattedDate)));
+        dayTv.setText(outFormat.format(new Date(formattedDate)));
         prevButton.setOnClickListener(this);
         forwadButton.setOnClickListener(this);
 
@@ -50,8 +55,7 @@ public class DateFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        SimpleDateFormat outFormat = new SimpleDateFormat("EEE");
-        SimpleDateFormat outFormat1 = new SimpleDateFormat("MMM dd");
+
         switch (view.getId()){
             case R.id.prevButton:
                 c.add(Calendar.DATE, -1);

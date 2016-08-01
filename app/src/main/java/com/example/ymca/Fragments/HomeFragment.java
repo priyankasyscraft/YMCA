@@ -29,6 +29,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private boolean isCheck = false;
     private ScheduleFragment scheduleFragment = new ScheduleFragment();
     private HomeClassesFragment homeClassesFragment = new HomeClassesFragment();
+    private LocationFragment locationFragment = new LocationFragment();
+    private MyCardsFragment myCardsFragment = new MyCardsFragment();
+    private NotificationFragment notificationFragment = new NotificationFragment();
 
     @Nullable
     @Override
@@ -90,6 +93,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 isCheck = DataManager.chkStatus();
                 if (isCheck) {
                     Toast.makeText(getActivity(), "NotificationBell", Toast.LENGTH_SHORT).show();
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame,notificationFragment,Constant.notificationFragment)
+                            .commit();
                 }
 
             }
@@ -108,14 +116,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.content_frame,scheduleFragment, Constant.scheduleFragment)
-                        .addToBackStack(getFragmentManager().getClass().getName())
+                        .replace(R.id.content_frame, scheduleFragment, Constant.scheduleFragment)
                         .commit();
 
                 break;
             case R.id.myCardLayout:
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+                        .commit();
                 break;
             case R.id.locationLayout:
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, locationFragment, Constant.locationFramgnet)
+                        .commit();
                 break;
             case R.id.programLayout:
                 break;
@@ -123,8 +140,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.content_frame,homeClassesFragment, Constant.homeClassFragment)
-                        .addToBackStack(getFragmentManager().getClass().getName())
+                        .replace(R.id.content_frame, homeClassesFragment, Constant.homeClassFragment)
                         .commit();
 
                 break;

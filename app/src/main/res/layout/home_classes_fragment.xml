@@ -33,8 +33,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_menu_send"
-                android:padding="@dimen/padding_common_10"
+                android:src="@drawable/arrow_prev"
                 android:id="@+id/prevButton"/>
 
             <LinearLayout
@@ -68,8 +67,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_menu_send"
-                android:padding="@dimen/padding_common_10"
+                android:src="@drawable/arrow_next"
                 android:id="@+id/forwadButton"/>
 
         </LinearLayout>

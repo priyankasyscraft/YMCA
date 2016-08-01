@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/padding_common_10">
+    android:paddingBottom="@dimen/padding_common_10"
+    android:weightSum="1"
+    android:background="@drawable/classes_bg">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_weight=".3">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorDateListTime"
+            android:background="@drawable/bg_bt_blue"
             android:paddingBottom="@dimen/padding_common_8"
             android:paddingLeft="@dimen/padding_common_14"
             android:paddingRight="@dimen/padding_common_14"
             android:paddingTop="@dimen/padding_common_8"
             android:text="07:00 am"
+            android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_common_14"
             android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight=".7"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="@dimen/padding_common_14"
         android:paddingTop="@dimen/padding_common_14"
@@ -35,10 +40,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text="Cycle + TRX - Beginner"
+            android:text="Cycle + TRX - Beginnersdfsfsfsafsafssadfsaf"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_common_18"
+            android:paddingRight="@dimen/padding_common_16"
             android:textStyle="bold" />
 
         <TextView
@@ -46,19 +51,22 @@
             android:layout_height="wrap_content"
             android:text="with james MacMann"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_common_14" />
+            android:textSize="@dimen/text_size_common_14"
+            android:padding="@dimen/padding_common_5" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tu Th @ 7:40 pm (50 min)"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_common_14" />
+            android:textSize="@dimen/text_size_common_14"
+            android:padding="@dimen/padding_common_5"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_common_5">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -69,12 +77,13 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Group Excersise Studio"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_common_14"
                 android:textStyle="bold"
-                android:paddingLeft="@dimen/padding_common_8"/>
+                android:paddingLeft="@dimen/padding_common_8"
+                />
         </LinearLayout>
     </LinearLayout>
 

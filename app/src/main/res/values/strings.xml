@@ -10,21 +10,48 @@
     <string name="instructors">Instructors</string>
     <string name="classe">Class</string>
     <string name="classes">Classes</string>
-    <string name="schedule">Schedule</string>
+    <string name="schedule">Schedules</string>
     <string name="my_card">My Cards</string>
     <string name="location">Location</string>
     <string name="program">Programs</string>
     <string name="blog">Blog</string>
     <string name="no_record">No Record Found</string>
-    <string name="home">Home</string>
-    <string name="check_in">Check-In</string>
-    <string name="announcement">Announcements</string>
-    <string name="program_register">Programs/Register</string>
-    <string name="event">Events</string>
-    <string name="donate">Donate</string>
-    <string name="contact">Contact</string>
-    <string name="setting">Settings</string>
+    <string name="home">HOME</string>
+    <string name="check_in">CHECK-IN</string>
+    <string name="announcement">ANNOUNCEMENTS</string>
+    <string name="program_register">PROGRAMS/REGISTER</string>
+    <string name="event">EVENTS</string>
+    <string name="donate">DONATE</string>
+    <string name="contact">CONTACT</string>
+    <string name="setting">SETTINGS</string>
     <string name="name">NAME</string>
     <string name="code">CODE</string>
     <string name="update_card">UPDATE CARD</string>
+    <string name="add_to_calender">Add To Calendar</string>
+    <string name="membership_info">MEMBERSHIP INFORMATION</string>
+    <string name="location_info">LOCATION INFORMATION</string>
+    <string name="application">APPLICATION</string>
+    <string name="facility">FACILITY STATUS</string>
+    <string name="facilits">FACILITY</string>
+    <string name="camp">CAMPS</string>
+
+    <string name="custom_primary_font">cachet-std-bold.ttf</string>
+    <string name="custom_secondary_font">cachet-std-book.ttf</string>
+    <string name="msg_center">Message Center</string>
+
+    <string-array name="drawerText">
+        <item>@string/membership_info</item>
+        <item>@string/home</item>
+        <item>@string/check_in</item>
+        <item>@string/location_info</item>
+        <item>@string/announcement</item>
+        <item>@string/program_register</item>
+        <item>@string/facility</item>
+        <item>@string/camp</item>
+        <item>@string/event</item>
+        <item>@string/donate</item>
+        <item>@string/contact</item>
+        <item>@string/application</item>
+        <item>@string/setting</item>
+    </string-array>
 </resources>

@@ -48,9 +48,9 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.dateTab:
 
-                dateTab.setBackgroundColor(getResources().getColor(R.color.colorScheduleBottomSelect));
-                classTab.setBackgroundColor(getResources().getColor(R.color.colorScheduleBottomUnSelect));
-                instructorTab.setBackgroundColor(getResources().getColor(R.color.colorScheduleBottomUnSelect));
+                dateTab.setBackground(getResources().getDrawable(R.drawable.schedule_tabmenu));
+                classTab.setBackground(getResources().getDrawable(R.drawable.schedule_tabmenu_selected));
+                instructorTab.setBackground(getResources().getDrawable(R.drawable.schedule_tabmenu_selected));
 
                 getChildFragmentManager()
                         .beginTransaction()
@@ -60,19 +60,19 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.classTab:
 
-                dateTab.setBackgroundColor(getResources().getColor(R.color.colorScheduleBottomUnSelect));
-                classTab.setBackgroundColor(getResources().getColor(R.color.colorScheduleBottomSelect));
-                instructorTab.setBackgroundColor(getResources().getColor(R.color.colorScheduleBottomUnSelect));
+                dateTab.setBackground(getResources().getDrawable(R.drawable.schedule_tabmenu_selected));
+                classTab.setBackground(getResources().getDrawable(R.drawable.schedule_tabmenu));
+                instructorTab.setBackground(getResources().getDrawable(R.drawable.schedule_tabmenu_selected));
                 getChildFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.content_child_frame, classFragment, Constant.instructorFragment)
+                        .replace(R.id.content_child_frame, classFragment, Constant.classFragment)
                         .commit();
                 break;
             case R.id.instructorTab:
 
-                dateTab.setBackgroundColor(getResources().getColor(R.color.colorScheduleBottomUnSelect));
-                classTab.setBackgroundColor(getResources().getColor(R.color.colorScheduleBottomUnSelect));
-                instructorTab.setBackgroundColor(getResources().getColor(R.color.colorScheduleBottomSelect));
+                dateTab.setBackground(getResources().getDrawable(R.drawable.schedule_tabmenu_selected));
+                classTab.setBackground(getResources().getDrawable(R.drawable.schedule_tabmenu_selected));
+                instructorTab.setBackground(getResources().getDrawable(R.drawable.schedule_tabmenu));
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_child_frame, instructorFragment, Constant.instructorFragment)

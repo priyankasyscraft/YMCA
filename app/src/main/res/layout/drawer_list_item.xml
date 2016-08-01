@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <ImageView
+        android:id="@+id/titleIcon"
+        android:layout_width="35dp"
+        android:layout_height="match_parent"
+        android:src="@mipmap/nav_home"
+
+        />
+
+    <com.example.ymca.CustomFont.PrimaryFontText
+        android:id="@+id/drawerTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Home"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/text_size_common_16"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        app:fontNames="@string/custom_primary_font"
+         />
+</LinearLayout>

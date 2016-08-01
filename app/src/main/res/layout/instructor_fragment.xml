@@ -2,19 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <TextView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <com.example.ymca.CustomFont.PrimaryFontText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:padding="@dimen/padding_common_10"
         android:text="@string/instructors"
         android:textAllCaps="true"
-        android:gravity="center"
         android:textColor="@color/colorScheduleBottomUnSelect"
         android:textSize="@dimen/margin_common_25"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:fontNames="@string/custom_primary_font"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight=".98" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".02"
+        android:background="@drawable/bottom_img" />
 </LinearLayout>

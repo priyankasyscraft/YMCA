@@ -2,44 +2,65 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/home" />
+            android:id="@+id/navigation_subheader"
+            android:title="@string/membership_info"
+            >
+            <menu>
+                <item
+                    android:id="@+id/home"
+                    android:checkable="false"
+                    android:icon="@mipmap/nav_home"
+                    android:title="@string/home" />
+                <item
+                    android:id="@+id/checkIn"
+                    android:checkable="false"
+                    android:icon="@mipmap/nav_check_id"
+                    android:title="@string/check_in" />
+            </menu>
+        </item>
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/check_in" />
+            android:id="@+id/navigation_subheader2"
+            android:title="@string/location_info">
+            <menu>
+                <item
+                    android:id="@+id/announcement"
+                    android:checkable="false"
+                    android:icon="@mipmap/nav_announcment"
+                    android:title="@string/announcement" />
+                <item
+                    android:id="@+id/program_register"
+                    android:checkable="false"
+                    android:icon="@mipmap/nav_prog"
+                    android:title="@string/program_register" />
+                <item
+                    android:id="@+id/events"
+                    android:checkable="false"
+                    android:icon="@mipmap/nav_event"
+                    android:title="@string/event" />
+                <item
+                    android:id="@+id/donate"
+                    android:checkable="false"
+                    android:icon="@mipmap/nav_donate"
+                    android:title="@string/donate" />
+                <item
+                    android:id="@+id/contact"
+                    android:checkable="false"
+                    android:icon="@mipmap/nav_contact"
+                    android:title="@string/contact" />
+            </menu>
+        </item>
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/announcement" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/program_register" />
-        <item
-            android:id="@+id/nav_manage1"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/event" />
-        <item
-            android:id="@+id/nav_manage2"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/donate" />
-        <item
-            android:id="@+id/nav_manage3"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/contact" />
-        <item
-            android:id="@+id/nav_manage4"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/program_register" />
-        <item
-            android:id="@+id/nav_manage5"
-            android:icon="@drawable/ic_menu_manage"
-
-            android:title="@string/setting" />
-
+            android:id="@+id/navigation_subheader3"
+            android:title="@string/application"
+            >
+            <menu>
+                <item
+                    android:id="@+id/settings"
+                    android:checkable="false"
+                    android:icon="@mipmap/nav_settings"
+                    android:title="@string/setting" />
+            </menu>
+        </item>
     </group>
 </menu>

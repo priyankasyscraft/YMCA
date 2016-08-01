@@ -9,18 +9,27 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/padding_common_5"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:background="@drawable/classes_bg">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".1"
-            android:src="@mipmap/ic_launcher" />
+            android:layout_height="60dp"
+            android:layout_weight=".15"
+            android:background="@drawable/bg_bt_left"
+            android:src="@mipmap/ic_launcher"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/timer_class_icon" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".6"
+            android:layout_weight=".55"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -48,23 +57,29 @@
             android:layout_weight=".2"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:padding="@dimen/padding_common_5">
+            android:padding="@dimen/padding_common_8">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/button_border"
+                android:background="@drawable/classes_button_bg_purple"
                 android:gravity="center"
                 android:text="10:30"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
 
-        <ImageView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".1"
-            android:src="@drawable/ic_menu_send" />
+            android:layout_weight=".12"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_black" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
