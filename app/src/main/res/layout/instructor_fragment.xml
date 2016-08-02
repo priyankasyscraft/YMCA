@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <com.example.ymca.CustomFont.PrimaryFontText
+    <com.ymca.CustomFont.PrimaryFontText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -14,7 +14,7 @@
         android:text="@string/instructors"
         android:textAllCaps="true"
         android:textColor="@color/colorScheduleBottomUnSelect"
-        android:textSize="@dimen/margin_common_25"
+        android:textSize="@dimen/text_size_common_22"
         android:textStyle="bold"
         app:fontNames="@string/custom_primary_font"/>
 

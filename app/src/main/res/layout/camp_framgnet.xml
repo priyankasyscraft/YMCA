@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.ymca.CustomFont.PrimaryFontText
+        android:id="@+id/campHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/padding_common_5"
+        android:text="@string/camps"
+        android:textColor="@color/colorScheduleBottomUnSelect"
+        android:textSize="@dimen/margin_common_20"
+        android:textStyle="bold"
+        app:fontName="@string/custom_primary_font" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/campList"/>
+
+</LinearLayout>

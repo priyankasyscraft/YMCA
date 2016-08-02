@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".98"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_common_14">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorGray"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_common_10"
+            android:weightSum="1">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".1"
+                android:background="@null"
+                android:id="@+id/memberName"
+                android:gravity="center"
+                android:hint="@string/member_name"
+                android:textColorHint="@color/colorTextGray"
+                android:padding="@dimen/padding_common_8"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_common_16"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:weightSum="1">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight=".8"
+                    android:background="@android:color/white" />
+            </LinearLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".1"
+                android:background="@null"
+                android:gravity="center"
+                android:id="@+id/memberBarCodeNumber"
+                android:hint="@string/enter_number"
+                android:textColorHint="@color/colorTextGray"
+                android:inputType="number"
+                android:maxLength="12"
+                android:textStyle="bold"
+                android:padding="@dimen/padding_common_8"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_common_16" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:weightSum="1">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight=".8"
+                    android:background="@android:color/white" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".5"
+                android:background="@android:color/white"
+                android:gravity="bottom"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight=".8" />
+
+                <com.ymca.CustomFont.SecondaryFontText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_common_5"
+                    android:text="@string/add_card_text"
+                    android:textSize="@dimen/text_size_common_16"
+                    app:fontNames="@string/custom_secondary_font" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".05" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".12"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <com.ymca.CustomFont.PrimaryFontText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:background="@drawable/classes_button_bg_purple"
+                    android:gravity="center"
+                    android:text="@string/add_card"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_common_15"
+                    android:textStyle="bold"
+                    app:fontName="@string/custom_primary_font"
+                    android:id="@+id/addCardButton"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".1" />
+                <com.ymca.CustomFont.PrimaryFontText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:background="@drawable/classes_button_bg_purple"
+                    android:gravity="center"
+                    android:text="@string/cancel"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_common_15"
+                    android:textStyle="bold"
+                    app:fontName="@string/custom_primary_font"
+                    android:id="@+id/cancelButton"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.02"
+        android:background="@drawable/bottom_img" />
+
+</LinearLayout>

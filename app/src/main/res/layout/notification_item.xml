@@ -2,23 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="@dimen/padding_common_10">
 
-    <TextView
+    <com.ymca.CustomFont.PrimaryFontText
         style="@android:style/TextAppearance.DeviceDefault.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="fasfhsfkjshfksajdfhkafhdsfkjhfsjdhfkjsafsj,dfhasjkdfhsf"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        app:fontName="@string/custom_primary_font"/>
 
-    <TextView
+    <com.ymca.CustomFont.SecondaryFontText
         style="@android:style/TextAppearance.DeviceDefault.Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="June 17,2016 at 04:30PM"
         android:textColor="@android:color/darker_gray"
         android:gravity="end"
-        android:paddingTop="@dimen/padding_common_5"/>
+        android:paddingTop="@dimen/padding_common_5"
+        app:fontNames="@string/custom_secondary_font"/>
 
 </LinearLayout>

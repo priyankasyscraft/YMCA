@@ -10,4 +10,5 @@
     <color name="colorTransParent">#BB000000</color>
     <color name="colorGray">#BCBEC0</color>
     <color name="colorTextGray">#8A8A8C</color>
+    <color name="colorTextGreeen">#51B100</color>
 </resources>

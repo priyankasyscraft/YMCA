@@ -21,8 +21,8 @@
             android:paddingTop="@dimen/padding_common_5"
             android:src="@drawable/bt_back" />
 
-        <com.example.ymca.CustomFont.PrimaryFontText
-            style="@android:style/TextAppearance.DeviceDefault.Large"
+        <com.ymca.CustomFont.PrimaryFontText
+            style="@android:style/TextAppearance.DeviceDefault.Medium"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal|center_vertical"

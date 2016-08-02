@@ -11,7 +11,7 @@
     <string name="classe">Class</string>
     <string name="classes">Classes</string>
     <string name="schedule">Schedules</string>
-    <string name="my_card">My Cards</string>
+    <string name="my_card">MY CARDS</string>
     <string name="location">Location</string>
     <string name="program">Programs</string>
     <string name="blog">Blog</string>
@@ -38,6 +38,27 @@
     <string name="custom_primary_font">cachet-std-bold.ttf</string>
     <string name="custom_secondary_font">cachet-std-book.ttf</string>
     <string name="msg_center">Message Center</string>
+    <string name="class_description">Class Description</string>
+    <string name="add_card">ADD CARD</string>
+    <string name="open">Open</string>
+    <string name="mon">Mon</string>
+    <string name="tue">Tues</string>
+    <string name="wed">Wed</string>
+    <string name="thus">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
+    <string name="sun">Sun</string>
+    <string name="camps">CAMPS</string>
+    <string name="descriptn">Description</string>
+    <string name="register">Register</string>
+    <string name="more_info">More Info</string>
+    <string name="ecperience">Experience</string>
+    <string name="certification">Certification</string>
+    <string name="fun">Fun Fact</string>
+    <string name="member_name">MEMBER\'S NAME</string>
+    <string name="enter_number">ENTER BAR CODE NUMBER</string>
+    <string name="add_card_text">You can find your barcode number on the back of your member card.</string>
+    <string name="cancel">CANCEL</string>
 
     <string-array name="drawerText">
         <item>@string/membership_info</item>

@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:weightSum="1"
     android:gravity="center_vertical">
 
-    <TextView
-        style="@style/TextAppearance.AppCompat.Small"
+    <com.ymca.CustomFont.PrimaryFontText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -15,7 +15,8 @@
         android:text="XXX XXXX XXXXXX"
         android:textColor="@android:color/black"
         android:background="@drawable/classes_bg"
-        android:id="@+id/textView2" />
+        android:id="@+id/textView2"
+        android:textSize="@dimen/text_size_common_16"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -29,25 +30,28 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="47dp"
         android:layout_marginEnd="47dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        >
 
-        <TextView
+        <com.ymca.CustomFont.PrimaryFontText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="01"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_common_35"
-            android:textStyle="bold" />
+            android:textSize="@dimen/text_size_common_22"
+            android:textStyle="bold"
+            app:fontName="@string/custom_primary_font"/>
 
-        <TextView
+        <com.ymca.CustomFont.SecondaryFontText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Aug"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_common_14"
-            android:textStyle="bold" />
+            android:textSize="@dimen/text_size_common_13"
+            android:textStyle="bold"
+            app:fontNames="@string/custom_secondary_font"/>
     </LinearLayout>
 
     <ImageView

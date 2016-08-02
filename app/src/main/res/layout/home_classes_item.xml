@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -33,46 +34,50 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <TextView
+            <com.ymca.CustomFont.PrimaryFontText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="Cricket Game Class"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_common_16"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:fontName="@string/custom_primary_font"/>
 
-            <TextView
+            <com.ymca.CustomFont.SecondaryFontText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="Cricket Game Class"
-                android:textColor="@color/colorScheduleBottomUnSelect" />
+                android:textColor="@color/colorScheduleBottomUnSelect"
+                app:fontNames="@string/custom_secondary_font"
+                android:textSize="@dimen/text_size_common_13"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".2"
+            android:layout_weight=".22"
             android:gravity="center_vertical"
             android:orientation="vertical"
             android:padding="@dimen/padding_common_8">
 
-            <TextView
+            <com.ymca.CustomFont.SecondaryFontText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/classes_button_bg_purple"
                 android:gravity="center"
                 android:text="10:30"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                app:fontNames="@string/custom_secondary_font"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".12"
+            android:layout_weight=".10"
             android:gravity="center_vertical">
 
             <ImageView

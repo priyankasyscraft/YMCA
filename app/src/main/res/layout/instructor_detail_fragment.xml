@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+
+    <LinearLayout
+        android:id="@+id/circleInstructorLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <com.ymca.CustomFont.RoundedImage
+            android:id="@+id/circleInstructorImg"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/blog_icon" />
+    </LinearLayout>
+
+    <com.ymca.CustomFont.PrimaryFontText
+        android:id="@+id/instructorName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/circleInstructorLay"
+        android:gravity="center"
+        android:padding="@dimen/padding_common_5"
+        android:text="@string/instructors"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/margin_common_16"
+        android:textStyle="bold"
+        app:fontNames="@string/custom_primary_font" />
+
+    <com.ymca.CustomFont.PrimaryFontText
+
+        android:id="@+id/expTag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/instructorName"
+        android:background="@drawable/classes_bg"
+        android:drawableLeft="@drawable/arrow_gray"
+        android:drawablePadding="@dimen/padding_common_5"
+        android:gravity="center_vertical"
+        android:padding="@dimen/padding_common_5"
+        android:text="@string/ecperience"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/margin_common_16"
+        android:textStyle="bold"
+        app:fontNames="@string/custom_primary_font" />
+
+    <LinearLayout
+        android:id="@+id/experienceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/expTag"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <com.ymca.CustomFont.PrimaryFontText
+
+        android:id="@+id/certificationTag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/experienceLayout"
+        android:background="@drawable/classes_bg"
+        android:drawableLeft="@drawable/arrow_gray"
+        android:drawablePadding="@dimen/padding_common_5"
+        android:gravity="center_vertical"
+        android:padding="@dimen/padding_common_5"
+        android:text="@string/certification"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/margin_common_16"
+        android:textStyle="bold"
+        app:fontNames="@string/custom_primary_font" />
+
+    <LinearLayout
+        android:id="@+id/certificateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/certificationTag"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <com.ymca.CustomFont.PrimaryFontText
+
+        android:id="@+id/funFactTag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/certificateLayout"
+        android:background="@drawable/classes_bg"
+        android:drawableLeft="@drawable/arrow_gray"
+        android:drawablePadding="@dimen/padding_common_5"
+        android:gravity="center_vertical"
+        android:padding="@dimen/padding_common_5"
+        android:text="@string/fun"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/margin_common_16"
+        android:textStyle="bold"
+        app:fontNames="@string/custom_primary_font" />
+
+    <LinearLayout
+        android:id="@+id/funFactLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/certificationTag"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".02"
+        android:background="@drawable/bottom_img" />
+</RelativeLayout>

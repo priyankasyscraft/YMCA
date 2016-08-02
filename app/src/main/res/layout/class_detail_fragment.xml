@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1.5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".25"
+        android:orientation="horizontal"
+
+        android:weightSum="1">
+
+        <com.ymca.CustomFont.PrimaryFontText
+            android:id="@+id/classDetailHeader"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".7"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/padding_common_5"
+            android:text="XXXXXXX"
+            android:textColor="@color/colorScheduleBottomUnSelect"
+            android:textSize="@dimen/text_size_common_22"
+            android:textStyle="bold"
+            app:fontName="@string/custom_primary_font" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".3"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".5"
+                android:text="xxxxxx"
+                android:id="@+id/classDetailDay"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".5"
+                android:text="xxxxxx"
+                android:id="@+id/classDetailDate" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_common_10"
+        android:layout_weight=".7"
+        android:background="@drawable/slider_img" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_common_10"
+        android:layout_weight="0.15"
+        android:background="@drawable/classes_bg"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+
+        <com.ymca.CustomFont.PrimaryFontText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".35"
+            android:drawableLeft="@drawable/timer_class_icon"
+            android:gravity="center"
+            android:text="10:30"
+            android:textColor="@color/colorScheduleBottomUnSelect"
+            android:textSize="@dimen/text_size_common_22"
+            android:textStyle="bold"
+            app:fontName="@string/custom_primary_font"
+            android:id="@+id/classDetailTime" />
+    </LinearLayout>
+
+    <com.ymca.CustomFont.SecondaryFontText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_common_10"
+        android:text="@string/class_description"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_common_16"
+        app:fontNames="@string/custom_secondary_font" />
+
+    <com.ymca.CustomFont.SecondaryFontText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_common_10"
+        android:text="sasdfsafasfsadfasdfasfddsasdfsfsafsadfasfasfdasdfasfdasdfasfasdfsdafsdfsafsafdsadfsafsafasfdsfsadfsfdsdfasdfasfdasdfgbfjfhas;iflakh;hasfjhluahfsakjsdfsfsfsdfsfhawkjfhakjefhafjkgehkawjfeghf;jgfe;jahwfkjafhjkaewfhakjwefelwrfsdfadsfsafasfsadfsadfsafdasf"
+        android:textColor="@android:color/black"
+        app:fontNames="@string/custom_secondary_font"
+        android:id="@+id/classDetailDescription"
+        android:textSize="@dimen/text_size_common_12"/>
+
+    <com.ymca.CustomFont.SecondaryFontText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_common_10"
+        android:text="@string/location"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_common_16"
+        app:fontNames="@string/custom_secondary_font" />
+
+    <com.ymca.CustomFont.SecondaryFontText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/padding_common_10"
+        android:text="XXXXXXX"
+        android:textColor="@color/colorScheduleBottomUnSelect"
+        app:fontName="@string/custom_secondary_font"
+        android:id="@+id/classDetailAddress"
+        />
+
+    <com.ymca.CustomFont.SecondaryFontText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/padding_common_10"
+        android:text="XXXXXXX"
+        android:textColor="@color/colorScheduleBottomUnSelect"
+        app:fontName="@string/custom_secondary_font"
+        android:id="@+id/classDetailPhoneNo"
+        />
+</LinearLayout>

@@ -31,6 +31,7 @@
     <dimen name="margin_common_16">16dp</dimen>
     <dimen name="margin_common_18">18dp</dimen>
     <dimen name="margin_common_20">20dp</dimen>
+    <dimen name="margin_common_22">22dp</dimen>
     <dimen name="margin_common_25">25dp</dimen>
 
 
@@ -39,10 +40,13 @@
     <dimen name="text_size_common_8">8sp</dimen>
     <dimen name="text_size_common_10">10sp</dimen>
     <dimen name="text_size_common_12">12sp</dimen>
+    <dimen name="text_size_common_13">13sp</dimen>
     <dimen name="text_size_common_14">14sp</dimen>
+    <dimen name="text_size_common_15">15sp</dimen>
     <dimen name="text_size_common_16">16sp</dimen>
     <dimen name="text_size_common_18">18sp</dimen>
     <dimen name="text_size_common_20">20sp</dimen>
+    <dimen name="text_size_common_22">22sp</dimen>
     <dimen name="text_size_common_25">25sp</dimen>
     <dimen name="text_size_common_30">30sp</dimen>
     <dimen name="text_size_common_35">35sp</dimen>
