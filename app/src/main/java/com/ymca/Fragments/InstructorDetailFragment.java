@@ -4,32 +4,50 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ymca.Activities.HomeActivity;
+import com.ymca.Adapters.GridAdapter;
 import com.ymca.AppManager.DataManager;
+import com.ymca.ModelClass.InstructorModelClass;
 import com.ymca.R;
 
 
 /**
  * Created by Soni on 28-Jul-16.
  */
-public class ClassDetailFragment extends Fragment {
+public class InstructorDetailFragment extends Fragment {
 
     private View view;
-   TextView classDetailHeader,classDetailDay,classDetailDate,classDetailTime,classDetailDescription,classDetailAddress,classDetailPhoneNo;
+    LinearLayout experienceLayout,certificateLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.class_detail_fragment,container,false );
-        DataManager.getInstance().setFlagClassList(true);
+        view = inflater.inflate(R.layout.instructor_detail_fragment,container,false );
+        DataManager.getInstance().setFlagInstructorList(true);
         actionBarUpdate();
+
+        certificateLayout = (LinearLayout)view.findViewById(R.id.certificateLayout);
+
+        for(int i=0;i<25;i++){
+            TextView textView = new TextView(getActivity());
+
+            textView.setText("Amitdsfsafsfsafsfdsafafsfsf");
+            textView.setTextColor(getResources().getColor(R.color.colorPrimary));
+            textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.arrow_black, 0, 0, 0);
+            textView.setPadding(5,2,0,2);
+            certificateLayout.addView(textView);
+        }
+
 
         return view;
     }

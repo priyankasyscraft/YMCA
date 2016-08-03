@@ -108,8 +108,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
 
         actionBar.setCustomView(view, layoutParams);
-
-
     }
 
     @Override
@@ -121,6 +119,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         .getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, scheduleFragment, Constant.scheduleFragment)
+                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
                         .commit();
 
                 break;

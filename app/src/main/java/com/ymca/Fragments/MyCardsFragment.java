@@ -76,11 +76,11 @@ public class MyCardsFragment extends Fragment {
         for (int i = 0; i < 10; i++) {
             MyCardModelClass myCardModelClass = new MyCardModelClass();
             myCardModelClass.setUserName("Amit");
-            myCardModelClass.setUserBarCodeNumber("1234567890");
+            myCardModelClass.setUserBarCodeNumber("123456789012");
             DataManager.getInstance().addMyCardModelClasses(myCardModelClass);
         }
 
-        myCardAdapter = new MyCardAdapter(DataManager.getInstance().getMyCardModelClasses());
+        myCardAdapter = new MyCardAdapter(getActivity(),DataManager.getInstance().getMyCardModelClasses());
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerCardList.setLayoutManager(mLayoutManager);
@@ -138,62 +138,5 @@ public class MyCardsFragment extends Fragment {
         actionBar.setCustomView(view, layoutParams);
 
 
-    }
-
-    public void createEAN13Code() {
-
-
-        String s = "";
-        if (s == null || s.length() != 12) return;
-
-        BarQrCodeGenerator bb = new BarQrCodeGenerator(s);
-
-
-//        barCodeNumber.setText(bb.getCode());
-        generateBarCode(s);
-//        generateQRCode(s);
-    }
-
-
-    //Change the writers as per your need QR code
-//    private void generateQRCode(String data) {
-//        com.google.zxing.Writer writer = new QRCodeWriter();
-//        String finaldata = Uri.encode(data, "ISO-8859-1");
-//        try {
-//            BitMatrix bm = writer.encode(finaldata, BarcodeFormat.QR_CODE, 350, 350);
-//            QrBitmap = Bitmap.createBitmap(350, 350, Bitmap.Config.ARGB_8888);
-//            for (int i = 0; i < 350; i++) {
-//                for (int j = 0; j < 350; j++) {
-//                    QrBitmap.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
-//                }
-//            }
-//        } catch (WriterException e) {
-//            e.printStackTrace();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        if (QrBitmap != null) {
-//            mImageView.setImageBitmap(QrBitmap);
-//        }
-//    }
-
-    public void generateBarCode(String data) {
-        com.google.zxing.Writer c9 = new Code128Writer();
-        try {
-            BitMatrix bm = c9.encode(data, BarcodeFormat.CODE_128, 350, 350);
-            BarCodeBitmap = Bitmap.createBitmap(350, 350, Bitmap.Config.ARGB_8888);
-
-            for (int i = 0; i < 350; i++) {
-                for (int j = 0; j < 350; j++) {
-
-                    BarCodeBitmap.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (BarCodeBitmap != null) {
-//            barCodeImg.setImageBitmap(BarCodeBitmap);
-        }
     }
 }

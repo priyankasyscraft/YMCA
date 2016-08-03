@@ -15,7 +15,7 @@ public abstract class BaseActivity extends FragmentActivity  {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 0);
-        DataManager.getInstance().setAppCompatActivity(this);
+//        DataManager.getInstance().setAppCompatActivity(this);
 //        JsonCaller.getInstance().setRefreshDataListener(this);
     }
 }

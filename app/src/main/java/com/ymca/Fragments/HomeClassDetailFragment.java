@@ -19,7 +19,7 @@ import com.ymca.R;
 /**
  * Created by Soni on 28-Jul-16.
  */
-public class ClassDetailFragment extends Fragment {
+public class HomeClassDetailFragment extends Fragment {
 
     private View view;
    TextView classDetailHeader,classDetailDay,classDetailDate,classDetailTime,classDetailDescription,classDetailAddress,classDetailPhoneNo;
@@ -28,7 +28,7 @@ public class ClassDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.class_detail_fragment,container,false );
-        DataManager.getInstance().setFlagClassList(true);
+
         actionBarUpdate();
 
         return view;

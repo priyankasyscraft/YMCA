@@ -29,15 +29,17 @@
             android:text="@string/no_record"
             android:textSize="@dimen/text_size_common_22"
             android:textStyle="bold"
-            app:fontName="@string/custom_primary_font"/>
+            app:fontName="@string/custom_primary_font"
+            android:visibility="gone"/>
 
         <com.ymca.PullListLoader.XListView
             android:id="@+id/classScheduleListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:choiceMode="singleChoice"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:smoothScrollbar="true" />
+            android:focusable="true"
+            android:smoothScrollbar="true"
+            android:divider="@null"
+            android:dividerHeight="0dp"/>
     </RelativeLayout>
 </LinearLayout>

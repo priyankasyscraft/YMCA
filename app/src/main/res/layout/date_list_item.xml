@@ -12,9 +12,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight=".3">
+        android:layout_weight=".28">
 
         <com.ymca.CustomFont.SecondaryFontText
+            android:id="@+id/dateTimeTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_bt_blue"
@@ -40,6 +41,7 @@
         >
 
         <com.ymca.CustomFont.PrimaryFontText
+            android:id="@+id/dateName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cycle + TRX - Beginnersdfsfsfsafsafssadfsaf"
@@ -50,6 +52,7 @@
             app:fontName="@string/custom_primary_font"/>
 
         <com.ymca.CustomFont.SecondaryFontText
+            android:id="@+id/dateSubName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="with james MacMann"
@@ -59,6 +62,7 @@
             app:fontNames="@string/custom_secondary_font"/>
 
         <com.ymca.CustomFont.SecondaryFontText
+            android:id="@+id/dateTTimeWithDays"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tu Th @ 7:40 pm (50 min)"
@@ -81,6 +85,7 @@
                 android:textSize="@dimen/text_size_common_14" />
 
             <com.ymca.CustomFont.PrimaryFontText
+                android:id="@+id/dateGroupName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Group Excersise Studio"

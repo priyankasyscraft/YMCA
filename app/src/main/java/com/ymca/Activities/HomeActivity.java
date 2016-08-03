@@ -22,10 +22,12 @@ import android.widget.Toast;
 import com.ymca.Adapters.DrawerAdapter;
 import com.ymca.AppManager.DataManager;
 import com.ymca.Constants.Constant;
+import com.ymca.Fragments.DonateFragment;
 import com.ymca.Fragments.EventFragment;
 import com.ymca.Fragments.HomeFragment;
 import com.ymca.Fragments.MyCardsFragment;
 import com.ymca.Fragments.NotificationFragment;
+import com.ymca.Fragments.ScheduleFragment;
 import com.ymca.R;
 
 public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -35,7 +37,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     private HomeFragment homeFragment = new HomeFragment();
     private NotificationFragment notificationFragment = new NotificationFragment();
     private MyCardsFragment myCardsFragment = new MyCardsFragment();
-
+    private ScheduleFragment scheduleFragment = new ScheduleFragment();
     private boolean isCheck = false;
     private boolean doubleBackToExitPressedOnce = false;
     private ListView mDrawerList;
@@ -87,7 +89,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
         setSupportActionBar(toolbar);
 
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -102,8 +104,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.content_frame, homeFragment, Constant.homeFragment)
-                .addToBackStack(getFragmentManager().getClass().getName())
+                .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
                 .commit();
     }
 
@@ -127,6 +128,58 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     super.onBackPressed();
                 } else if (fr.getTag().equals(Constant.eventFragment)) {
                     super.onBackPressed();
+                }else if (fr.getTag().equals(Constant.classDetailFragment)) {
+//                    super.onBackPressed();
+                    fm.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame,scheduleFragment,Constant.scheduleFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
+                }else if (fr.getTag().equals(Constant.instructorDetailFrag)) {
+                    fm.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame,scheduleFragment,Constant.scheduleFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
+                }else if (fr.getTag().equals(Constant.scheduleFragment)) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
+                            .commit();
+                }else if (fr.getTag().equals(Constant.homeClassFragment)) {
+//                    fm.popBackStack(2, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    super.onBackPressed();
+                }else if (fr.getTag().equals(Constant.homeClassDetailFragment)) {
+//                    fm.popBackStack(2, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    super.onBackPressed();
+                }else if (fr.getTag().equals(Constant.cardShowFragment)) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame,myCardsFragment,Constant.myCardFragment)
+                            .commit();
+                }else if (fr.getTag().equals(Constant.myCardFragment)) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
+                            .commit();
+                }else if (fr.getTag().contains(Constant.homeFragment)) {
+                    if (doubleBackToExitPressedOnce) {
+                        super.onBackPressed();
+                        HomeActivity.this.finish();
+                        return;
+                    }
+                    this.doubleBackToExitPressedOnce = true;
+                    Toast.makeText(this, "Please click Back again to exit", Toast.LENGTH_SHORT).show();
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            doubleBackToExitPressedOnce = false;
+                        }
+                    }, 2000);
                 }else {
                     super.onBackPressed();
                 }
@@ -202,8 +255,13 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                         .commit();
                 break;
             case 9:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, new DonateFragment(), Constant.donateFragment)
+                        .commit();
                 break;
             case 10:
+
                 break;
             case 11:
                 break;

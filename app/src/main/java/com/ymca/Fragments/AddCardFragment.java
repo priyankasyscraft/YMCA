@@ -29,32 +29,52 @@ import com.ymca.R;
 public class AddCardFragment extends Fragment implements View.OnClickListener {
 
     private View view;
-    EditText memberName,memberBarCodeNumber;
-    TextView cancelButton,addCardButton;
+    EditText memberName, memberBarCodeNumber;
+    TextView cancelButton, addCardButton;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.add_my_card_fragment,container,false);
+        view = inflater.inflate(R.layout.add_my_card_fragment, container, false);
         actionBarUpdate();
-        memberName = (EditText)view.findViewById(R.id.memberName);
-        memberBarCodeNumber = (EditText)view.findViewById(R.id.memberBarCodeNumber);
+        memberName = (EditText) view.findViewById(R.id.memberName);
+        memberBarCodeNumber = (EditText) view.findViewById(R.id.memberBarCodeNumber);
         cancelButton = (TextView) view.findViewById(R.id.cancelButton);
+        addCardButton = (TextView) view.findViewById(R.id.addCardButton);
 
         Typeface myTypeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/cachet-std-bold.ttf");
         memberName.setTypeface(myTypeface);
         memberBarCodeNumber.setTypeface(myTypeface);
 
         cancelButton.setOnClickListener(this);
+        addCardButton.setOnClickListener(this);
 
         return view;
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.cancelButton:
                 getActivity().onBackPressed();
+                break;
+            case R.id.addCardButton:
+
+                if (memberName.getText().toString().trim().equals("")) {
+                    Toast.makeText(getActivity(), "Please enter Member Name", Toast.LENGTH_SHORT).show();
+                } else if (memberBarCodeNumber.getText().toString().trim().equals("")) {
+                    Toast.makeText(getActivity(), "Please enter Member Card Number", Toast.LENGTH_SHORT).show();
+                } else if (memberBarCodeNumber.getText().toString().trim().length()!= 12) {
+                    Toast.makeText(getActivity(), "Please enter 12 digit member card number", Toast.LENGTH_SHORT).show();
+                } else {
+                    DataManager.getInstance().setMemberName(memberName.getText().toString().trim());
+                    DataManager.getInstance().setMemberCardNumber(memberBarCodeNumber.getText().toString().trim());
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new CardShowFragment(), Constant.cardShowFragment)
+                            .commit();
+                }
                 break;
         }
     }
@@ -94,7 +114,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
         image_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            getActivity().onBackPressed();
+                getActivity().onBackPressed();
             }
         });
 

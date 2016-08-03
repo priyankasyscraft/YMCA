@@ -9,6 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ymca.Activities.HomeActivity;
+import com.ymca.Constants.Constant;
+import com.ymca.Fragments.ClassDetailFragment;
+import com.ymca.Fragments.InstructorDetailFragment;
 import com.ymca.R;
 import com.ymca.AppManager.DataManager;
 import com.ymca.ImageCache.ImageLoader;
@@ -65,7 +69,12 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.RecyclerViewHo
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(view.getContext(), "Clicked Country Position = " + getPosition(), Toast.LENGTH_SHORT).show();
+            ((HomeActivity) context)
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, new InstructorDetailFragment(), Constant.instructorDetailFrag)
+                    .addToBackStack(((HomeActivity) context).getFragmentManager().getClass().getName())
+                    .commit();
         }
     }
 }

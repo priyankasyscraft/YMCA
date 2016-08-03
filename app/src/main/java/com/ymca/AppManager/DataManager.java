@@ -5,26 +5,29 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ymca.ModelClass.ClassesModelClass;
+import com.ymca.ModelClass.DateModelClass;
 import com.ymca.ModelClass.EventModelClass;
+import com.ymca.ModelClass.HomeClassesModelClass;
 import com.ymca.ModelClass.InstructorModelClass;
+import com.ymca.ModelClass.LocationModelClass;
 import com.ymca.ModelClass.MyCardModelClass;
 import com.ymca.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Soni on 28-Jul-16.
@@ -43,10 +46,18 @@ public class DataManager {
     private ImageLoader imageLoader;
     private Activity appCompatActivity;
     private boolean isProgressDialogRunning = false;
+    private boolean flagClassList = false;
+    private boolean flagInstructorList = false;
+    private String memberName;
+    private String memberCardNumber;
 
     private ArrayList<InstructorModelClass> instructorModelClassArrayList = new ArrayList<>();
     private ArrayList<EventModelClass> eventModelClasses = new ArrayList<>();
     private ArrayList<MyCardModelClass> myCardModelClasses = new ArrayList<>();
+    private ArrayList<ClassesModelClass> classesModelClassArrayList = new ArrayList<>();
+    private ArrayList<HomeClassesModelClass> homeClassesModelClassArrayList = new ArrayList<>();
+    private ArrayList<DateModelClass> dateModelClasses = new ArrayList<>();
+    private ArrayList<LocationModelClass> locationModelClasses = new ArrayList<>();
 
     public static boolean chkStatus() {
         // TODO Auto-generated method stub
@@ -140,6 +151,58 @@ public class DataManager {
         }
     }
 
+    public String getNotifyDate(String notifyDate) {
+        if (!notifyDate.equals("") || !notifyDate.equals(null)) {
+            DateFormat theDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = null;
+            theDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            try {
+
+                date = theDateFormat.parse(notifyDate);
+            } catch (ParseException parseException) {
+                // Date is invalid. Do what you want.
+            } catch (Exception exception) {
+                // Generic catch. Do what you want.
+            }
+//            theDateFormat.setTimeZone(TimeZone.getDefault());
+            theDateFormat = new SimpleDateFormat("hh:mm a");
+
+            if (date != null) {
+                notifyDate = theDateFormat.format(date);
+                if (notifyDate.contains("AM")) {
+                    notifyDate = notifyDate.replace("AM", "AM");
+                } else {
+                    notifyDate = notifyDate.replace("PM", "PM");
+                }
+
+            }
+            return notifyDate;
+        } else {
+            return notifyDate;
+        }
+    }
+
+
+    public double distance(double lat1, double lon1, double lat2, double lon2) {
+
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+
+        return (dist);
+    }
+
+    public double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    public double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
+
+
     public void uniImageLoader(Context context, String imgUrl, ImageView imageView) {
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
@@ -192,5 +255,101 @@ public class DataManager {
 
     public void clearMyCardModelClasses() {
         this.myCardModelClasses.clear();
+    }
+
+    public ArrayList<ClassesModelClass> getClassesModelClassArrayList() {
+        return classesModelClassArrayList;
+    }
+
+    public void setClassesModelClassArrayList(ArrayList<ClassesModelClass> classesModelClassArrayList) {
+        this.classesModelClassArrayList = classesModelClassArrayList;
+    }
+
+    public void addClassesModelClassArrayList(ClassesModelClass classesModelClassArrayList) {
+        this.classesModelClassArrayList.add(classesModelClassArrayList);
+    }
+
+    public void clearClassesModelClassArrayList() {
+        this.classesModelClassArrayList.clear();
+    }
+
+    public ArrayList<DateModelClass> getDateModelClasses() {
+        return dateModelClasses;
+    }
+
+    public void setDateModelClasses(ArrayList<DateModelClass> dateModelClasses) {
+        this.dateModelClasses = dateModelClasses;
+    }
+
+    public void addDateModelClasses(DateModelClass dateModelClasses) {
+        this.dateModelClasses.add(dateModelClasses);
+    }
+
+    public void clearDateModelClasses() {
+        this.dateModelClasses.clear();
+    }
+
+    public boolean isFlagClassList() {
+        return flagClassList;
+    }
+
+    public void setFlagClassList(boolean flagClassList) {
+        this.flagClassList = flagClassList;
+    }
+
+    public boolean isFlagInstructorList() {
+        return flagInstructorList;
+    }
+
+    public void setFlagInstructorList(boolean flagInstructorList) {
+        this.flagInstructorList = flagInstructorList;
+    }
+
+    public String getMemberName() {
+        return memberName;
+    }
+
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
+    }
+
+    public String getMemberCardNumber() {
+        return memberCardNumber;
+    }
+
+    public void setMemberCardNumber(String memberCardNumber) {
+        this.memberCardNumber = memberCardNumber;
+    }
+
+    public ArrayList<HomeClassesModelClass> getHomeClassesModelClassArrayList() {
+        return homeClassesModelClassArrayList;
+    }
+
+    public void setHomeClassesModelClassArrayList(ArrayList<HomeClassesModelClass> homeClassesModelClassArrayList) {
+        this.homeClassesModelClassArrayList = homeClassesModelClassArrayList;
+    }
+
+    public void addHomeClassesModelClassArrayList(HomeClassesModelClass homeClassesModelClassArrayList) {
+        this.homeClassesModelClassArrayList.add(homeClassesModelClassArrayList);
+    }
+
+    public void clearHomeClassesModelClassArrayList() {
+        this.homeClassesModelClassArrayList.clear();
+    }
+
+    public ArrayList<LocationModelClass> getLocationModelClasses() {
+        return locationModelClasses;
+    }
+
+    public void setLocationModelClasses(ArrayList<LocationModelClass> locationModelClasses) {
+        this.locationModelClasses = locationModelClasses;
+    }
+
+    public void addLocationModelClasses(LocationModelClass locationModelClasses) {
+        this.locationModelClasses.add(locationModelClasses);
+    }
+
+    public void clearLocationModelClasses() {
+        this.locationModelClasses.clear();
     }
 }

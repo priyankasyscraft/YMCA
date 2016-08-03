@@ -1,48 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="1"
-        android:padding="@dimen/padding_common_5"
         android:background="@drawable/classes_bg"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_common_5"
+        android:weightSum="1">
 
         <com.ymca.CustomFont.PrimaryFontText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:padding="@dimen/padding_common_10"
-            android:textColor="@android:color/black"
-            android:text="XXXXXX"
-            android:textSize="@dimen/text_size_common_15"
+            android:layout_weight=".62"
             android:gravity="center_vertical"
+            android:padding="@dimen/padding_common_10"
+            android:text="XXXXXX"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_common_15"
             app:fontName="@string/custom_primary_font"
-            />
+            android:id="@+id/locationName"/>
+
         <com.ymca.CustomFont.SecondaryFontText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
             android:background="@drawable/text_border"
-            android:text="1698.2 mi"
             android:gravity="center"
             android:padding="@dimen/padding_common_8"
-            app:fontNames="@string/custom_secondary_font"
+            android:text="1698.2 mi"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_common_13"
             android:textStyle="bold"
+            app:fontNames="@string/custom_secondary_font"
+            android:id="@+id/locationDistance"
             />
 
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".2"
+            android:layout_weight=".08"
             android:background="@null"
             android:src="@drawable/location_arrow_black" />
     </LinearLayout>

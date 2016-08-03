@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:focusable="false">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,15 +13,17 @@
         android:padding="@dimen/padding_common_5"
         android:weightSum="1">
 
-        <com.ymca.CustomFont.PrimaryFontText
+        <com.ymca.CustomFont.SecondaryFontText
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".8"
             android:padding="@dimen/padding_common_10"
             android:text="XXXXXX"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_common_14"
-            app:fontName="@string/custom_primary_font"/>
+            android:textSize="@dimen/text_size_common_22"
+            app:fontName="@string/custom_secondary_font"
+            android:id="@+id/className"
+            android:focusable="false"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -33,7 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:src="@drawable/arrow_gray" />
+                android:src="@drawable/arrow_gray"
+                android:focusable="false" />
         </LinearLayout>
     </LinearLayout>
 

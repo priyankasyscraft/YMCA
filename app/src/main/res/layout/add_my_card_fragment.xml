@@ -22,18 +22,18 @@
             android:weightSum="1">
 
             <EditText
+                android:id="@+id/memberName"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".1"
                 android:background="@null"
-                android:id="@+id/memberName"
                 android:gravity="center"
                 android:hint="@string/member_name"
-                android:textColorHint="@color/colorTextGray"
                 android:padding="@dimen/padding_common_8"
                 android:textColor="@android:color/black"
+                android:textColorHint="@color/colorTextGray"
                 android:textSize="@dimen/text_size_common_16"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,20 +49,20 @@
             </LinearLayout>
 
             <EditText
+                android:id="@+id/memberBarCodeNumber"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".1"
                 android:background="@null"
                 android:gravity="center"
-                android:id="@+id/memberBarCodeNumber"
                 android:hint="@string/enter_number"
-                android:textColorHint="@color/colorTextGray"
                 android:inputType="number"
                 android:maxLength="12"
-                android:textStyle="bold"
                 android:padding="@dimen/padding_common_8"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_common_16" />
+                android:textColorHint="@color/colorTextGray"
+                android:textSize="@dimen/text_size_common_16"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -120,6 +120,7 @@
                 android:weightSum="1">
 
                 <com.ymca.CustomFont.PrimaryFontText
+                    android:id="@+id/addCardButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
@@ -129,13 +130,15 @@
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_common_15"
                     android:textStyle="bold"
-                    app:fontName="@string/custom_primary_font"
-                    android:id="@+id/addCardButton"/>
+                    app:fontName="@string/custom_primary_font" />
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".1" />
+
                 <com.ymca.CustomFont.PrimaryFontText
+                    android:id="@+id/cancelButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
@@ -145,8 +148,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_common_15"
                     android:textStyle="bold"
-                    app:fontName="@string/custom_primary_font"
-                    android:id="@+id/cancelButton"/>
+                    app:fontName="@string/custom_primary_font" />
             </LinearLayout>
         </LinearLayout>
 

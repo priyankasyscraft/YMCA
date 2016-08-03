@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ymca.Adapters.DateAdapter;
+import com.ymca.AppManager.DataManager;
+import com.ymca.ModelClass.DateModelClass;
+import com.ymca.PullListLoader.XListView;
 import com.ymca.R;
 
 import java.text.SimpleDateFormat;
@@ -28,6 +32,8 @@ public class DateFragment extends Fragment implements View.OnClickListener {
     SimpleDateFormat df;
     String formattedDate;
     private SimpleDateFormat outFormat,outFormat1;
+    XListView dateScheduleListView;
+    DateAdapter dateAdapter;
 
 
     @Nullable
@@ -40,6 +46,7 @@ public class DateFragment extends Fragment implements View.OnClickListener {
         outFormat1 = new SimpleDateFormat("MMM dd");
         formattedDate = df.format(c.getTime());
 
+        dateScheduleListView = (XListView) view.findViewById(R.id.dateScheduleListView);
         dateTv = (TextView) view.findViewById(R.id.dateTv);
         dayTv = (TextView) view.findViewById(R.id.dayTv);
         prevButton   = (ImageView)view.findViewById(R.id.prevButton);
@@ -50,7 +57,25 @@ public class DateFragment extends Fragment implements View.OnClickListener {
         prevButton.setOnClickListener(this);
         forwadButton.setOnClickListener(this);
 
+        dateAdapter = new DateAdapter(getActivity(), DataManager.getInstance().getDateModelClasses());
+        dateScheduleListView.setAdapter(dateAdapter);
+
+        setData();
+
         return view;
+    }
+
+    private void setData() {
+        for(int i = 0;i<20;i++){
+            DateModelClass dateModelClass = new DateModelClass();
+            dateModelClass.setScheduleDateAppointmentTime("2016-08-03 15:23:00");
+            dateModelClass.setScheduleDateName("CYCLE + TRX - Beginner");
+            dateModelClass.setScheduleDateNameWith("with James MacMann");
+            dateModelClass.setScheduleDateTime("Th Tu @07:40 AM (50 min)");
+            dateModelClass.setScheduleDatePlace("Group Exercise studio");
+            DataManager.getInstance().addDateModelClasses(dateModelClass);
+        }
+        dateAdapter.setReloadData(true);
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,28 +38,59 @@ public class NotificationFragment extends Fragment {
 
 
         view = inflater.inflate(R.layout.notification_fragment,container,false );
-        notificationList = (ListView)view.findViewById(R.id.notificationList);
-        backButton = (ImageButton) view.findViewById(R.id.backButton);
 
-        backButton.setOnClickListener(new View.OnClickListener() {
+        actionBarUpdate();
+
+        notificationList = (ListView)view.findViewById(R.id.notificationList);
+
+
+
+        return view;
+    }
+
+
+    private void actionBarUpdate() {
+        // TODO Auto-generated method stub
+
+
+        ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
+
+
+        actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
+        actionBar.setHomeButtonEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+//        actionBar.setTitle("");
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
+//        actionBar.setHomeAsUpIndicator(R.drawable.menu_icon);
+        actionBar.setDisplayShowTitleEnabled(false);
+
+//        Drawable actionBar_bg = getResources().getDrawable(
+//                R.drawable.tool_bar_bg);
+//        actionBar.setBackgroundDrawable(actionBar_bg);
+
+//        actionBar.setDisplayShowCustomEnabled(true);
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
+                ActionBar.LayoutParams.MATCH_PARENT,
+                ActionBar.LayoutParams.MATCH_PARENT);
+        layoutParams.gravity = Gravity.START;
+        layoutParams.leftMargin = -50;
+
+        LayoutInflater inflator = getActivity().getLayoutInflater();
+        View v = inflator.inflate(R.layout.custom_layout_back_button, null);
+        ImageView image_action = (ImageView) v.findViewById(R.id.custom_img_action_profile);
+        image_action.setImageResource(R.drawable.bt_back_white);
+        image_action.setVisibility(View.VISIBLE);
+        image_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().onBackPressed();
             }
         });
-        return view;
-    }
 
 
+        actionBar.setCustomView(v, layoutParams);
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+
     }
 }

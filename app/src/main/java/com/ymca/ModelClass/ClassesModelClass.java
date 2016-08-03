@@ -1,10 +1,9 @@
 package com.ymca.ModelClass;
 
 /**
- * Created by Soni on 28-Jul-16.
+ * Created by Soni on 03-Aug-16.
  */
 public class ClassesModelClass {
-
 
     private String classesName;
 
