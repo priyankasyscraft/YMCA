@@ -5,16 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ymca.Activities.HomeActivity;
-import com.ymca.Adapters.EventAdapter;
+import com.ymca.Adapters.FacilityAdapter;
 import com.ymca.AppManager.DataManager;
-import com.ymca.ModelClass.EventModelClass;
+import com.ymca.ModelClass.FacilityModelClass;
 import com.ymca.PullListLoader.XListView;
 import com.ymca.R;
 
@@ -22,36 +21,39 @@ import com.ymca.R;
 /**
  * Created by Soni on 28-Jul-16.
  */
-public class EventFragment extends Fragment {
+public class FacilityFragment extends Fragment {
 
     private View view;
-    XListView eventListView;
-    EventAdapter eventAdapter;
+    XListView facilityScheduleListView;
+    FacilityAdapter facilityAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.event_fragment, container, false);
+        view = inflater.inflate(R.layout.facility_fragment,container,false );
         actionBarUpdate();
-        eventListView = (XListView) view.findViewById(R.id.eventListView);
-        eventAdapter = new EventAdapter(getActivity(), DataManager.getInstance().getEventModelClasses());
-        eventListView.setAdapter(eventAdapter);
+        facilityScheduleListView = (XListView)view.findViewById(R.id.facilityScheduleListView);
+
+        facilityAdapter = new FacilityAdapter(getActivity(), DataManager.getInstance().getFacilityModelClassArrayList());
+        facilityScheduleListView.setAdapter(facilityAdapter);
 
         setData();
-
         return view;
     }
 
     private void setData() {
-        for (int i = 0; i < 20; i++) {
-            EventModelClass eventModelClass = new EventModelClass();
-            eventModelClass.setEventName("YMCA Trivia Night");
-            eventModelClass.setEventdate("01");
-            eventModelClass.setEventMonth("AUG");
-            DataManager.getInstance().addEventModelClasses(eventModelClass);
+        for(int i = 0;i<20; i++){
+            FacilityModelClass facilityModelClass = new FacilityModelClass();
+            facilityModelClass.setFacilityName("DOWNTOWN Facility");
+            facilityModelClass.setFacilityAddress("701 South 4th street");
+            facilityModelClass.setFacilityOpenClose("We are open");
+
+            facilityModelClass.setFacilityStatus(true);
+            DataManager.getInstance().addFacilityModelClassArrayList(facilityModelClass);
         }
-        eventAdapter.setReloadData(true);
+        facilityAdapter.setReloadData(true);
     }
+
     private void actionBarUpdate() {
         // TODO Auto-generated method stub
 

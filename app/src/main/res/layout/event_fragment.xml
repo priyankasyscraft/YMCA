@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <com.ymca.CustomFont.PrimaryFontText
         android:layout_width="match_parent"
@@ -15,11 +16,12 @@
         android:textColor="@color/colorScheduleBottomUnSelect"
         android:textSize="@dimen/text_size_common_22"
         android:textStyle="bold"
-        app:fontName="@string/custom_primary_font"/>
+        app:fontName="@string/custom_primary_font" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight=".97">
 
         <com.ymca.CustomFont.PrimaryFontText
             android:layout_width="match_parent"
@@ -28,15 +30,25 @@
             android:text="@string/no_record"
             android:textSize="@dimen/text_size_common_22"
             android:textStyle="bold"
-            app:fontName="@string/custom_primary_font"/>
+            android:visibility="gone"
+            app:fontName="@string/custom_primary_font" />
 
         <com.ymca.PullListLoader.XListView
             android:id="@+id/eventListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:choiceMode="singleChoice"
+            android:divider="@android:color/white"
+            android:dividerHeight="5dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:smoothScrollbar="true" />
+            android:smoothScrollbar="true"
+            android:scrollbars="none"
+            android:scrollbarStyle="insideOverlay" />
     </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".03"
+        android:background="@drawable/bottom_img" />
 </LinearLayout>

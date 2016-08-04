@@ -11,9 +11,11 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ymca.ModelClass.CampModelClass;
 import com.ymca.ModelClass.ClassesModelClass;
 import com.ymca.ModelClass.DateModelClass;
 import com.ymca.ModelClass.EventModelClass;
+import com.ymca.ModelClass.FacilityModelClass;
 import com.ymca.ModelClass.HomeClassesModelClass;
 import com.ymca.ModelClass.InstructorModelClass;
 import com.ymca.ModelClass.LocationModelClass;
@@ -48,6 +50,7 @@ public class DataManager {
     private boolean isProgressDialogRunning = false;
     private boolean flagClassList = false;
     private boolean flagInstructorList = false;
+    private boolean flagCheckIn = false;
     private String memberName;
     private String memberCardNumber;
 
@@ -58,6 +61,8 @@ public class DataManager {
     private ArrayList<HomeClassesModelClass> homeClassesModelClassArrayList = new ArrayList<>();
     private ArrayList<DateModelClass> dateModelClasses = new ArrayList<>();
     private ArrayList<LocationModelClass> locationModelClasses = new ArrayList<>();
+    private ArrayList<FacilityModelClass> facilityModelClassArrayList = new ArrayList<>();
+    private ArrayList<CampModelClass> campModelClassArrayList = new ArrayList<>();
 
     public static boolean chkStatus() {
         // TODO Auto-generated method stub
@@ -351,5 +356,57 @@ public class DataManager {
 
     public void clearLocationModelClasses() {
         this.locationModelClasses.clear();
+    }
+
+    public ArrayList<FacilityModelClass> getFacilityModelClassArrayList() {
+        return facilityModelClassArrayList;
+    }
+
+    public void setFacilityModelClassArrayList(ArrayList<FacilityModelClass> facilityModelClassArrayList) {
+        this.facilityModelClassArrayList = facilityModelClassArrayList;
+    }
+
+    public void addFacilityModelClassArrayList(FacilityModelClass facilityModelClassArrayList) {
+        this.facilityModelClassArrayList.add(facilityModelClassArrayList);
+    }
+
+    public void clearFacilityModelClassArrayList() {
+        this.facilityModelClassArrayList.clear();
+    }
+
+    public ArrayList<CampModelClass> getCampModelClassArrayList() {
+        return campModelClassArrayList;
+    }
+
+    public void setCampModelClassArrayList(ArrayList<CampModelClass> campModelClassArrayList) {
+        this.campModelClassArrayList = campModelClassArrayList;
+    }
+
+    public void addCampModelClassArrayList(CampModelClass campModelClassArrayList) {
+        this.campModelClassArrayList.add(campModelClassArrayList);
+    }
+
+    public void clearCampModelClassArrayList() {
+        this.campModelClassArrayList.clear();
+    }
+
+    public boolean isFlagCheckIn() {
+        return flagCheckIn;
+    }
+
+    public void setFlagCheckIn(boolean flagCheckIn) {
+        this.flagCheckIn = flagCheckIn;
+    }
+
+    public void showIFramePopUp(Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(context.getResources().getString(R.string.iframe_msg));
+        builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 }

@@ -14,7 +14,9 @@
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            android:scrollbars="none"
+            android:scrollbarStyle="insideOverlay">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -55,12 +57,17 @@
                     <com.ymca.CustomFont.PrimaryFontText
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:drawableRight="@drawable/arrow_next"
                         android:gravity="center_vertical"
+                        android:paddingRight="@dimen/padding_common_8"
                         android:text="@string/open"
                         android:textColor="@color/colorTextGreeen"
                         android:textSize="@dimen/text_size_common_15"
                         android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/arrow_next" />
 
                     <com.ymca.CustomFont.PrimaryFontText
                         android:layout_width="match_parent"
@@ -79,8 +86,7 @@
                     android:layout_marginTop="@dimen/margin_common_10"
                     android:background="@drawable/classes_bg"
                     android:orientation="horizontal"
-                    android:weightSum="1"
-                    >
+                    android:weightSum="1">
 
                     <com.ymca.CustomFont.PrimaryFontText
                         android:layout_width="0dp"
@@ -102,8 +108,8 @@
                         android:text="XXXXXXXXXXXXXXX"
                         android:textAllCaps="true"
                         android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/text_size_common_14"/>
+                        android:textSize="@dimen/text_size_common_14"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -135,8 +141,8 @@
                         android:text="XXXXXXXXXXXXXXX"
                         android:textAllCaps="true"
                         android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/text_size_common_14" />
+                        android:textSize="@dimen/text_size_common_14"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -168,8 +174,8 @@
                         android:text="XXXXXXXXXXXXXXX"
                         android:textAllCaps="true"
                         android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/text_size_common_14" />
+                        android:textSize="@dimen/text_size_common_14"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -201,8 +207,8 @@
                         android:text="XXXXXXXXXXXXXXX"
                         android:textAllCaps="true"
                         android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/text_size_common_14" />
+                        android:textSize="@dimen/text_size_common_14"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -266,8 +272,8 @@
                         android:text="XXXXXXXXXXXXXXX"
                         android:textAllCaps="true"
                         android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/text_size_common_14" />
+                        android:textSize="@dimen/text_size_common_14"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -299,8 +305,8 @@
                         android:text="XXXXXXXXXXXXXXX"
                         android:textAllCaps="true"
                         android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/text_size_common_14"/>
+                        android:textSize="@dimen/text_size_common_14"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -312,22 +318,32 @@
                     android:padding="@dimen/padding_common_10"
                     android:weightSum="1">
 
-                    <ImageView
+                    <Button
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".3"
-                        android:background="@drawable/classes_button_bg_purple" />
+                        android:background="@drawable/classes_button_bg_purple"
+                        android:text="Call"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_common_15"
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".05" />
 
-                    <ImageView
+                    <Button
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".3"
-                        android:background="@drawable/bg_blue_button" />
+                        android:background="@drawable/bg_blue_button"
+                        android:text="Email"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_size_common_15"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <View

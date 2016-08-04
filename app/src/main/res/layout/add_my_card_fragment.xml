@@ -94,7 +94,8 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight=".8" />
+                    android:layout_weight=".8"
+                    android:src="@drawable/card"/>
 
                 <com.ymca.CustomFont.SecondaryFontText
                     android:layout_width="match_parent"
@@ -124,7 +125,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
-                    android:background="@drawable/classes_button_bg_purple"
+                    android:background="@drawable/add_card_bt"
                     android:gravity="center"
                     android:text="@string/add_card"
                     android:textColor="@android:color/white"
@@ -142,7 +143,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".4"
-                    android:background="@drawable/classes_button_bg_purple"
+                    android:background="@drawable/cancel_bt"
                     android:gravity="center"
                     android:text="@string/cancel"
                     android:textColor="@android:color/white"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,33 +18,32 @@
         app:fontName="@string/custom_primary_font" />
 
     <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_below="@+id/myCardHeader"-->
-        <!--android:orientation="vertical"-->
-        <!--android:paddingTop="@dimen/padding_common_10">-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_below="@+id/myCardHeader"-->
+    <!--android:orientation="vertical"-->
+    <!--android:paddingTop="@dimen/padding_common_10">-->
 
-        <!--<com.ymca.PullListLoader.XListView-->
-            <!--android:id="@+id/myCardList"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:choiceMode="singleChoice"-->
-            <!--android:focusable="false"-->
-            <!--android:focusableInTouchMode="false"-->
-            <!--android:smoothScrollbar="true" />-->
+    <!--<com.ymca.PullListLoader.XListView-->
+    <!--android:id="@+id/myCardList"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:choiceMode="singleChoice"-->
+    <!--android:focusable="false"-->
+    <!--android:focusableInTouchMode="false"-->
+    <!--android:smoothScrollbar="true" />-->
     <!--</LinearLayout>-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerCardList"
-        android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/myCardHeader"/>
+        android:layout_height="0dp"
+        android:layout_weight=".9"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="none" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:background="@android:color/white"
         android:gravity="center_horizontal"
         android:paddingBottom="@dimen/padding_common_10"
@@ -65,4 +64,4 @@
             android:textStyle="bold"
             app:fontName="@string/custom_primary_font" />
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/classes_bg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:focusable="false"
+    android:id="@+id/facilityLayout">
 
     <com.ymca.CustomFont.PrimaryFontText
         android:id="@+id/facilityName"
@@ -16,7 +18,8 @@
         android:textAllCaps="true"
         android:textColor="@android:color/black"
         android:textStyle="bold"
-        app:fontName="@string/custom_primary_font" />
+        app:fontName="@string/custom_primary_font"
+        android:focusable="false"/>
 
     <com.ymca.CustomFont.SecondaryFontText
         android:id="@+id/facilityAddress"
@@ -26,7 +29,8 @@
         android:text="601,South 4th spreed filed"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_size_common_12"
-        app:fontNames="@string/custom_secondary_font" />
+        app:fontNames="@string/custom_secondary_font"
+        android:focusable="false"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +39,7 @@
         android:weightSum="1">
 
         <com.ymca.CustomFont.SecondaryFontText
-            android:id="@+id/facilitystatus"
+            android:id="@+id/facilityStatus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".8"
@@ -43,14 +47,35 @@
             android:text="we are open"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_common_12"
-            app:fontNames="@string/custom_secondary_font" />
+            app:fontNames="@string/custom_secondary_font"
+            android:focusable="false" />
 
-        <ImageView
-            android:id="@+id/statusImg"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".2"
-            android:src="@drawable/event_forwd_aarow" />
+            android:src="@drawable/event_forwd_aarow"
+            android:focusable="false"
+            android:orientation="horizontal"
+            android:gravity="bottom">
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/icon_lock"
+                android:id="@+id/statusImg"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Close"
+                android:gravity="bottom"
+                android:textSize="@dimen/text_size_common_16"
+                android:textColor="@color/colorTextRed"
+                android:paddingLeft="@dimen/padding_common_5"
+                android:id="@+id/statusText"
+                />
+
+            </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

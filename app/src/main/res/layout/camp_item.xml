@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:background="@drawable/classes_bg"
     android:orientation="horizontal"
-    android:layout_margin="@dimen/margin_common_5">
+    android:layout_margin="@dimen/margin_common_5"
+    android:focusable="false"
+    android:id="@+id/campLayout">
 
     <com.ymca.CustomFont.PrimaryFontText
         android:id="@+id/campCount"
@@ -18,7 +20,8 @@
         android:textColor="@color/colorScheduleBottomUnSelect"
         android:textSize="@dimen/text_size_common_25"
         android:textStyle="bold"
-        app:fontName="@string/custom_primary_font" />
+        app:fontName="@string/custom_primary_font"
+        android:focusable="false"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,19 +39,21 @@
             android:textColor="@color/colorScheduleBottomUnSelect"
             android:textSize="@dimen/text_size_common_16"
             android:textStyle="bold"
-            app:fontName="@string/custom_primary_font" />
+            app:fontName="@string/custom_primary_font"
+            android:focusable="false" />
 
-        <com.ymca.CustomFont.PrimaryFontText
+        <com.ymca.CustomFont.SecondaryFontText
             android:id="@+id/campAddress"
+            android:focusable="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/padding_common_5"
             android:text="Summer Camp"
             android:textColor="@color/colorTextGreeen"
             android:textSize="@dimen/text_size_common_14"
-            app:fontName="@string/custom_primary_font" />
+            app:fontName="@string/custom_secondary_font" />
 
-        <com.ymca.CustomFont.PrimaryFontText
+        <com.ymca.CustomFont.SecondaryFontText
             android:id="@+id/campMoreInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -57,7 +62,8 @@
             android:gravity="end|bottom"
             android:textColor="@color/colorTextGreeen"
             android:textSize="@dimen/text_size_common_12"
-            app:fontName="@string/custom_primary_font" />
+            app:fontName="@string/custom_secondary_font"
+            android:focusable="false" />
     </LinearLayout>
 
 </LinearLayout>

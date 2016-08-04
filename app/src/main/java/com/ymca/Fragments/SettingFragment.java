@@ -5,53 +5,48 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ymca.Activities.HomeActivity;
-import com.ymca.Adapters.EventAdapter;
 import com.ymca.AppManager.DataManager;
-import com.ymca.ModelClass.EventModelClass;
-import com.ymca.PullListLoader.XListView;
 import com.ymca.R;
 
-
 /**
- * Created by Soni on 28-Jul-16.
+ * Created by Soni on 04-Aug-16.
  */
-public class EventFragment extends Fragment {
+public class SettingFragment extends Fragment implements View.OnClickListener {
 
     private View view;
-    XListView eventListView;
-    EventAdapter eventAdapter;
+    ImageView punchIn,timeCard;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.event_fragment, container, false);
+        view = inflater.inflate(R.layout.setting_fragment,container,false);
         actionBarUpdate();
-        eventListView = (XListView) view.findViewById(R.id.eventListView);
-        eventAdapter = new EventAdapter(getActivity(), DataManager.getInstance().getEventModelClasses());
-        eventListView.setAdapter(eventAdapter);
+        punchIn = (ImageView)view.findViewById(R.id.punchIn);
+        timeCard = (ImageView)view.findViewById(R.id.timeCard);
 
-        setData();
-
+        punchIn  .setOnClickListener(this);
+        timeCard .setOnClickListener(this);
         return view;
     }
 
-    private void setData() {
-        for (int i = 0; i < 20; i++) {
-            EventModelClass eventModelClass = new EventModelClass();
-            eventModelClass.setEventName("YMCA Trivia Night");
-            eventModelClass.setEventdate("01");
-            eventModelClass.setEventMonth("AUG");
-            DataManager.getInstance().addEventModelClasses(eventModelClass);
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.timeCard:
+                DataManager.getInstance().showIFramePopUp(getActivity());
+                break;
+            case R.id.punchIn:
+                DataManager.getInstance().showIFramePopUp(getActivity());
+                break;
         }
-        eventAdapter.setReloadData(true);
     }
+
     private void actionBarUpdate() {
         // TODO Auto-generated method stub
 

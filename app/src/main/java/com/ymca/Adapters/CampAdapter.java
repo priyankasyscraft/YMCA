@@ -11,9 +11,9 @@ import android.widget.TextView;
 import com.ymca.Activities.HomeActivity;
 import com.ymca.AppManager.DataManager;
 import com.ymca.Constants.Constant;
+import com.ymca.Fragments.CampDetailFragment;
 import com.ymca.Fragments.ClassDetailFragment;
-import com.ymca.Fragments.LocationDetailFragment;
-import com.ymca.ModelClass.LocationModelClass;
+import com.ymca.ModelClass.CampModelClass;
 import com.ymca.R;
 
 import java.util.ArrayList;
@@ -21,21 +21,21 @@ import java.util.ArrayList;
 /**
  * Created by Soni on 03-Aug-16.
  */
-public class LocationAdapter extends BaseAdapter {
-    private ArrayList<LocationModelClass> locationModelClasses = new ArrayList<LocationModelClass>();
+public class CampAdapter extends BaseAdapter {
+    private ArrayList<CampModelClass> campModelClassArrayList = new ArrayList<CampModelClass>();
     private LayoutInflater inflater;
     Context context;
     ViewHolder viewHolder;
 
-    public LocationAdapter(Context context, ArrayList<LocationModelClass> classesModelClassArrayList) {
-        this.locationModelClasses = classesModelClassArrayList;
+    public CampAdapter(Context context, ArrayList<CampModelClass> campModelClasses) {
+        this.campModelClassArrayList = campModelClasses;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
 
     public void setReloadData(boolean shouldReload) {
-        locationModelClasses = DataManager.getInstance().getLocationModelClasses();
+        campModelClassArrayList = DataManager.getInstance().getCampModelClassArrayList();
         if (shouldReload) {
             DataManager.getInstance().getAppCompatActivity().runOnUiThread(new Runnable() {
                 public void run() {
@@ -48,7 +48,7 @@ public class LocationAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return locationModelClasses.size();
+        return campModelClassArrayList.size();
     }
 
     @Override
@@ -66,25 +66,27 @@ public class LocationAdapter extends BaseAdapter {
 
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.location_item, null);
-            viewHolder.locationLayout = (LinearLayout) convertView.findViewById(R.id.locationLayout);
-            viewHolder.locationName = (TextView) convertView.findViewById(R.id.locationName);
-            viewHolder.locationDistance = (TextView) convertView.findViewById(R.id.locationDistance);
+            convertView = inflater.inflate(R.layout.camp_item, null);
+            viewHolder.campCount = (TextView) convertView.findViewById(R.id.campCount);
+            viewHolder.campName = (TextView) convertView.findViewById(R.id.campName);
+            viewHolder.campAddress = (TextView) convertView.findViewById(R.id.campAddress);
+            viewHolder.campLayout = (LinearLayout) convertView.findViewById(R.id.campLayout);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.locationName.setText(locationModelClasses.get(position).getLocationName());
-        viewHolder.locationDistance.setText(locationModelClasses.get(position).getLocationMiles()+" "+"Mi");
+        viewHolder.campCount.setText(campModelClassArrayList.get(position).getCampCounter());
+        viewHolder.campName.setText(campModelClassArrayList.get(position).getCampName());
+        viewHolder.campAddress.setText(campModelClassArrayList.get(position).getCampAddress());
 
-        viewHolder.locationLayout.setOnClickListener(new View.OnClickListener() {
+        viewHolder.campLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 ((HomeActivity) context)
                         .getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.content_frame, new LocationDetailFragment(), Constant.locationDetailFragment)
+                        .replace(R.id.content_frame, new CampDetailFragment(), Constant.campDetailFramgent)
                         .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
                         .commit();
             }
@@ -94,7 +96,7 @@ public class LocationAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder {
-        TextView locationName, locationDistance;
-        LinearLayout locationLayout;
+        TextView campCount, campName, campAddress;
+        LinearLayout campLayout;
     }
 }

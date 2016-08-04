@@ -22,4 +22,9 @@ public class Constant {
     public static String homeClassDetailFragment = "home_class_detail_fragment";
     public static String donateFragment = "donate_fragment";
     public static String locationDetailFragment = "location_detail_fragment";
+    public static String facilityFragment = "facility_fragment";
+    public static String eventDetailFragment = "event_detail_fragment";
+    public static String campDetailFramgent = "camp_detail_fragment";
+    public static String campFragment = "camp_fragment";
+    public static String settingFragment = "setting_fragment";
 }

@@ -51,6 +51,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
             getChildFragmentManager()
                     .beginTransaction()
                     .replace(R.id.content_child_frame, classFragment, Constant.classFragment)
+                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
                     .commit();
         } else if (DataManager.getInstance().isFlagInstructorList()) {
             DataManager.getInstance().setFlagInstructorList(false);
@@ -60,6 +61,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
             getChildFragmentManager()
                     .beginTransaction()
                     .replace(R.id.content_child_frame, instructorFragment, Constant.instructorFragment)
+                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
                     .commit();
         } else {
             dateTab.setBackgroundResource(R.drawable.schedule_tabmenu);
@@ -135,6 +137,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_child_frame, dateFragment, Constant.dateFragment)
+                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
                         .commit();
 
                 break;
@@ -146,6 +149,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_child_frame, classFragment, Constant.classFragment)
+                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
                         .commit();
                 break;
             case R.id.instructorTab:
@@ -156,6 +160,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_child_frame, instructorFragment, Constant.instructorFragment)
+                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
                         .commit();
                 break;
         }

@@ -112,43 +112,52 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.scheduleLayout:
+        isCheck = DataManager.chkStatus();
+        if(isCheck) {
+            switch (view.getId()) {
+                case R.id.scheduleLayout:
 
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, scheduleFragment, Constant.scheduleFragment)
-                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                        .commit();
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, scheduleFragment, Constant.scheduleFragment)
+                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                            .commit();
 
-                break;
-            case R.id.myCardLayout:
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-                        .commit();
-                break;
-            case R.id.locationLayout:
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, locationFragment, Constant.locationFramgnet)
-                        .commit();
-                break;
-            case R.id.programLayout:
-                break;
-            case R.id.classLayout:
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, homeClassesFragment, Constant.homeClassFragment)
-                        .commit();
+                    break;
+                case R.id.myCardLayout:
+                    DataManager.getInstance().setFlagCheckIn(false);
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                            .commit();
+                    break;
+                case R.id.locationLayout:
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, locationFragment, Constant.locationFramgnet)
+                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                            .commit();
+                    break;
+                case R.id.programLayout:
+                    DataManager.getInstance().showIFramePopUp(getActivity());
+                    break;
+                case R.id.classLayout:
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, homeClassesFragment, Constant.homeClassFragment)
+                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                            .commit();
 
-                break;
-            case R.id.blogLayout:
-                break;
+                    break;
+                case R.id.blogLayout:
+                    DataManager.getInstance().showIFramePopUp(getActivity());
+                    break;
+            }
         }
     }
 }

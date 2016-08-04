@@ -72,13 +72,19 @@
         android:weightSum="1">
 
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/timer_icon_pink"
+            android:padding="@dimen/padding_common_2"
+            />
         <com.ymca.CustomFont.PrimaryFontText
             android:id="@+id/classDetailTime"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".35"
-            android:drawableLeft="@drawable/timer_class_icon"
-            android:gravity="center"
+            android:drawablePadding="@dimen/padding_common_5"
+            android:gravity="center_vertical"
             android:text="XX:XX"
             android:textColor="@color/colorScheduleBottomUnSelect"
             android:textSize="@dimen/text_size_common_22"

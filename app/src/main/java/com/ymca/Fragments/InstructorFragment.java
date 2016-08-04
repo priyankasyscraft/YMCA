@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ymca.Adapters.GridAdapter;
+import com.ymca.Adapters.InstructorAdapter;
 import com.ymca.AppManager.DataManager;
 import com.ymca.ModelClass.InstructorModelClass;
 import com.ymca.R;
@@ -49,7 +49,7 @@ public class InstructorFragment extends Fragment {
             instructorModelClass.setInstructorImg("http://img.rtve.es/i/?w=400&crop=no&o=no&i=1435058352516.png");
             DataManager.getInstance().addInstructorModelClassArrayList(instructorModelClass);
         }
-        mAdapter = new GridAdapter(getActivity(), DataManager.getInstance().getInstructorModelClassArrayList());
+        mAdapter = new InstructorAdapter(getActivity(), DataManager.getInstance().getInstructorModelClassArrayList());
         mRecyclerView.setAdapter(mAdapter);
     }
 }

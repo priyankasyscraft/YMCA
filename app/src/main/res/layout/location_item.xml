@@ -12,7 +12,9 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/padding_common_5"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:id="@+id/locationLayout"
+        android:focusable="false">
 
         <com.ymca.CustomFont.PrimaryFontText
             android:layout_width="0dp"
@@ -24,7 +26,8 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_common_15"
             app:fontName="@string/custom_primary_font"
-            android:id="@+id/locationName"/>
+            android:id="@+id/locationName"
+            android:focusable="false"/>
 
         <com.ymca.CustomFont.SecondaryFontText
             android:layout_width="0dp"
@@ -39,6 +42,7 @@
             android:textStyle="bold"
             app:fontNames="@string/custom_secondary_font"
             android:id="@+id/locationDistance"
+            android:focusable="false"
             />
 
         <ImageButton
@@ -46,6 +50,7 @@
             android:layout_height="match_parent"
             android:layout_weight=".08"
             android:background="@null"
-            android:src="@drawable/location_arrow_black" />
+            android:src="@drawable/location_arrow_black"
+            android:focusable="false"/>
     </LinearLayout>
 </LinearLayout>

@@ -5,15 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ymca.Activities.HomeActivity;
 import com.ymca.AppManager.DataManager;
 import com.ymca.Constants.Constant;
 import com.ymca.Fragments.ClassDetailFragment;
-import com.ymca.Fragments.LocationDetailFragment;
-import com.ymca.ModelClass.LocationModelClass;
+import com.ymca.Fragments.EventDetailFragment;
+import com.ymca.ModelClass.EventModelClass;
 import com.ymca.R;
 
 import java.util.ArrayList;
@@ -21,21 +21,21 @@ import java.util.ArrayList;
 /**
  * Created by Soni on 03-Aug-16.
  */
-public class LocationAdapter extends BaseAdapter {
-    private ArrayList<LocationModelClass> locationModelClasses = new ArrayList<LocationModelClass>();
+public class EventAdapter extends BaseAdapter {
+    private ArrayList<EventModelClass> eventModelClassArrayList = new ArrayList<EventModelClass>();
     private LayoutInflater inflater;
     Context context;
     ViewHolder viewHolder;
 
-    public LocationAdapter(Context context, ArrayList<LocationModelClass> classesModelClassArrayList) {
-        this.locationModelClasses = classesModelClassArrayList;
+    public EventAdapter(Context context, ArrayList<EventModelClass> eventModelClasses) {
+        this.eventModelClassArrayList = eventModelClasses;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
 
     public void setReloadData(boolean shouldReload) {
-        locationModelClasses = DataManager.getInstance().getLocationModelClasses();
+        eventModelClassArrayList = DataManager.getInstance().getEventModelClasses();
         if (shouldReload) {
             DataManager.getInstance().getAppCompatActivity().runOnUiThread(new Runnable() {
                 public void run() {
@@ -48,7 +48,7 @@ public class LocationAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return locationModelClasses.size();
+        return eventModelClassArrayList.size();
     }
 
     @Override
@@ -66,26 +66,28 @@ public class LocationAdapter extends BaseAdapter {
 
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.location_item, null);
-            viewHolder.locationLayout = (LinearLayout) convertView.findViewById(R.id.locationLayout);
-            viewHolder.locationName = (TextView) convertView.findViewById(R.id.locationName);
-            viewHolder.locationDistance = (TextView) convertView.findViewById(R.id.locationDistance);
+            convertView = inflater.inflate(R.layout.event_items, null);
+            viewHolder.eventLayout = (RelativeLayout) convertView.findViewById(R.id.eventLayout);
+            viewHolder.eventName = (TextView) convertView.findViewById(R.id.eventName);
+            viewHolder.eventDate = (TextView) convertView.findViewById(R.id.eventDate);
+            viewHolder.eventMonth = (TextView) convertView.findViewById(R.id.eventMonth);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.locationName.setText(locationModelClasses.get(position).getLocationName());
-        viewHolder.locationDistance.setText(locationModelClasses.get(position).getLocationMiles()+" "+"Mi");
+        viewHolder.eventName.setText(eventModelClassArrayList.get(position).getEventName());
+        viewHolder.eventDate.setText(eventModelClassArrayList.get(position).getEventdate());
+        viewHolder.eventMonth.setText(eventModelClassArrayList.get(position).getEventMonth());
 
-        viewHolder.locationLayout.setOnClickListener(new View.OnClickListener() {
+        viewHolder.eventLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 ((HomeActivity) context)
                         .getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.content_frame, new LocationDetailFragment(), Constant.locationDetailFragment)
-                        .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
+                        .replace(R.id.content_frame, new EventDetailFragment(), Constant.eventDetailFragment)
+                        .addToBackStack(((HomeActivity) context).getFragmentManager().getClass().getName())
                         .commit();
             }
         });
@@ -94,7 +96,7 @@ public class LocationAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder {
-        TextView locationName, locationDistance;
-        LinearLayout locationLayout;
+        TextView eventName, eventDate, eventMonth;
+        RelativeLayout eventLayout;
     }
 }

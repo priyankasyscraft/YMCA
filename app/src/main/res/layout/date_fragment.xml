@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -83,7 +84,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight=".97">
 
         <com.ymca.CustomFont.PrimaryFontText
             android:layout_width="match_parent"
@@ -104,8 +106,15 @@
             android:focusableInTouchMode="false"
             android:smoothScrollbar="true"
             android:divider="@null"
-            android:dividerHeight="0dp" />
+            android:dividerHeight="0dp"
+            android:scrollbars="none"
+            android:scrollbarStyle="insideOverlay"/>
 
 
     </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".03"
+        android:background="@drawable/bottom_img" />
 </LinearLayout>

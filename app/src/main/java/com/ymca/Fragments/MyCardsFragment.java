@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,11 @@ public class MyCardsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.my_card_fragment, container, false);
 
-        actionBarUpdate();
+        if (DataManager.getInstance().isFlagCheckIn()) {
+            actionBarUpdate();
+        } else {
+            actionBarUpdateBack();
+        }
         recyclerCardList = (RecyclerView) view.findViewById(R.id.recyclerCardList);
         addCard = (TextView) view.findViewById(R.id.addCard);
 
@@ -65,7 +70,7 @@ public class MyCardsFragment extends Fragment {
                         .getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, new AddCardFragment(), Constant.addMyCardFragment)
-                        .addToBackStack(null)
+                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
                         .commit();
             }
         });
@@ -80,7 +85,7 @@ public class MyCardsFragment extends Fragment {
             DataManager.getInstance().addMyCardModelClasses(myCardModelClass);
         }
 
-        myCardAdapter = new MyCardAdapter(getActivity(),DataManager.getInstance().getMyCardModelClasses());
+        myCardAdapter = new MyCardAdapter(getActivity(), DataManager.getInstance().getMyCardModelClasses());
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerCardList.setLayoutManager(mLayoutManager);
@@ -91,6 +96,8 @@ public class MyCardsFragment extends Fragment {
 
     private void actionBarUpdate() {
         // TODO Auto-generated method stub
+
+
         ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
 
 
@@ -118,24 +125,54 @@ public class MyCardsFragment extends Fragment {
 
         ImageView notificationBell = (ImageView) view.findViewById(R.id.notificationBell);
 
+        view.setVisibility(View.GONE);
 
-        notificationBell.setOnClickListener(new View.OnClickListener() {
+
+        actionBar.setCustomView(view, layoutParams);
+    }
+
+
+    private void actionBarUpdateBack() {
+        // TODO Auto-generated method stub
+
+
+        ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
+
+
+        actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
+        actionBar.setHomeButtonEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+//        actionBar.setTitle("");
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
+//        actionBar.setHomeAsUpIndicator(R.drawable.menu_icon);
+        actionBar.setDisplayShowTitleEnabled(false);
+
+//        Drawable actionBar_bg = getResources().getDrawable(
+//                R.drawable.tool_bar_bg);
+//        actionBar.setBackgroundDrawable(actionBar_bg);
+
+//        actionBar.setDisplayShowCustomEnabled(true);
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
+                ActionBar.LayoutParams.MATCH_PARENT,
+                ActionBar.LayoutParams.MATCH_PARENT);
+        layoutParams.gravity = Gravity.START;
+        layoutParams.leftMargin = -50;
+
+        LayoutInflater inflator = getActivity().getLayoutInflater();
+        View v = inflator.inflate(R.layout.custom_layout_back_button, null);
+        ImageView image_action = (ImageView) v.findViewById(R.id.custom_img_action_profile);
+        image_action.setImageResource(R.drawable.bt_back_white);
+        image_action.setVisibility(View.VISIBLE);
+        image_action.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                boolean isCheck = DataManager.chkStatus();
-                if (isCheck) {
-
-                    getActivity()
-                            .getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.content_frame, new NotificationFragment(), Constant.notificationFragment)
-                            .commit();
-                }
-
+            public void onClick(View view) {
+                getActivity().onBackPressed();
             }
         });
 
-        actionBar.setCustomView(view, layoutParams);
+
+        actionBar.setCustomView(v, layoutParams);
 
 
     }

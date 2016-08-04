@@ -80,6 +80,7 @@ public class ClassAdapter extends BaseAdapter {
                         .getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, new ClassDetailFragment(), Constant.classDetailFragment)
+                        .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
                         .commit();
             }
         });
