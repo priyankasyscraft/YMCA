@@ -31,7 +31,11 @@ import com.ymca.Fragments.MyCardsFragment;
 import com.ymca.Fragments.NotificationFragment;
 import com.ymca.Fragments.ScheduleFragment;
 import com.ymca.Fragments.SettingFragment;
+import com.ymca.ModelClass.DrawerModel;
+import com.ymca.PullListLoader.XListView;
 import com.ymca.R;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -46,44 +50,14 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     private boolean isCheck = false;
     private boolean doubleBackToExitPressedOnce = false;
     private ListView mDrawerList;
-    int[] navDrawerImg = {1,
-            R.mipmap.nav_home,
-            R.mipmap.nav_check_id,
-            2,
-            R.mipmap.nav_announcment,
-            R.mipmap.nav_prog,
-            R.mipmap.nav_facility,
-            R.mipmap.nav_camp,
-            R.mipmap.nav_event,
-            R.mipmap.nav_donate,
-            R.mipmap.nav_contact,
-            3,
-            R.mipmap.nav_settings,
-    };
-    int[] colors = new int[]{
-            Color.parseColor("#AAAAAA"),
-            Color.WHITE,
-            Color.WHITE,
-
-            Color.parseColor("#AAAAAA"),
-            Color.WHITE,
-            Color.WHITE,
-            Color.WHITE,
-            Color.WHITE,
-            Color.WHITE,
-            Color.WHITE,
-            Color.WHITE,
-
-            Color.parseColor("#AAAAAA"),
-            Color.WHITE,
-    };
-
+    private ArrayList<DrawerModel> drawerModels = new ArrayList<>();
+    private DrawerAdapter drawerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        setData();
         DataManager.getInstance().setAppCompatActivity(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -98,10 +72,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
 
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        mDrawerList.setAdapter(new DrawerAdapter(getApplicationContext(),
-                getResources().getStringArray(R.array.drawerText), navDrawerImg, colors));
 
         mDrawerList.setOnItemClickListener(this);
         toggle.syncState();
@@ -111,6 +82,100 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 .add(R.id.content_frame, homeFragment, Constant.homeFragment)
                 .addToBackStack(getSupportFragmentManager().getClass().getName())
                 .commit();
+    }
+
+    private void setData() {
+        int[] navDrawerImg = {
+                1,
+                R.mipmap.nav_home,
+                R.mipmap.nav_check_id,
+                R.mipmap.nav_announcment,
+                R.mipmap.nav_prog,
+                R.mipmap.nav_facility,
+                2,
+                R.mipmap.nav_event,
+                R.mipmap.nav_donate,
+                R.mipmap.nav_contact,
+                R.mipmap.nav_contact,
+                R.mipmap.nav_contact,
+                R.mipmap.nav_contact,
+                3,
+                R.mipmap.nav_settings,
+                R.mipmap.nav_settings,
+                R.mipmap.nav_settings,
+        };
+
+        int[] navTextBfImg = {
+                R.drawable.bg_leftmenu_heading,
+                0,
+                0,
+                0,
+                0,
+                0,
+                R.drawable.bg_leftmenu_heading,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                R.drawable.bg_leftmenu_heading,
+                0,
+                0,
+                0,
+        };
+        int[] colors = new int[]{
+                Color.parseColor("#AAAAAA"),
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE,
+                Color.parseColor("#AAAAAA"),
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE,
+
+                Color.parseColor("#AAAAAA"),
+                Color.WHITE,
+                Color.WHITE,
+                Color.WHITE,
+        };
+
+        String[] name = {
+                getResources().getString(R.string.membership_info),
+                getResources().getString(R.string.home),
+                getResources().getString(R.string.check_in),
+                getResources().getString(R.string.location),
+                getResources().getString(R.string.announcement),
+                getResources().getString(R.string.setting),
+                getResources().getString(R.string.progrm_activity),
+                getResources().getString(R.string.schedule),
+                getResources().getString(R.string.program_register),
+                getResources().getString(R.string.clas_activity),
+                getResources().getString(R.string.camp),
+                getResources().getString(R.string.sports),
+                getResources().getString(R.string.event_caln),
+                getResources().getString(R.string.spiring_field),
+                getResources().getString(R.string.donate),
+                getResources().getString(R.string.sponsers),
+                getResources().getString(R.string.about_y),
+        };
+
+        for (int i = 0; i < colors.length; i++) {
+            DrawerModel drawerModel = new DrawerModel();
+            drawerModel.setMenuName(name[i]);
+            drawerModel.setMenuColor(colors[i]);
+            drawerModel.setMenuImg(navDrawerImg[i]);
+            drawerModel.setMenuTextBg(navTextBfImg[i]);
+            drawerModels.add(drawerModel);
+        }
+        drawerAdapter = new DrawerAdapter(getApplicationContext(), drawerModels);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList.setAdapter(drawerAdapter);
     }
 
 //    @Override
@@ -263,7 +328,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                             .commit();
                 } else if (fr.getTag().contains(Constant.homeFragment)) {
                     if (doubleBackToExitPressedOnce) {
-                        super.onBackPressed();
+//                        super.onBackPressed();
                         HomeActivity.this.finish();
                         return;
                     } else {
