@@ -27,4 +27,6 @@ public class Constant {
     public static String campDetailFramgent = "camp_detail_fragment";
     public static String campFragment = "camp_fragment";
     public static String settingFragment = "setting_fragment";
+    public static String eventCalenderFragment = "event_calender_fragment";
+    public static String deviceToken = "device_token";
 }

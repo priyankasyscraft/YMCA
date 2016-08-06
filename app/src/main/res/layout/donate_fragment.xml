@@ -38,7 +38,7 @@
     <com.ymca.CustomFont.PrimaryFontText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="16010 64th st E Summer ,WA 98930"
+        android:text="@string/donate_text"
         android:textSize="@dimen/text_size_common_16"
         android:textStyle="bold"
         android:gravity="center_horizontal"

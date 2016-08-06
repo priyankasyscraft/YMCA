@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.ymca.CustomFont.PrimaryFontText
+        android:id="@+id/instructorDetailHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="@dimen/padding_common_5"
+        android:text="@string/event_caln"
+        android:textColor="@color/colorScheduleBottomUnSelect"
+        android:textSize="@dimen/text_size_common_22"
+        android:textStyle="bold"
+        app:fontName="@string/custom_primary_font" />
+
+    <!--<com.imanoweb.calendarview.CustomCalendarView-->
+        <!--android:id="@+id/calendar_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@android:color/white"-->
+        <!--app:calendarBackgroundColor="@android:color/white"-->
+        <!--app:calendarTitleTextColor="@color/black"-->
+        <!--app:currentDayOfMonthColor="@android:color/white"-->
+        <!--app:dayOfMonthTextColor="@color/black"-->
+        <!--app:dayOfWeekTextColor="@color/black"-->
+        <!--app:disabledDayBackgroundColor="@android:color/white"-->
+        <!--app:disabledDayTextColor="@android:color/darker_gray"-->
+        <!--app:selectedDayBackgroundColor="@android:color/holo_blue_dark"-->
+        <!--app:titleLayoutBackgroundColor="@color/white"-->
+        <!--app:weekLayoutBackgroundColor="@color/white" />-->
+</LinearLayout>

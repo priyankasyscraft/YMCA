@@ -6,7 +6,17 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-
+    <com.ymca.CustomFont.PrimaryFontText
+        android:id="@+id/instructorDetailHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="@dimen/padding_common_5"
+        android:text="@string/instructor_detail"
+        android:textColor="@color/colorScheduleBottomUnSelect"
+        android:textSize="@dimen/text_size_common_22"
+        android:textStyle="bold"
+        app:fontName="@string/custom_primary_font" />
 
     <LinearLayout
         android:id="@+id/circleInstructorLay"
@@ -14,7 +24,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="@dimen/padding_common_10"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:layout_below="@+id/instructorDetailHeader">
 
         <View
             android:layout_width="0dp"

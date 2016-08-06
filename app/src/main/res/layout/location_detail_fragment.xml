@@ -312,18 +312,17 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="@dimen/padding_common_10"
                     android:weightSum="1">
 
-                    <Button
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".3"
-                        android:background="@drawable/classes_button_bg_purple"
-                        android:text="Call"
+                        android:background="@drawable/location_call"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_common_15"
@@ -334,12 +333,11 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".05" />
 
-                    <Button
+                    <TextView
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight=".3"
-                        android:background="@drawable/bg_blue_button"
-                        android:text="Email"
+                        android:background="@drawable/location_email"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_size_common_15"

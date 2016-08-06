@@ -19,11 +19,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.ymca.Adapters.DrawerAdapter;
 import com.ymca.AppManager.DataManager;
+import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
 import com.ymca.Fragments.CampFragment;
 import com.ymca.Fragments.DonateFragment;
+import com.ymca.Fragments.EventCalenderFragment;
 import com.ymca.Fragments.EventFragment;
 import com.ymca.Fragments.FacilityFragment;
 import com.ymca.Fragments.HomeFragment;
@@ -58,7 +61,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         setData();
-        DataManager.getInstance().setAppCompatActivity(this);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -399,6 +402,10 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                             .commit();
                     break;
                 case 3:
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new EventCalenderFragment(), Constant.eventCalenderFragment)
+                            .commit();
                     break;
                 case 4:
                     getSupportFragmentManager()

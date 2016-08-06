@@ -54,12 +54,50 @@
 
     </LinearLayout>
 
-    <ImageView
+    <LinearLayout
+        android:id="@+id/circleInstructorLay"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_common_10"
         android:layout_weight=".7"
-        android:background="@drawable/slider_img" />
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/padding_common_10"
+        android:weightSum="1">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".03"
+            android:background="@color/colorPrimary" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".95"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/img_box" />
+
+            <com.ymca.CustomFont.RoundedImage
+                android:id="@+id/circleInstructorImg"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/cancel_bt" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".03"
+            android:background="@color/colorPrimary" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

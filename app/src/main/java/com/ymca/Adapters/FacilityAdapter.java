@@ -67,7 +67,6 @@ public class FacilityAdapter extends BaseAdapter {
             viewHolder.facilityName = (TextView) convertView.findViewById(R.id.facilityName);
             viewHolder.facilityAddress = (TextView) convertView.findViewById(R.id.facilityAddress);
             viewHolder.facilityStatus = (TextView) convertView.findViewById(R.id.facilityStatus);
-            viewHolder.statusText = (TextView) convertView.findViewById(R.id.statusText);
             viewHolder.statusImg = (ImageView) convertView.findViewById(R.id.statusImg);
             viewHolder.facilityLayout = (LinearLayout) convertView.findViewById(R.id.facilityLayout);
             convertView.setTag(viewHolder);
@@ -77,21 +76,17 @@ public class FacilityAdapter extends BaseAdapter {
         viewHolder.facilityName.setText(facilityModelClassArrayList.get(position).getFacilityName());
         viewHolder.facilityAddress.setText(facilityModelClassArrayList.get(position).getFacilityAddress());
         viewHolder.facilityStatus.setText(facilityModelClassArrayList.get(position).getFacilityOpenClose());
-        if(facilityModelClassArrayList.get(position).isFacilityStatus()){
-            viewHolder.statusImg.setBackgroundResource(R.drawable.icon_unlock);
-            viewHolder.statusText.setText("Open");
-            viewHolder.statusText.setTextColor(context.getResources().getColor(R.color.colorTextGreeen));
-        }else {
-            viewHolder.statusImg.setBackgroundResource(R.drawable.icon_lock);
-            viewHolder.statusText.setText("Close");
-            viewHolder.statusText.setTextColor(context.getResources().getColor(R.color.colorTextRed));
+        if (facilityModelClassArrayList.get(position).isFacilityStatus()) {
+            viewHolder.statusImg.setImageResource(R.mipmap.open);
+        } else {
+            viewHolder.statusImg.setImageResource(R.mipmap.close);
         }
 
         return convertView;
     }
 
     public static class ViewHolder {
-        TextView facilityName,facilityAddress, statusText,facilityStatus;
+        TextView facilityName, facilityAddress, statusText, facilityStatus;
         ImageView statusImg;
         LinearLayout facilityLayout;
     }

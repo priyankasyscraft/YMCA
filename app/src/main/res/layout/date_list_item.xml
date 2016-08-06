@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="@dimen/padding_common_14"
-        android:paddingTop="@dimen/padding_common_14"
+        android:paddingTop="@dimen/padding_common_5"
         >
 
         <com.ymca.CustomFont.PrimaryFontText
@@ -58,7 +58,7 @@
             android:text="with james MacMann"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_common_13"
-            android:padding="@dimen/padding_common_5"
+            android:padding="@dimen/padding_common_2"
             app:fontNames="@string/custom_secondary_font"/>
 
         <com.ymca.CustomFont.SecondaryFontText
@@ -68,21 +68,14 @@
             android:text="Tu Th @ 7:40 pm (50 min)"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_common_12"
-            android:padding="@dimen/padding_common_5"
+            android:padding="@dimen/padding_common_2"
             app:fontNames="@string/custom_secondary_font"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/padding_common_5">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" in "
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_common_14" />
+            android:paddingLeft="@dimen/padding_common_2">
 
             <com.ymca.CustomFont.PrimaryFontText
                 android:id="@+id/dateGroupName"
@@ -92,7 +85,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_common_13"
                 android:textStyle="bold"
-                android:paddingLeft="@dimen/padding_common_8"
+                android:paddingLeft="@dimen/padding_common_2"
                 app:fontNames="@string/custom_primary_font"
                 />
         </LinearLayout>

@@ -21,7 +21,7 @@
         </item>
         <item
             android:id="@+id/navigation_subheader2"
-            android:title="@string/location_info">
+            android:title="@string/progrm_activity">
             <menu>
                 <item
                     android:id="@+id/announcement"

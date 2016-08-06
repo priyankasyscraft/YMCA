@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:weightSum="1">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight=".1"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:layout_weight=".1"
-        android:weightSum="1.5">
+        android:weightSum="2">
 
         <LinearLayout
             android:id="@+id/dateTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
+            android:layout_weight=".48"
             android:background="@drawable/schedule_tabmenu"
             android:paddingBottom="@dimen/padding_common_5">
 
@@ -32,14 +32,14 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_common_16"
                 android:textStyle="bold"
-                app:fontNames="@string/custom_secondary_font"/>
+                app:fontNames="@string/custom_secondary_font" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/classTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
+            android:layout_weight=".48"
             android:background="@drawable/schedule_tabmenu_selected"
             android:paddingBottom="@dimen/padding_common_5">
 
@@ -51,18 +51,17 @@
                 android:padding="@dimen/padding_common_5"
                 android:text="@string/classe"
                 android:textColor="@android:color/white"
-                android:textStyle="bold"
                 android:textSize="@dimen/text_size_common_16"
-                app:fontNames="@string/custom_secondary_font"/>
+                android:textStyle="bold"
+                app:fontNames="@string/custom_secondary_font" />
         </LinearLayout>
-
 
 
         <LinearLayout
             android:id="@+id/instructorTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
+            android:layout_weight=".56"
             android:background="@drawable/schedule_tabmenu_selected"
             android:paddingBottom="@dimen/padding_common_5">
 
@@ -77,14 +76,36 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_common_16"
                 android:textStyle="bold"
-                app:fontNames="@string/custom_secondary_font"/>
+                app:fontNames="@string/custom_secondary_font" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/areas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".48"
+            android:background="@drawable/schedule_tabmenu_selected"
+            android:paddingBottom="@dimen/padding_common_5">
+
+            <com.ymca.CustomFont.SecondaryFontText
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center"
+                android:padding="@dimen/padding_common_5"
+                android:text="@string/areas"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_common_16"
+                android:textStyle="bold"
+                app:fontNames="@string/custom_secondary_font" />
         </LinearLayout>
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/content_child_frame"
         android:layout_width="match_parent"
-        android:layout_weight=".9"
-        android:layout_height="0dp" />
+        android:layout_height="0dp"
+        android:layout_weight=".9" />
 
 </LinearLayout>

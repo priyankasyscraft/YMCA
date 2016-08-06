@@ -10,9 +10,9 @@
     <string name="instructors">Instructors</string>
     <string name="classe">Class</string>
     <string name="classes">Classes</string>
-    <string name="schedule">Schedules</string>
+    <string name="schedule">SCHEDULES</string>
     <string name="my_card">MY CARDS</string>
-    <string name="location">Location</string>
+    <string name="location">LOCATION</string>
     <string name="program">Programs</string>
     <string name="blog">Blog</string>
     <string name="no_record">No Record Found</string>
@@ -29,7 +29,7 @@
     <string name="update_card">UPDATE CARD</string>
     <string name="add_to_calender">Add To Calendar</string>
     <string name="membership_info">MEMBERSHIP INFORMATION</string>
-    <string name="location_info">LOCATION INFORMATION</string>
+    <string name="progrm_activity">PROGRAMS &amp; ACTIVITIES</string>
     <string name="application">APPLICATION</string>
     <string name="facility">FACILITY STATUS</string>
     <string name="facilits">FACILITY</string>
@@ -55,7 +55,7 @@
     <string name="ecperience">Experience</string>
     <string name="certification">Certification</string>
     <string name="fun">Fun Fact</string>
-    <string name="member_name">MEMBER\'S NAME</string>
+    <string name="card_name">CARD NAME</string>
     <string name="enter_number">ENTER BAR CODE NUMBER</string>
     <string name="add_card_text">You can find your barcode number on the back of your member card.</string>
     <string name="cancel">CANCEL</string>
@@ -63,12 +63,21 @@
     <string name="center">CNETER  #01</string>
     <string name="address">ADDRESS</string>
     <string name="iframe_msg">It would be navigate to iFrame.</string>
+    <string name="donate_text">The Y.™ For a better us.™</string>
+    <string name="clas_activity"><![CDATA[CLASSES & ACTIVITIES]]></string>
+    <string name="sports">SPORTS LEAGUES</string>
+    <string name="event_caln">EVENTS CALENDAR</string>
+    <string name="spiring_field">SPRINGFIELD YMCA</string>
+    <string name="sponsers"><![CDATA[SPONSORS & PARTNERS]]></string>
+    <string name="about_y">ABOUT YOUR Y</string>
+    <string name="event_info">Event Info</string>
+    <string name="areas">Areas</string>
 
     <string-array name="drawerText">
         <item>@string/membership_info</item>
         <item>@string/home</item>
         <item>@string/check_in</item>
-        <item>@string/location_info</item>
+        <item>@string/progrm_activity</item>
         <item>@string/announcement</item>
         <item>@string/program_register</item>
         <item>@string/facility</item>
@@ -79,4 +88,31 @@
         <item>@string/application</item>
         <item>@string/setting</item>
     </string-array>
+
+    <!--TODO : Change Siode Navigation 05-08-2016-->
+    <string-array name="drawerTextNew">
+
+        <item>@string/membership_info</item>
+        <item>@string/home</item>
+        <item>@string/check_in</item>
+        <item>@string/location</item>
+        <item>@string/announcement</item>
+        <item>@string/setting</item>
+
+        <item>@string/progrm_activity</item>
+        <item>@string/schedule</item>
+        <item>@string/program_register</item>
+        <item>@string/clas_activity</item>
+        <item>@string/camp</item>
+        <item>@string/sports</item>
+        <item>@string/event_caln</item>
+
+        <item>@string/spiring_field</item>
+        <item>@string/donate</item>
+        <item>@string/sponsers</item>
+        <item>@string/about_y</item>
+    </string-array>
+    <string name="title_activity_maps">Map</string>
+    <string name="instructor_detail">INSTRUCTOR DETAIL</string>
+    <string name="event_map">EVENT LOCATION</string>
 </resources>

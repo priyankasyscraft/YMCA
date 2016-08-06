@@ -401,7 +401,7 @@ public class DataManager {
     public void showIFramePopUp(Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(context.getResources().getString(R.string.iframe_msg));
-        builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

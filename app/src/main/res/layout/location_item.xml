@@ -3,54 +3,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_vertical"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/locationLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/classes_bg"
+        android:focusable="false"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/padding_common_5"
-        android:weightSum="1"
-        android:id="@+id/locationLayout"
-        android:focusable="false">
+        android:weightSum="1">
 
         <com.ymca.CustomFont.PrimaryFontText
+            android:id="@+id/locationName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight=".62"
+            android:focusable="false"
             android:gravity="center_vertical"
             android:padding="@dimen/padding_common_10"
             android:text="XXXXXX"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_common_15"
-            app:fontName="@string/custom_primary_font"
-            android:id="@+id/locationName"
-            android:focusable="false"/>
+            app:fontName="@string/custom_primary_font" />
 
         <com.ymca.CustomFont.SecondaryFontText
+            android:id="@+id/locationDistance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".3"
             android:background="@drawable/text_border"
+            android:focusable="false"
             android:gravity="center"
             android:padding="@dimen/padding_common_8"
             android:text="1698.2 mi"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_common_13"
             android:textStyle="bold"
-            app:fontNames="@string/custom_secondary_font"
-            android:id="@+id/locationDistance"
-            android:focusable="false"
-            />
+            app:fontNames="@string/custom_secondary_font" />
 
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".08"
             android:background="@null"
-            android:src="@drawable/location_arrow_black"
-            android:focusable="false"/>
+            android:focusable="false"
+            android:src="@drawable/location_arrow_black" />
     </LinearLayout>
 </LinearLayout>

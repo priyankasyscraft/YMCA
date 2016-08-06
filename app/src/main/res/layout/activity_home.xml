@@ -19,8 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@drawable/bg_leftmenu"
-        android:orientation="vertical"
-        android:paddingRight="@dimen/padding_common_5">
+        android:orientation="vertical">
 
         <ListView
             android:id="@+id/left_drawer"

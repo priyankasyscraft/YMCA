@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ymca.Activities.HomeActivity;
+import com.ymca.Adapters.ViewPagerAdapter;
 import com.ymca.AppManager.DataManager;
 import com.ymca.Constants.Constant;
 import com.ymca.Fragments.HomeClassesFragment;
@@ -22,6 +24,8 @@ import com.ymca.Fragments.MyCardsFragment;
 import com.ymca.Fragments.NotificationFragment;
 import com.ymca.Fragments.ScheduleFragment;
 import com.ymca.R;
+
+import java.util.ArrayList;
 
 /**
  * Created by Soni on 28-Jul-16.
@@ -37,12 +41,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private LocationFragment locationFragment = new LocationFragment();
     private MyCardsFragment myCardsFragment = new MyCardsFragment();
     private NotificationFragment notificationFragment = new NotificationFragment();
+    private ViewPager mPager;
+    ViewPagerAdapter viewPagerAdapter;
+    private ArrayList<String> arrrayListImage = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.home_fragment, container, false);
 
+        mPager = (ViewPager)view.findViewById(R.id.frame);
         scheduleLayout = (LinearLayout) view.findViewById(R.id.scheduleLayout);
         myCardLayout = (LinearLayout) view.findViewById(R.id.myCardLayout);
         locationLayout = (LinearLayout) view.findViewById(R.id.locationLayout);
@@ -56,6 +64,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         programLayout.setOnClickListener(this);
         classLayout.setOnClickListener(this);
         blogLayout.setOnClickListener(this);
+
+        viewPagerAdapter = new ViewPagerAdapter(getActivity(),arrrayListImage);
+        mPager.setAdapter(viewPagerAdapter);
+
         actionBarUpdate();
         return view;
     }
