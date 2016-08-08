@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1.5">
+    android:weightSum="2">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,27 +58,25 @@
         android:id="@+id/circleInstructorLay"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".7"
+        android:layout_weight=".95"
+        android:background="@drawable/slider_img"
+        android:gravity="center"
         android:orientation="horizontal"
         android:paddingTop="@dimen/padding_common_10"
         android:weightSum="1">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".03"
-            android:background="@color/colorPrimary" />
 
         <RelativeLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".95"
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/bgImg"
                 android:layout_width="128dp"
                 android:layout_height="128dp"
                 android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:src="@drawable/img_box" />
 
             <com.ymca.CustomFont.RoundedImage
@@ -90,13 +88,22 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/cancel_bt" />
 
+            <com.ymca.CustomFont.PrimaryFontText
+                android:id="@+id/trainerName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="@dimen/margin_common_5"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/padding_common_5"
+                android:text="@string/class_description"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_common_16"
+                android:textStyle="bold"
+                app:fontNames="@string/custom_primary_font" />
         </RelativeLayout>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".03"
-            android:background="@color/colorPrimary" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -107,93 +114,193 @@
         android:background="@drawable/classes_bg"
         android:gravity="center"
         android:orientation="horizontal"
-        android:weightSum="1">
+        android:weightSum="7">
 
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/timer_icon_pink"
-            android:padding="@dimen/padding_common_2"
-            />
         <com.ymca.CustomFont.PrimaryFontText
             android:id="@+id/classDetailTime"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".35"
+            android:layout_weight="1"
             android:drawablePadding="@dimen/padding_common_5"
             android:gravity="center_vertical"
-            android:text="XX:XX"
+            android:text="Mon"
             android:textColor="@color/colorScheduleBottomUnSelect"
-            android:textSize="@dimen/text_size_common_22"
+            android:textSize="@dimen/text_size_common_18"
+            android:textStyle="bold"
+            app:fontName="@string/custom_primary_font" />
+
+        <com.ymca.CustomFont.PrimaryFontText
+            android:id="@+id/classDetailTime2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".9"
+            android:drawablePadding="@dimen/padding_common_5"
+            android:gravity="center_vertical"
+            android:text="Tue"
+            android:textColor="@color/colorScheduleBottomUnSelect"
+            android:textSize="@dimen/text_size_common_18"
+            android:textStyle="bold"
+            app:fontName="@string/custom_primary_font" />
+
+        <com.ymca.CustomFont.PrimaryFontText
+            android:id="@+id/classDetailTime3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/padding_common_5"
+            android:gravity="center_vertical"
+            android:text="Wed"
+            android:textColor="@color/colorScheduleBottomUnSelect"
+            android:textSize="@dimen/text_size_common_18"
+            android:textStyle="bold"
+            app:fontName="@string/custom_primary_font" />
+
+        <com.ymca.CustomFont.PrimaryFontText
+            android:id="@+id/classDetailTime4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".9"
+            android:drawablePadding="@dimen/padding_common_5"
+            android:gravity="center_vertical"
+            android:text="Thu"
+            android:textColor="@color/colorScheduleBottomUnSelect"
+            android:textSize="@dimen/text_size_common_18"
+            android:textStyle="bold"
+            app:fontName="@string/custom_primary_font" />
+
+        <com.ymca.CustomFont.PrimaryFontText
+            android:id="@+id/classDetailTime5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".8"
+            android:gravity="center_vertical"
+            android:text="Fri"
+            android:textColor="@color/colorScheduleBottomUnSelect"
+            android:textSize="@dimen/text_size_common_18"
+            android:textStyle="bold"
+            app:fontName="@string/custom_primary_font"
+            />
+
+        <com.ymca.CustomFont.PrimaryFontText
+            android:id="@+id/classDetailTime6"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".9"
+            android:drawablePadding="@dimen/padding_common_5"
+            android:gravity="center_vertical"
+            android:text="Sat"
+            android:textColor="@color/colorScheduleBottomUnSelect"
+            android:textSize="@dimen/text_size_common_18"
+            android:textStyle="bold"
+            app:fontName="@string/custom_primary_font" />
+
+        <com.ymca.CustomFont.PrimaryFontText
+            android:id="@+id/classDetailTime7"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".9"
+            android:drawablePadding="@dimen/padding_common_5"
+            android:gravity="center_vertical"
+            android:text="Sun"
+            android:textColor="@color/colorScheduleBottomUnSelect"
+            android:textSize="@dimen/text_size_common_18"
             android:textStyle="bold"
             app:fontName="@string/custom_primary_font" />
     </LinearLayout>
 
-    <com.ymca.CustomFont.SecondaryFontText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/padding_common_8"
-        android:text="@string/class_description"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/text_size_common_16"
-        app:fontNames="@string/custom_secondary_font" />
-
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".3"
-        android:padding="@dimen/padding_common_10"
-        android:scrollbars="none">
+        android:layout_weight=".71">
 
-        <com.ymca.CustomFont.SecondaryFontText
-            android:id="@+id/classDetailDescription"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="sasdfsafasfsadfasdfasfddsasdfsfsafsadfasfasfdasdfasfdasdfasfasdfsdafsdfsafsafdsadfsafsafasfdsfsadfsfdsdfasdfasfdasdfgbfjfhas;iflakh;hasfjhluahfsakjsdfsfsfsdfsfhawkjfhakjefhafjkgehkawjfeghf;jgfe;jahwfkjafhjkaewfhakjwefelwrfsdfadsfsafasfsadfsadfsafdasf"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_common_12"
-            app:fontNames="@string/custom_secondary_font" />
-    </ScrollView>
+            android:layout_height="match_parent">
 
-    <com.ymca.CustomFont.SecondaryFontText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/padding_common_8"
-        android:text="@string/location"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/text_size_common_16"
-        app:fontNames="@string/custom_secondary_font" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <com.ymca.CustomFont.SecondaryFontText
-        android:id="@+id/classDetailAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/padding_common_10"
-        android:text="XXXXXXX"
-        android:textColor="@color/colorScheduleBottomUnSelect"
-        app:fontName="@string/custom_secondary_font" />
 
-    <com.ymca.CustomFont.SecondaryFontText
-        android:id="@+id/classDetailPhoneNo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/padding_common_10"
-        android:text="XXXXXXX"
-        android:textColor="@color/colorScheduleBottomUnSelect"
-        app:fontName="@string/custom_secondary_font" />
+                <com.ymca.CustomFont.SecondaryFontText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_common_8"
+                    android:text="@string/class_description"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_common_16"
+                    app:fontNames="@string/custom_secondary_font" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".15"
-        android:gravity="bottom">
+                <com.ymca.CustomFont.SecondaryFontText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/padding_common_8"
+                    android:text="@string/intensity_level"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_common_14"
+                    app:fontNames="@string/custom_secondary_font" />
+
+                <com.ymca.CustomFont.SecondaryFontText
+                    android:id="@+id/intensityLevel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/padding_common_8"
+                    android:text="Seniour"
+                    android:textColor="@color/colorScheduleBottomUnSelect"
+                    android:textSize="@dimen/text_size_common_14"
+                    app:fontNames="@string/custom_secondary_font" />
+
+                <com.ymca.CustomFont.SecondaryFontText
+                    android:id="@+id/classDetailDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_common_8"
+                    android:text="sasdfsafasfsadfsfsdffasdfsafsfdsdfsfsadfasdfassdfsfsfsfsadfsdfasdfsfsafasdfsfsdfsadfasdfsaffsfasfasdfsaddfasdfdfasfasfawfawefawefwafawefawefawfeawefwaefawfawefaefwaefawefaefaefafeaefaefafawefawefawefawefawefewafawgersrtgesrtgewegsegesrgesgsegesgresgsergesrgesrgesgrsergsergsergsergsergesrgsergesrgsergsergserfgsdgsdgfdvxdrgzsdrgdrvbsdrtjdrtdsrtaegerghrthsertefsadfsadffsdfdfdfssadfdfssdfsdfasdfsfdfsfffffffffffffffffffffffffffffffffffffffffsdffffffffsdfasfddsasdfsfsafsadfasfasfdasdfasfdasdfasfasdfsdafsdfsafsafdsadfsafsafasfdsfsadfsfdsdfasdfasfdasdfgbfjfhas;iflakh;hasfjhluahfsakjsdfsfsfsdfsfhawkjfhakjefhafjkgehkawjfeghf;jgfe;jahwfkjafhjkaewfhakjwefelwrfsdfadsfsafasfsadfsadfsafdasf"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_common_12"
+                    app:fontNames="@string/custom_secondary_font" />
+
+                <!--<com.ymca.CustomFont.SecondaryFontText-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="@dimen/padding_common_8"-->
+                <!--android:text="@string/location"-->
+                <!--android:textColor="@android:color/black"-->
+                <!--android:textSize="@dimen/text_size_common_16"-->
+                <!--app:fontNames="@string/custom_secondary_font" />-->
+
+                <com.ymca.CustomFont.SecondaryFontText
+                    android:id="@+id/classDetailAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/padding_common_10"
+                    android:text="XXXXXXX"
+                    android:textColor="@color/colorScheduleBottomUnSelect"
+                    app:fontName="@string/custom_secondary_font" />
+
+                <com.ymca.CustomFont.SecondaryFontText
+                    android:id="@+id/classDetailPhoneNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/padding_common_10"
+                    android:text="XXXXXXX"
+                    android:textColor="@color/colorScheduleBottomUnSelect"
+                    app:fontName="@string/custom_secondary_font" />
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="15dp"
+            android:layout_alignParentBottom="true"
             android:background="@drawable/bottom_img" />
-    </LinearLayout>
+
+    </RelativeLayout>
 </LinearLayout>

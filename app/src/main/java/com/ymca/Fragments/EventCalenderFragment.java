@@ -2,20 +2,25 @@ package com.ymca.Fragments;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
+import com.ymca.Activities.HomeActivity;
+import com.ymca.Constants.Constant;
 import com.ymca.R;
 
 import java.text.ParseException;
@@ -23,19 +28,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by Soni on 06-Aug-16.
  */
-public class EventCalenderFragment extends Fragment {
+public class EventCalenderFragment extends Fragment implements View.OnClickListener {
 
     private View view;
 
     private boolean undo = false;
     private CaldroidFragment caldroidFragment;
     private CaldroidFragment dialogCaldroidFragment;
-    private TextView textView;
+    private TextView eventTv;
     private ArrayList<Date> dates = new ArrayList<>();
 
 
@@ -43,11 +47,12 @@ public class EventCalenderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.custom_event_calender_fragment, container, false);
-
+        actionBarUpdate();
         final SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
 
         caldroidFragment = new CaldroidFragment();
-        textView = (TextView) view.findViewById(R.id.textview);
+        eventTv = (TextView) view.findViewById(R.id.eventTv);
+        eventTv.setOnClickListener(this);
         if (savedInstanceState != null) {
             caldroidFragment.restoreStatesFromKey(savedInstanceState,
                     "CALDROID_SAVED_STATE");
@@ -77,10 +82,10 @@ public class EventCalenderFragment extends Fragment {
             public void onSelectDate(Date date, View view) {
 
                 if(dates.contains(date) ) {
-                    textView.setText("This is event text");
-                    textView.setVisibility(View.VISIBLE);
+                    eventTv.setText("This is event text");
+                    eventTv.setVisibility(View.VISIBLE);
                 }else {
-                    textView.setVisibility(View.GONE);
+                    eventTv.setVisibility(View.GONE);
                     return;
                 }
             }
@@ -123,7 +128,7 @@ public class EventCalenderFragment extends Fragment {
             public void onClick(View v) {
                 if (undo) {
                     customizeButton.setText("NEXT");
-                    textView.setText("");
+                    eventTv.setText("");
 
                     // Reset calendar
                     caldroidFragment.clearDisableDates();
@@ -195,7 +200,7 @@ public class EventCalenderFragment extends Fragment {
                     text += "Disabled Date: " + formatter.format(date) + "\n";
                 }
 
-                textView.setText(text);
+                eventTv.setText(text);
             }
         });
 
@@ -267,4 +272,57 @@ public class EventCalenderFragment extends Fragment {
         }
     }
 
+    private void actionBarUpdate() {
+        // TODO Auto-generated method stub
+
+
+        ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
+
+
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setTitle("");
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.icon_menu);
+        actionBar.setDisplayShowTitleEnabled(true);
+
+
+        // TODO: 28-Jul-16 set action bar background
+        Drawable actionBar_bg = getResources().getDrawable(R.drawable.header_bg);
+        actionBar.setBackgroundDrawable(actionBar_bg);
+        actionBar.setDisplayShowCustomEnabled(true);
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
+                ActionBar.LayoutParams.MATCH_PARENT,
+                ActionBar.LayoutParams.MATCH_PARENT);
+
+        // layoutParams.rightMargin = 20;
+
+        LayoutInflater inflator = getActivity().getLayoutInflater();
+        View view = inflator.inflate(R.layout.custom_layout_actionbar, null);
+
+        ImageView notificationBell = (ImageView) view.findViewById(R.id.notificationBell);
+        TextView badgeCount = (TextView) view.findViewById(R.id.badgeCount);
+
+        notificationBell.setVisibility(View.GONE);
+        badgeCount.setVisibility(View.GONE);
+
+
+        actionBar.setCustomView(view, layoutParams);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.eventTv:
+
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame,new EventDetailFragment(), Constant.eventDetailFragment)
+                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                        .commit();
+                break;
+        }
+    }
 }

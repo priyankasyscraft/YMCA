@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ymca.Activities.HomeActivity;
+import com.ymca.Constants.Constant;
 import com.ymca.R;
 
 
@@ -20,12 +22,28 @@ import com.ymca.R;
 public class EventDetailFragment extends Fragment {
 
     private View view;
+    TextView showMapButton;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.event_detail_fragment,container,false );
         actionBarUpdate();
+
+        showMapButton = (TextView)view.findViewById(R.id.showMapButton);
+
+        showMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame,new EventMapFragment(), Constant.eventMapFragment)
+                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                        .commit();
+            }
+        });
+
         return view;
     }
 

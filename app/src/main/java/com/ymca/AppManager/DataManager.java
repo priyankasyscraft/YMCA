@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ymca.ModelClass.AreaModelClass;
 import com.ymca.ModelClass.CampModelClass;
 import com.ymca.ModelClass.ClassesModelClass;
 import com.ymca.ModelClass.DateModelClass;
@@ -51,6 +52,8 @@ public class DataManager {
     private boolean flagClassList = false;
     private boolean flagInstructorList = false;
     private boolean flagCheckIn = false;
+    private boolean flagScedule = false;
+    private boolean flagLocation = false;
     private String memberName;
     private String memberCardNumber;
 
@@ -63,6 +66,7 @@ public class DataManager {
     private ArrayList<LocationModelClass> locationModelClasses = new ArrayList<>();
     private ArrayList<FacilityModelClass> facilityModelClassArrayList = new ArrayList<>();
     private ArrayList<CampModelClass> campModelClassArrayList = new ArrayList<>();
+    private ArrayList<AreaModelClass> areaModelClassArrayList = new ArrayList<>();
 
     public static boolean chkStatus() {
         // TODO Auto-generated method stub
@@ -398,7 +402,7 @@ public class DataManager {
         this.flagCheckIn = flagCheckIn;
     }
 
-    public void showIFramePopUp(Context context){
+    public void showIFramePopUp(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(context.getResources().getString(R.string.iframe_msg));
         builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
@@ -408,5 +412,37 @@ public class DataManager {
             }
         });
         builder.show();
+    }
+
+    public ArrayList<AreaModelClass> getAreaModelClassArrayList() {
+        return areaModelClassArrayList;
+    }
+
+    public void setAreaModelClassArrayList(ArrayList<AreaModelClass> areaModelClassArrayList) {
+        this.areaModelClassArrayList = areaModelClassArrayList;
+    }
+
+    public void addAreaModelClassArrayList(AreaModelClass areaModelClassArrayList) {
+        this.areaModelClassArrayList.add(areaModelClassArrayList);
+    }
+
+    public void clearAreaModelClassArrayList() {
+        this.areaModelClassArrayList.clear();
+    }
+
+    public boolean isFlagLocation() {
+        return flagLocation;
+    }
+
+    public void setFlagLocation(boolean flagLocation) {
+        this.flagLocation = flagLocation;
+    }
+
+    public boolean isFlagScedule() {
+        return flagScedule;
+    }
+
+    public void setFlagScedule(boolean flagScedule) {
+        this.flagScedule = flagScedule;
     }
 }

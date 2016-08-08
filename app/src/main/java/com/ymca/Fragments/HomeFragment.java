@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.home_fragment, container, false);
 
-        mPager = (ViewPager)view.findViewById(R.id.frame);
+        mPager = (ViewPager) view.findViewById(R.id.frame);
         scheduleLayout = (LinearLayout) view.findViewById(R.id.scheduleLayout);
         myCardLayout = (LinearLayout) view.findViewById(R.id.myCardLayout);
         locationLayout = (LinearLayout) view.findViewById(R.id.locationLayout);
@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         classLayout.setOnClickListener(this);
         blogLayout.setOnClickListener(this);
 
-        viewPagerAdapter = new ViewPagerAdapter(getActivity(),arrrayListImage);
+        viewPagerAdapter = new ViewPagerAdapter(getActivity(), arrrayListImage);
         mPager.setAdapter(viewPagerAdapter);
 
         actionBarUpdate();
@@ -112,7 +112,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     getActivity()
                             .getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.content_frame,notificationFragment,Constant.notificationFragment)
+                            .replace(R.id.content_frame, notificationFragment, Constant.notificationFragment)
                             .commit();
                 }
 
@@ -125,10 +125,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         isCheck = DataManager.chkStatus();
-        if(isCheck) {
+        if (isCheck) {
             switch (view.getId()) {
                 case R.id.scheduleLayout:
-
+                    DataManager.getInstance().setFlagScedule(false);
                     getActivity()
                             .getSupportFragmentManager()
                             .beginTransaction()
@@ -147,6 +147,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             .commit();
                     break;
                 case R.id.locationLayout:
+                    DataManager.getInstance().setFlagLocation(false);
                     getActivity()
                             .getSupportFragmentManager()
                             .beginTransaction()
@@ -158,12 +159,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     DataManager.getInstance().showIFramePopUp(getActivity());
                     break;
                 case R.id.classLayout:
-                    getActivity()
-                            .getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.content_frame, homeClassesFragment, Constant.homeClassFragment)
-                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                            .commit();
+//                    getActivity()
+//                            .getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.content_frame, homeClassesFragment, Constant.homeClassFragment)
+//                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+//                            .commit();
+
+                    DataManager.getInstance().showIFramePopUp(getActivity());
 
                     break;
                 case R.id.blogLayout:

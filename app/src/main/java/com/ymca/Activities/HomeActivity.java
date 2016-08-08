@@ -1,9 +1,15 @@
 package com.ymca.Activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,6 +25,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.ymca.Adapters.DrawerAdapter;
 import com.ymca.AppManager.DataManager;
@@ -30,6 +44,7 @@ import com.ymca.Fragments.EventCalenderFragment;
 import com.ymca.Fragments.EventFragment;
 import com.ymca.Fragments.FacilityFragment;
 import com.ymca.Fragments.HomeFragment;
+import com.ymca.Fragments.LocationFragment;
 import com.ymca.Fragments.MyCardsFragment;
 import com.ymca.Fragments.NotificationFragment;
 import com.ymca.Fragments.ScheduleFragment;
@@ -40,21 +55,36 @@ import com.ymca.R;
 
 import java.util.ArrayList;
 
-public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, LocationListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
 
+    // TODO: 08-Aug-16 Left Menu All Fragments
     private EventFragment eventFragment = new EventFragment();
     private HomeFragment homeFragment = new HomeFragment();
     private NotificationFragment notificationFragment = new NotificationFragment();
     private MyCardsFragment myCardsFragment = new MyCardsFragment();
     private ScheduleFragment scheduleFragment = new ScheduleFragment();
     private FacilityFragment facilityFragment = new FacilityFragment();
+    private LocationFragment locationFragment = new LocationFragment();
     private CampFragment campFragment = new CampFragment();
+    private SettingFragment settingFragment = new SettingFragment();
+    private EventCalenderFragment eventCalenderFragment = new EventCalenderFragment();
+    private DonateFragment donateFragment = new DonateFragment();
+
     private boolean isCheck = false;
     private boolean doubleBackToExitPressedOnce = false;
     private ListView mDrawerList;
     private ArrayList<DrawerModel> drawerModels = new ArrayList<>();
     private DrawerAdapter drawerAdapter;
+    private static final long INTERVAL = 1000 * 10;
+    private static final long FASTEST_INTERVAL = 1000 * 5;
+    LocationRequest mLocationRequest;
+    GoogleApiClient mGoogleApiClient;
+    Location mCurrentLocation;
+    private String TAG = "Home Activity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +92,16 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_home);
         setData();
 
-
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-//        ImageView customButton = (ImageView)toolbar.findViewById(R.id.customButton);
-
-
         setSupportActionBar(toolbar);
+
+//        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+//        Log.e("refreshedToken: ", refreshedToken );
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -76,15 +109,21 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         drawer.setDrawerListener(toggle);
 
 
-
         mDrawerList.setOnItemClickListener(this);
         toggle.syncState();
-
+        createLocationRequest();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.content_frame, homeFragment, Constant.homeFragment)
                 .addToBackStack(getSupportFragmentManager().getClass().getName())
                 .commit();
+    }
+
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     private void setData() {
@@ -180,112 +219,6 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerList.setAdapter(drawerAdapter);
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        }
-//
-//        FragmentManager fm = getSupportFragmentManager();
-//        int count = fm.getBackStackEntryCount();
-//        Log.e("Count", String.valueOf(count));
-//        Fragment fr = fm.findFragmentById(R.id.content_frame);
-//        isCheck = DataManager.chkStatus();
-//        if (isCheck) {
-//            if (count > 1) {
-//                if (fr.getTag().equals(Constant.dateFragment)) {
-//                    super.onBackPressed();
-//                } else if (fr.getTag().equals(Constant.classFragment)) {
-//                    super.onBackPressed();
-//                } else if (fr.getTag().equals(Constant.eventFragment)) {
-//                    super.onBackPressed();
-//                } else if (fr.getTag().equals(Constant.classDetailFragment)) {
-////                    super.onBackPressed();
-//                    fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.content_frame, scheduleFragment, Constant.scheduleFragment)
-//                            .addToBackStack(getSupportFragmentManager().getClass().getName())
-//                            .commit();
-//                } else if (fr.getTag().equals(Constant.instructorDetailFrag)) {
-//                    fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.content_frame, scheduleFragment, Constant.scheduleFragment)
-//                            .addToBackStack(getSupportFragmentManager().getClass().getName())
-//                            .commit();
-//                } else if (fr.getTag().equals(Constant.scheduleFragment)) {
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
-//                            .commit();
-//                } else if (fr.getTag().equals(Constant.homeClassFragment)) {
-////                    fm.popBackStack(2, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//                    super.onBackPressed();
-//                } else if (fr.getTag().equals(Constant.homeClassDetailFragment)) {
-////                    fm.popBackStack(2, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//                    super.onBackPressed();
-//                } else if (fr.getTag().equals(Constant.cardShowFragment)) {
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-//                            .commit();
-//                } else if (fr.getTag().equals(Constant.myCardFragment)) {
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
-//                            .commit();
-//                } else if (fr.getTag().contains(Constant.homeFragment)) {
-//                    if (doubleBackToExitPressedOnce) {
-//                        super.onBackPressed();
-//                        HomeActivity.this.finish();
-//                        return;
-//                    }
-//                    this.doubleBackToExitPressedOnce = true;
-//                    Toast.makeText(this, "Please click Back again to exit", Toast.LENGTH_SHORT).show();
-//
-//                    new Handler().postDelayed(new Runnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            doubleBackToExitPressedOnce = false;
-//                        }
-//                    }, 2000);
-//                } else {
-//                    super.onBackPressed();
-//                }
-//            } else {
-//                if (fr.getTag().contains(Constant.homeFragment)) {
-//                    if (doubleBackToExitPressedOnce) {
-//                        super.onBackPressed();
-//                        HomeActivity.this.finish();
-//                        return;
-//                    }
-//                    this.doubleBackToExitPressedOnce = true;
-//                    Toast.makeText(this, "Please click Back again to exit", Toast.LENGTH_SHORT).show();
-//
-//                    new Handler().postDelayed(new Runnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            doubleBackToExitPressedOnce = false;
-//                        }
-//                    }, 2000);
-//                } else {
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
-//                            .commit();
-//                }
-//
-//
-//            }
-//        }
-//
-//
-//    }
 
     @Override
     public void onBackPressed() {
@@ -402,9 +335,14 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                             .commit();
                     break;
                 case 3:
+//                    getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.content_frame, new EventCalenderFragment(), Constant.eventCalenderFragment)
+//                            .commit();
+                    DataManager.getInstance().setFlagLocation(true);
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.content_frame, new EventCalenderFragment(), Constant.eventCalenderFragment)
+                            .replace(R.id.content_frame, locationFragment, Constant.locationFramgnet)
                             .commit();
                     break;
                 case 4:
@@ -414,42 +352,70 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                             .commit();
                     break;
                 case 5:
-                    DataManager.getInstance().showIFramePopUp(this);
-                    break;
-                case 6:
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.content_frame, facilityFragment, Constant.facilityFragment)
+                            .replace(R.id.content_frame, settingFragment, Constant.settingFragment)
                             .commit();
                     break;
+                case 6:
+//                    getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.content_frame, facilityFragment, Constant.facilityFragment)
+//                            .commit();
+                    break;
                 case 7:
+                    DataManager.getInstance().setFlagScedule(true);
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.content_frame, campFragment, Constant.campFragment)
+                            .replace(R.id.content_frame, scheduleFragment, Constant.scheduleFragment)
                             .commit();
                     break;
                 case 8:
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.content_frame, eventFragment, Constant.eventFragment)
-                            .commit();
+
+                    DataManager.getInstance().showIFramePopUp(this);
+//                    getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.content_frame, eventFragment, Constant.eventFragment)
+//                            .commit();
                     break;
                 case 9:
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.content_frame, new DonateFragment(), Constant.donateFragment)
-                            .commit();
+
+                    DataManager.getInstance().showIFramePopUp(this);
+//                    getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.content_frame, new DonateFragment(), Constant.donateFragment)
+//                            .commit();
                     break;
                 case 10:
 
+                    DataManager.getInstance().showIFramePopUp(this);
                     break;
                 case 11:
+
+                    DataManager.getInstance().showIFramePopUp(this);
                     break;
                 case 12:
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.content_frame, new SettingFragment(), Constant.settingFragment)
+                            .replace(R.id.content_frame, eventCalenderFragment, Constant.eventCalenderFragment)
                             .commit();
+                    break;
+                case 13:
+
+                    break;
+                case 14:
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, donateFragment, Constant.donateFragment)
+                            .commit();
+                    break;
+                case 15:
+
+                    DataManager.getInstance().showIFramePopUp(this);
+                    break;
+                case 16:
+
+                    DataManager.getInstance().showIFramePopUp(this);
                     break;
 
             }
@@ -458,5 +424,61 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         drawer.closeDrawer(GravityCompat.START);
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.e(TAG, "onStart fired ..............");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
+    }
+
+    private boolean isGooglePlayServicesAvailable() {
+        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (ConnectionResult.SUCCESS == status) {
+            return true;
+        } else {
+            GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
+            return false;
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        startLocationUpdates();
+    }
+
+    protected void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+        PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+        Log.e(TAG, "Location update started ..............: ");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e(TAG, "Connection failed: " + connectionResult.toString());
+    }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.e(TAG, "Firing onLocationChanged..............................................");
+        mCurrentLocation = location;
+
+    }
 
 }

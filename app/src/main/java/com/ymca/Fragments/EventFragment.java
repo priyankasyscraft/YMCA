@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ymca.Activities.HomeActivity;
 import com.ymca.Adapters.EventAdapter;
@@ -82,8 +83,10 @@ public class EventFragment extends Fragment {
         View view = inflator.inflate(R.layout.custom_layout_actionbar, null);
 
         ImageView notificationBell = (ImageView) view.findViewById(R.id.notificationBell);
+        TextView badgeCount = (TextView) view.findViewById(R.id.badgeCount);
 
-        view.setVisibility(View.GONE);
+        notificationBell.setVisibility(View.GONE);
+        badgeCount.setVisibility(View.GONE);
 
 
         actionBar.setCustomView(view, layoutParams);

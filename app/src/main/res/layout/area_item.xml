@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/areaBgLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/classes_bg"
+        android:focusable="false"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".02"
+            android:background="@color/colorScheduleTab" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".7"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <com.ymca.CustomFont.PrimaryFontText
+                android:id="@+id/areaName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:text="Yoga Class"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_common_18"
+                android:textStyle="bold"
+                app:fontName="@string/custom_primary_font"
+                android:padding="@dimen/padding_common_8" />
+
+            <com.ymca.CustomFont.SecondaryFontText
+                android:id="@+id/areaInstructor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:text="with James Macmann"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_common_13"
+                app:fontNames="@string/custom_secondary_font"
+                android:paddingLeft="@dimen/padding_common_8" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".28"
+            android:gravity="center_vertical">
+
+            <com.ymca.CustomFont.PrimaryFontText
+                android:id="@+id/areaTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="@dimen/padding_common_5"
+                android:text="07:00 am"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

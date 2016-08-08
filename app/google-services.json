@@ -1,27 +1,35 @@
 {
   "project_info": {
-    "project_number": "475769546732",
-    "firebase_url": "https://ymca-6b919.firebaseio.com",
-    "project_id": "ymca-6b919",
-    "storage_bucket": "ymca-6b919.appspot.com"
+    "project_number": "950653925542",
+    "firebase_url": "https://ymca-b1857.firebaseio.com",
+    "project_id": "ymca-b1857",
+    "storage_bucket": "ymca-b1857.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:475769546732:android:86f19f37eac7bf54",
+        "mobilesdk_app_id": "1:950653925542:android:86f19f37eac7bf54",
         "android_client_info": {
           "package_name": "com.ymca"
         }
       },
       "oauth_client": [
         {
-          "client_id": "475769546732-4fhfnqdndkt4cb09q4fo4d79vnjt8vor.apps.googleusercontent.com",
+          "client_id": "950653925542-0dnhqost09nj85duabvefvvspv4r2iun.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ymca",
+            "certificate_hash": "1D39DC25B1C4A8A2651FEAECB123AED5F700D303"
+          }
+        },
+        {
+          "client_id": "950653925542-n3tqnickilks6i4stmfvkik15kj6imcp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBLFwQRBkl3X22_HqynsWLQ56AS-ZvBsWM"
+          "current_key": "AIzaSyApFE_sJicMI18nbLyaGm5Liimsi3alzc4"
         }
       ],
       "services": {
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950653925542-n3tqnickilks6i4stmfvkik15kj6imcp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

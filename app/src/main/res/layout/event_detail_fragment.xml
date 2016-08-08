@@ -136,7 +136,8 @@
         android:textColor="@color/colorScheduleTab"
         android:textSize="@dimen/text_size_common_12"
         app:fontNames="@string/custom_primary_font"
-        android:paddingBottom="@dimen/padding_common_5"/>
+        android:paddingBottom="@dimen/padding_common_5"
+        android:id="@+id/showMapButton"/>
 
     <LinearLayout
         android:layout_width="match_parent"

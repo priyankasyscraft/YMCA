@@ -20,6 +20,15 @@
             android:src="@drawable/bt_back_white" />
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/arrow_gray"
+        android:id="@+id/filterImg"
+        android:layout_toRightOf="@+id/customLayout"
+        android:visibility="gone"
+        android:paddingLeft="@dimen/padding_common_10"/>
+
     <com.ymca.CustomFont.PrimaryFontText
         android:id="@+id/logoText"
         android:layout_width="match_parent"

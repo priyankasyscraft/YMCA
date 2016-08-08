@@ -1,111 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="1">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".1"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <LinearLayout
-            android:id="@+id/dateTab"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".48"
-            android:background="@drawable/schedule_tabmenu"
-            android:paddingBottom="@dimen/padding_common_5">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".1"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-            <com.ymca.CustomFont.SecondaryFontText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:gravity="center"
-                android:padding="@dimen/padding_common_5"
-                android:text="@string/date"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_common_16"
-                android:textStyle="bold"
-                app:fontNames="@string/custom_secondary_font" />
+            <LinearLayout
+                android:id="@+id/dateTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".48"
+                android:background="@drawable/schedule_tabmenu"
+                android:paddingBottom="@dimen/padding_common_5">
+
+                <com.ymca.CustomFont.SecondaryFontText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_common_5"
+                    android:text="@string/date"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_common_16"
+                    android:textStyle="bold"
+                    app:fontNames="@string/custom_secondary_font" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/classTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".48"
+                android:background="@drawable/schedule_tabmenu_selected"
+                android:paddingBottom="@dimen/padding_common_5">
+
+                <com.ymca.CustomFont.SecondaryFontText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_common_5"
+                    android:text="@string/classe"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_common_16"
+                    android:textStyle="bold"
+                    app:fontNames="@string/custom_secondary_font" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/instructorTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".56"
+                android:background="@drawable/schedule_tabmenu_selected"
+                android:paddingBottom="@dimen/padding_common_5">
+
+                <com.ymca.CustomFont.SecondaryFontText
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_common_5"
+                    android:text="@string/instructor"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_common_16"
+                    android:textStyle="bold"
+                    app:fontNames="@string/custom_secondary_font" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/areasTab"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".48"
+                android:background="@drawable/schedule_tabmenu_selected"
+                android:paddingBottom="@dimen/padding_common_5">
+
+                <com.ymca.CustomFont.SecondaryFontText
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_common_5"
+                    android:text="@string/areas"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_common_16"
+                    android:textStyle="bold"
+                    app:fontNames="@string/custom_secondary_font" />
+            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/classTab"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".48"
-            android:background="@drawable/schedule_tabmenu_selected"
-            android:paddingBottom="@dimen/padding_common_5">
+        <FrameLayout
+            android:id="@+id/content_child_frame"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".9" />
 
-            <com.ymca.CustomFont.SecondaryFontText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:gravity="center"
-                android:padding="@dimen/padding_common_5"
-                android:text="@string/classe"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_common_16"
-                android:textStyle="bold"
-                app:fontNames="@string/custom_secondary_font" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/instructorTab"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".56"
-            android:background="@drawable/schedule_tabmenu_selected"
-            android:paddingBottom="@dimen/padding_common_5">
-
-            <com.ymca.CustomFont.SecondaryFontText
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:gravity="center"
-                android:padding="@dimen/padding_common_5"
-                android:text="@string/instructor"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_common_16"
-                android:textStyle="bold"
-                app:fontNames="@string/custom_secondary_font" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/areas"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".48"
-            android:background="@drawable/schedule_tabmenu_selected"
-            android:paddingBottom="@dimen/padding_common_5">
-
-            <com.ymca.CustomFont.SecondaryFontText
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:gravity="center"
-                android:padding="@dimen/padding_common_5"
-                android:text="@string/areas"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_common_16"
-                android:textStyle="bold"
-                app:fontNames="@string/custom_secondary_font" />
-        </LinearLayout>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/content_child_frame"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".9" />
+        android:layout_height="wrap_content"
+        android:background="@color/colorTransParent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/filterLayout">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/cityOne"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_common_8"
+            android:text="@string/city_1"
+            android:textColor="@android:color/white" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:id="@+id/cityTwo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_common_8"
+            android:text="@string/city_2"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</RelativeLayout>

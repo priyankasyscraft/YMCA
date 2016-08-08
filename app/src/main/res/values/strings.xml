@@ -115,4 +115,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="instructor_detail">INSTRUCTOR DETAIL</string>
     <string name="event_map">EVENT LOCATION</string>
+    <string name="intensity_level">Intensity Level</string>
+    <string name="city_1">DOWNTOWN</string>
+    <string name="city_2">KERASOTES</string>
 </resources>
