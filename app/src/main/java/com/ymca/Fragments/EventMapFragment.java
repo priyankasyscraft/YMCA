@@ -44,6 +44,7 @@ public class EventMapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.event_map_fragment,container,false);
+        setUpMapIfNeeded();
         return view;
     }
 
@@ -51,7 +52,7 @@ public class EventMapFragment extends Fragment {
         if (mapFragment == null) {
             mapFragment = (SupportMapFragment)getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
         }
-        markerLatLng = new LatLng(22.768430, 75.895702);
+        markerLatLng = new LatLng(40.723008, -74.000633);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -73,7 +74,6 @@ public class EventMapFragment extends Fragment {
                     .snippet("Event short Description")
                     .icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), viewMarker))));
         rotateMarker(customMarker, 0.5f, mMap);
-//        new ImageBitmapLoader().execute();
     }
 
     static public void rotateMarker(final Marker marker, final float toRotation, GoogleMap map) {
