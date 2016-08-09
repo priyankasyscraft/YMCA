@@ -68,10 +68,9 @@ public class DataManager {
     private ArrayList<CampModelClass> campModelClassArrayList = new ArrayList<>();
     private ArrayList<AreaModelClass> areaModelClassArrayList = new ArrayList<>();
 
-    public static boolean chkStatus() {
+    public static boolean chkStatus(Context context) {
         // TODO Auto-generated method stub
-        final ConnectivityManager connMgr = (ConnectivityManager) getInstance().getAppCompatActivity()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        final ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         if (connMgr.getActiveNetworkInfo() != null
                 && connMgr.getActiveNetworkInfo().isAvailable()

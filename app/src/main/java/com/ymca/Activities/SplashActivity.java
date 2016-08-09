@@ -1,10 +1,14 @@
 package com.ymca.Activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -13,18 +17,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import com.activate.gcm.CommonUtilities;
+import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.ymca.Activities.*;
 import com.ymca.Activities.HomeActivity;
 import com.ymca.AppManager.DataManager;
 import com.ymca.AppManager.MarshMallowPermission;
+import com.ymca.AppManager.SharedPreference;
+import com.ymca.Constants.Constant;
 import com.ymca.R;
 
 import java.text.DateFormat;
@@ -38,13 +48,31 @@ public class SplashActivity extends BaseActivity {
     private long SPLASH_DISPLAY_LENGTH = 2000;
 
     MarshMallowPermission marshMallowPermission;
+    private GoogleCloudMessaging gcm;
+    private String regId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 0);
         setContentView(R.layout.activity_splash);
         marshMallowPermission = new MarshMallowPermission(this);
 
+
+        try {
+            GCMRegistrar.checkDevice(SplashActivity.this);
+            GCMRegistrar.checkManifest(SplashActivity.this);
+
+            gcm = GoogleCloudMessaging.getInstance(this.getApplicationContext());
+            regId = GCMPreference.getRegistrationId(this.getApplicationContext());
+            if (regId.isEmpty()) {
+                registerGCM();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         if (marshMallowPermission.checkPermissionsLocation()) {
@@ -57,7 +85,6 @@ public class SplashActivity extends BaseActivity {
             marshMallowPermission.requestPermissionForLocation();
         }
     }
-
 
 
     private void setUpPane() {
@@ -136,6 +163,35 @@ public class SplashActivity extends BaseActivity {
     }
 
 
+    public void registerGCM() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                try {
+                    // call register and save registration ID to preference.
+                    String regId = gcm.register(Constant.SENDER_ID);
 
+                    GCMPreference.setRegistrationId(SplashActivity.this.getApplicationContext(), regId);
+                    return null;
+                } catch (Exception e) {
+                    // Error Handling
+                    return null;
+                }
+            }
+        }.execute();
+    }
 
+    public static class GCMPreference {
+
+        public static String getRegistrationId(Context context) {
+
+            String registrationId = "";
+            return registrationId;
+        }
+
+        public static void setRegistrationId(Context context, String regId) {
+            SharedPreference.setDataInSharedPreference(context, Constant.deviceToken, regId);
+            Log.e("regId = ", "+++++++++++" + regId);
+        }
+    }
 }

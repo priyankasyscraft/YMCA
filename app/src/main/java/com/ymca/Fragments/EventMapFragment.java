@@ -50,7 +50,7 @@ public class EventMapFragment extends Fragment {
 
     private void setUpMapIfNeeded() {
         if (mapFragment == null) {
-            mapFragment = (SupportMapFragment)getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
+            mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
         }
         markerLatLng = new LatLng(40.723008, -74.000633);
         mapFragment.getMapAsync(new OnMapReadyCallback() {

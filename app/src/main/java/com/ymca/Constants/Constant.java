@@ -1,10 +1,20 @@
 package com.ymca.Constants;
 
+import twitter4j.Twitter;
+import twitter4j.auth.RequestToken;
+
 /**
  * Created by Soni on 28-Jul-16.
  */
 public class Constant {
 
+    public static RequestToken rToken = null;
+    public static String TWITTER_CONSUMER_KEY = "VfAP9Q9WPxTJ8ocIMzt42aJnn";
+    public static String TWITTER_CONSUMER_SECRET = "vSA2XKEONN2UlJaCrO3nykp3te4vJEov4A29JuqW0pJbAlBsOp";
+    public static final String TWITTER_CALLBACK_URL = "oauth://cartrizeProduction";
+    public static final String URL_TWITTER_OAUTH_VERIFIER = "oauth_verifier";
+    public static Twitter twitter = null;
+    public static final String SENDER_ID = "950653925542";
     public static String homeFragment = "home_fragment";
     public static String scheduleFragment = "schedule_fragment";
     public static String dateFragment = "date_fragment";

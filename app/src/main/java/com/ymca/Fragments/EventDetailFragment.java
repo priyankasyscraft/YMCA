@@ -1,5 +1,7 @@
 package com.ymca.Fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -35,12 +37,19 @@ public class EventDetailFragment extends Fragment {
         showMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame,new EventMapFragment(), Constant.eventMapFragment)
-                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                        .commit();
+                // TODO: 09-Aug-16 Open Map in app
+//                getActivity()
+//                        .getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.content_frame,new EventMapFragment(), Constant.eventMapFragment)
+//                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+//                        .commit();
+
+                // TODO: 09-Aug-16 Redirect to the Map app
+                Uri gmmIntentUri = Uri.parse("geo:"+""+40.723008+","+-74.000633+"?q=<"+40.723008+">,<"+-74.000633+">"+"Event Name");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
             }
         });
 

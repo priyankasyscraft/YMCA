@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/instructorDetailBgLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/classes_bg"
+        android:focusable="false"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".02"
+            android:background="@color/colorScheduleTab" />
+
+        <com.ymca.CustomFont.PrimaryFontText
+            android:id="@+id/instructorDetailListName"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".91"
+            android:focusable="false"
+            android:gravity="center_vertical"
+            android:padding="@dimen/padding_common_8"
+            android:text="Yoga Class"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_common_18"
+            android:textStyle="bold"
+            app:fontName="@string/custom_primary_font" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".06">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/arrow_black" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

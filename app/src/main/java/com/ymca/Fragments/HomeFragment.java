@@ -6,24 +6,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.ymca.Activities.HomeActivity;
-import com.ymca.Adapters.ViewPagerAdapter;
+import com.ymca.Adapters.ScreenSlidePagerAdapter;
 import com.ymca.AppManager.DataManager;
 import com.ymca.Constants.Constant;
-import com.ymca.Fragments.HomeClassesFragment;
-import com.ymca.Fragments.LocationFragment;
-import com.ymca.Fragments.MyCardsFragment;
-import com.ymca.Fragments.NotificationFragment;
-import com.ymca.Fragments.ScheduleFragment;
 import com.ymca.R;
+import com.ymca.ViewPager.CirclePageIndicator;
 
 import java.util.ArrayList;
 
@@ -42,8 +36,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private MyCardsFragment myCardsFragment = new MyCardsFragment();
     private NotificationFragment notificationFragment = new NotificationFragment();
     private ViewPager mPager;
-    ViewPagerAdapter viewPagerAdapter;
+    ScreenSlidePagerAdapter viewPagerAdapter;
     private ArrayList<String> arrrayListImage = new ArrayList<>();
+    private CirclePageIndicator mIndicator;
 
     @Nullable
     @Override
@@ -65,9 +60,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         classLayout.setOnClickListener(this);
         blogLayout.setOnClickListener(this);
 
-        viewPagerAdapter = new ViewPagerAdapter(getActivity(), arrrayListImage);
+        for(int i = 0;i<5;i++) {
+            arrrayListImage.add("http://www.northpennymca.org/content/wp-content/uploads/2013/01/summer-camp-1.jpg");
+        }
+        viewPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(),getActivity(), arrrayListImage);
         mPager.setAdapter(viewPagerAdapter);
-
+        mIndicator = (CirclePageIndicator)view.findViewById(R.id.sliderIndicator);
+        mIndicator.setViewPager(mPager);
         actionBarUpdate();
         return view;
     }
@@ -107,7 +106,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         notificationBell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isCheck = DataManager.chkStatus();
+                isCheck = DataManager.chkStatus(getActivity());
                 if (isCheck) {
                     getActivity()
                             .getSupportFragmentManager()
@@ -124,7 +123,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        isCheck = DataManager.chkStatus();
+        isCheck = DataManager.chkStatus(getActivity());
         if (isCheck) {
             switch (view.getId()) {
                 case R.id.scheduleLayout:
