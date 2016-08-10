@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/YMCA.iml" filepath="$PROJECT_DIR$/YMCA.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gcm/gcm.iml" filepath="$PROJECT_DIR$/gcm/gcm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/twitter4j-core-3.0.5/twitter4j-core-3.0.5.iml" filepath="$PROJECT_DIR$/twitter4j-core-3.0.5/twitter4j-core-3.0.5.iml" />
     </modules>
   </component>
 </project>
