@@ -8,6 +8,7 @@ public class EventModelClass  {
     private String eventName;
     private String eventdate;
     private String eventMonth;
+    private String eventDay;
 
     public String getEventMonth() {
         return eventMonth;
@@ -31,5 +32,13 @@ public class EventModelClass  {
 
     public void setEventName(String eventName) {
         this.eventName = eventName;
+    }
+
+    public String getEventDay() {
+        return eventDay;
+    }
+
+    public void setEventDay(String eventDay) {
+        this.eventDay = eventDay;
     }
 }

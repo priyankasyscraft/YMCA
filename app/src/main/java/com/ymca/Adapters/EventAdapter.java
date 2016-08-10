@@ -68,6 +68,7 @@ public class EventAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = inflater.inflate(R.layout.event_items, null);
             viewHolder.eventLayout = (RelativeLayout) convertView.findViewById(R.id.eventLayout);
+            viewHolder.eventDay = (TextView) convertView.findViewById(R.id.eventDay);
             viewHolder.eventName = (TextView) convertView.findViewById(R.id.eventName);
             viewHolder.eventDate = (TextView) convertView.findViewById(R.id.eventDate);
             viewHolder.eventMonth = (TextView) convertView.findViewById(R.id.eventMonth);
@@ -78,6 +79,7 @@ public class EventAdapter extends BaseAdapter {
         viewHolder.eventName.setText(eventModelClassArrayList.get(position).getEventName());
         viewHolder.eventDate.setText(eventModelClassArrayList.get(position).getEventdate());
         viewHolder.eventMonth.setText(eventModelClassArrayList.get(position).getEventMonth());
+        viewHolder.eventDay.setText(eventModelClassArrayList.get(position).getEventDay());
 
         viewHolder.eventLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +98,7 @@ public class EventAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder {
-        TextView eventName, eventDate, eventMonth;
+        TextView eventName, eventDate, eventMonth,eventDay;
         RelativeLayout eventLayout;
     }
 }

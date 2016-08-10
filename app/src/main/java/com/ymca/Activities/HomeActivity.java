@@ -10,9 +10,14 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -77,6 +82,7 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
@@ -116,6 +122,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     private String TAG = "Home Activity";
     private int WEBVIEW_REQUEST_CODE = 1800;
     private File casted_image;
+    private Bitmap bitamp;
 
 
     @Override
@@ -283,12 +290,79 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         instaShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(HomeActivity.this, "Insta click", Toast.LENGTH_SHORT).show();
+//                String_to_File("http://www.northpennymca.org/content/wp-content/uploads/2013/01/summer-camp-1.jpg");
+                new LongOperation().execute();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+
             }
         });
 
         mDrawerList.addFooterView(footerView);
         mDrawerList.setAdapter(drawerAdapter);
+    }
+
+    private class LongOperation extends AsyncTask<Object, Object, Bitmap> {
+
+        @Override
+        protected Bitmap doInBackground(Object... objects) {
+
+            try {
+                URL url = new URL("http://www.northpennymca.org/content/wp-content/uploads/2013/01/summer-camp-1.jpg");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                bitamp = BitmapFactory.decodeStream(input);
+                return bitamp;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            saveImage(result);
+
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+
+    }
+
+    private void saveImage(Bitmap finalBitmap) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/scan_qr_images");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-" + n + ".jpg";
+        File file = new File(myDir, fname);
+        if (file.exists()) file.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+            Uri uri = Uri.parse("file://" + file.getAbsolutePath());
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setPackage("com.instagram.android");
+            share.putExtra(Intent.EXTRA_STREAM, uri);
+            share.putExtra(Intent.EXTRA_SHORTCUT_NAME, "YMCA");
+            share.setType("image/*");
+            share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(share, "Share image File"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static String printKeyHash(Activity context) {
@@ -363,9 +437,11 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                             .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
                             .commit();
                 } else if (fr.getTag().equals(Constant.myCardFragment)) {
+//                    fm.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
                             .commit();
                 } else if (fr.getTag().contains(Constant.homeFragment)) {
                     if (doubleBackToExitPressedOnce) {

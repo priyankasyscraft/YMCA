@@ -7,14 +7,16 @@
 
     <LinearLayout
         android:id="@+id/customLayout"
-        android:layout_width="30dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:gravity="center">
+        android:gravity="center"
+        android:padding="@dimen/padding_common_8"
+        >
 
         <ImageView
             android:id="@+id/custom_img_action_profile"
-            android:layout_width="match_parent"
+            android:layout_width="35dp"
             android:layout_height="match_parent"
             android:padding="@dimen/padding_common_8"
             android:src="@drawable/bt_back_white" />
@@ -23,7 +25,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/arrow_gray"
+        android:src="@drawable/filter_icon"
         android:id="@+id/filterImg"
         android:layout_toRightOf="@+id/customLayout"
         android:visibility="gone"

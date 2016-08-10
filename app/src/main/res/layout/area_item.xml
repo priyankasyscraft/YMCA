@@ -39,7 +39,7 @@
                 android:textSize="@dimen/text_size_common_18"
                 android:textStyle="bold"
                 app:fontName="@string/custom_primary_font"
-                android:padding="@dimen/padding_common_8" />
+                android:padding="@dimen/padding_common_2" />
 
             <com.ymca.CustomFont.SecondaryFontText
                 android:id="@+id/areaInstructor"
@@ -51,7 +51,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_common_13"
                 app:fontNames="@string/custom_secondary_font"
-                android:paddingLeft="@dimen/padding_common_8" />
+                android:paddingLeft="@dimen/padding_common_2" />
 
         </LinearLayout>
 
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:gravity="center"
-                android:padding="@dimen/padding_common_5"
+                android:padding="@dimen/padding_common_10"
                 android:text="07:00 am"
                 android:textColor="@android:color/white" />
         </LinearLayout>

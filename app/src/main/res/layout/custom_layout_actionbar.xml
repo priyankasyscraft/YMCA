@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:weightSum="1">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/padding_common_2">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
@@ -32,18 +32,21 @@
                 android:gravity="center"
                 android:text="25"
                 android:textColor="@android:color/white" />
+            <ImageView
+                android:id="@+id/filterImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/filter_icon"
+                android:visibility="gone"
+                android:paddingTop="@dimen/padding_common_10"
+                android:paddingLeft="@dimen/padding_common_10"
+
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/badgeCount"
+                android:layout_toEndOf="@+id/badgeCount" />
         </RelativeLayout>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/filterImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/filter_icon"
-        android:visibility="gone"
-        android:paddingTop="@dimen/padding_common_10"
-        android:paddingLeft="@dimen/padding_common_10"
 
-        />
 
 </LinearLayout>

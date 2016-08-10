@@ -33,19 +33,21 @@
     <!--android:focusableInTouchMode="false"-->
     <!--android:smoothScrollbar="true" />-->
     <!--</LinearLayout>-->
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerCardList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".9"
+        android:layout_weight=".8"
         android:scrollbarStyle="insideOverlay"
         android:scrollbars="none" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight=".15"
         android:background="@android:color/white"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:paddingBottom="@dimen/padding_common_10"
         android:paddingTop="@dimen/padding_common_5"
         android:weightSum="1">
@@ -53,10 +55,10 @@
         <com.ymca.CustomFont.PrimaryFontText
             android:id="@+id/addCard"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight=".4"
-            android:background="@drawable/classes_button_bg_purple"
-            android:gravity="center_horizontal"
+            android:background="@drawable/add_card_bt"
+            android:gravity="center"
             android:padding="@dimen/padding_common_10"
             android:text="@string/add_card"
             android:textColor="@android:color/white"

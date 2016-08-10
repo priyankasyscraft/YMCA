@@ -3,7 +3,9 @@ package com.ymca.Adapters;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -26,12 +28,13 @@ public class MyCardAdapter extends RecyclerView.Adapter<MyCardAdapter.MyViewHold
     private final Context context;
     private ArrayList<MyCardModelClass> myCardModelClasses;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
         public TextView cardUserName, cardBarCodeNo;
 
         public MyViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
+            view.setOnCreateContextMenuListener(this);
             cardUserName = (TextView) view.findViewById(R.id.cardUserName);
             cardBarCodeNo = (TextView) view.findViewById(R.id.cardBarCodeNo);
 
@@ -50,6 +53,17 @@ public class MyCardAdapter extends RecyclerView.Adapter<MyCardAdapter.MyViewHold
                     .addToBackStack(null)
                     .commit();
 
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            MenuItem myActionItem = contextMenu.add("Delete");
+            myActionItem.setOnMenuItemClickListener(this);
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            return true;
         }
     }
 

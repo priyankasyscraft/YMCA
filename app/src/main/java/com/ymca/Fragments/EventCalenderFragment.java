@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +22,10 @@ import android.widget.Toast;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 import com.ymca.Activities.HomeActivity;
+import com.ymca.Adapters.EventAdapter;
+import com.ymca.AppManager.DataManager;
 import com.ymca.Constants.Constant;
+import com.ymca.ModelClass.EventModelClass;
 import com.ymca.R;
 
 import java.text.ParseException;
@@ -41,7 +46,8 @@ public class EventCalenderFragment extends Fragment implements View.OnClickListe
     private CaldroidFragment dialogCaldroidFragment;
     private TextView eventTv;
     private ArrayList<Date> dates = new ArrayList<>();
-
+    private ListView eventListView;
+    private EventAdapter eventAdapter;
 
     @Nullable
     @Override
@@ -52,12 +58,12 @@ public class EventCalenderFragment extends Fragment implements View.OnClickListe
 
         caldroidFragment = new CaldroidFragment();
         eventTv = (TextView) view.findViewById(R.id.eventTv);
+        eventListView = (ListView) view.findViewById(R.id.eventListView);
         eventTv.setOnClickListener(this);
         if (savedInstanceState != null) {
             caldroidFragment.restoreStatesFromKey(savedInstanceState,
                     "CALDROID_SAVED_STATE");
-        }
-        else {
+        } else {
             Bundle args = new Bundle();
             Calendar cal = Calendar.getInstance();
             args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
@@ -67,6 +73,7 @@ public class EventCalenderFragment extends Fragment implements View.OnClickListe
             args.putString(CaldroidFragment.DIALOG_TITLE, "Hello");
 
             caldroidFragment.setArguments(args);
+
         }
 
         setCustomResourceForDates();
@@ -81,13 +88,32 @@ public class EventCalenderFragment extends Fragment implements View.OnClickListe
             @Override
             public void onSelectDate(Date date, View view) {
 
-                if(dates.contains(date) ) {
+                if (dates.contains(date)) {
+                    eventAdapter = new EventAdapter(getActivity(), DataManager.getInstance().getEventModelClasses());
+                    eventListView.setAdapter(eventAdapter);
+                    setData();
                     eventTv.setText("This is event text");
                     eventTv.setVisibility(View.VISIBLE);
-                }else {
+                    eventListView.setVisibility(View.VISIBLE);
+                } else {
                     eventTv.setVisibility(View.GONE);
+                    eventListView.setVisibility(View.GONE);
                     return;
                 }
+            }
+
+            private void setData() {
+                DataManager.getInstance().clearEventModelClasses();
+                for (int i = 0; i < 20; i++) {
+                    EventModelClass eventModelClass = new EventModelClass();
+                    eventModelClass.setEventName("YMCA Trivia Night");
+                    eventModelClass.setEventdate("01");
+                    eventModelClass.setEventMonth("AUG");
+                    eventModelClass.setEventDay("Mon");
+                    DataManager.getInstance().addEventModelClasses(eventModelClass);
+                }
+                eventAdapter.setReloadData(true);
+                setListViewHeightBasedOnChildren(eventListView);
             }
 
             @Override
@@ -99,9 +125,9 @@ public class EventCalenderFragment extends Fragment implements View.OnClickListe
 
             @Override
             public void onLongClickDate(Date date, View view) {
-                Toast.makeText(getActivity(),
-                        "Long click " + formatter.format(date),
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(),
+//                        "Long click " + formatter.format(date),
+//                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -184,12 +210,6 @@ public class EventCalenderFragment extends Fragment implements View.OnClickListe
                 caldroidFragment.setEnableSwipe(false);
 
                 caldroidFragment.refreshView();
-
-                // Move to date
-                // cal = Calendar.getInstance();
-                // cal.add(Calendar.MONTH, 12);
-                // caldroidFragment.moveToDate(cal.getTime());
-
                 String text = "Today: " + formatter.format(new Date()) + "\n";
                 text += "Min Date: " + formatter.format(minDate) + "\n";
                 text += "Max Date: " + formatter.format(maxDate) + "\n";
@@ -240,32 +260,49 @@ public class EventCalenderFragment extends Fragment implements View.OnClickListe
         return view;
     }
 
-    private void setCustomResourceForDates() {
-        Calendar cal = Calendar.getInstance();
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
 
-        // Min date is last 7 days
-        cal.add(Calendar.DATE, -7);
-        Date blueDate = cal.getTime();
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        // Max date is next 7 days
-        cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 7);
-
-        Date greenDate = cal.getTime();
-
-        if (caldroidFragment != null) {
-            ColorDrawable blue = new ColorDrawable(getResources().getColor(R.color.colorAccent));
-            ColorDrawable green = new ColorDrawable(Color.GREEN);
-            caldroidFragment.setBackgroundDrawableForDate(blue, blueDate);
-            caldroidFragment.setBackgroundDrawableForDate(green, greenDate);
-            caldroidFragment.setShowsDialog(true);
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
         }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+    }
 
-        String s = "2016-08-06";
+    private void setCustomResourceForDates() {
+        ArrayList<String> datesList = new ArrayList<>();
+        datesList.add(0, "2016-08-06");
+        datesList.add(1, "2016-09-06");
+        datesList.add(2, "2016-08-23");
+        datesList.add(3, "2016-07-30");
+        datesList.add(4, "2016-08-02");
+        datesList.add(5, "2016-08-10");
+        datesList.add(6, "2016-08-12");
+        datesList.add(7, "2016-08-30");
+        datesList.add(8, "2016-02-09");
+        datesList.add(9, "2016-08-06");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        for(int i = 0; i<5;i++){
+        for (int i = 0; i < datesList.size(); i++) {
             try {
-                dates.add(i,format.parse(s) );
+                Date date = format.parse(datesList.get(i));
+                dates.add(i, date);
+                if (caldroidFragment != null) {
+                    ColorDrawable blue = new ColorDrawable(getResources().getColor(R.color.colorPrimary));
+                    caldroidFragment.setBackgroundDrawableForDate(blue, date);
+                    caldroidFragment.setShowsDialog(true);
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -313,13 +350,13 @@ public class EventCalenderFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.eventTv:
 
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.content_frame,new EventDetailFragment(), Constant.eventDetailFragment)
+                        .replace(R.id.content_frame, new EventDetailFragment(), Constant.eventDetailFragment)
                         .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
                         .commit();
                 break;

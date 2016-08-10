@@ -34,7 +34,16 @@
         android:layout_marginEnd="47dp"
         android:gravity="center_vertical"
         >
-
+        <com.ymca.CustomFont.PrimaryFontText
+            android:id="@+id/eventDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Mon"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_common_16"
+            android:textStyle="bold"
+            app:fontName="@string/custom_primary_font"/>
         <com.ymca.CustomFont.PrimaryFontText
             android:id="@+id/eventDate"
             android:layout_width="match_parent"

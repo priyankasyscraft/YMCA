@@ -20,6 +20,8 @@ import com.ymca.R;
 import com.ymca.ViewPager.CirclePageIndicator;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Soni on 28-Jul-16.
@@ -39,6 +41,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     ScreenSlidePagerAdapter viewPagerAdapter;
     private ArrayList<String> arrrayListImage = new ArrayList<>();
     private CirclePageIndicator mIndicator;
+    private Timer timer;
+    private int count = 0;
 
     @Nullable
     @Override
@@ -60,13 +64,44 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         classLayout.setOnClickListener(this);
         blogLayout.setOnClickListener(this);
 
-        for(int i = 0;i<5;i++) {
+        if (arrrayListImage.size() == 0) {
+//            for (int i = 0; i < 5; i++) {
             arrrayListImage.add("http://www.northpennymca.org/content/wp-content/uploads/2013/01/summer-camp-1.jpg");
+            arrrayListImage.add("http://ymcagymnationals.org/wp-content/uploads/2014/10/2016-YMCA-Nationals-Logo-Blue1.jpg");
+            arrrayListImage.add("http://www.northpennymca.org/content/wp-content/uploads/2013/01/summer-camp-1.jpg");
+            arrrayListImage.add("http://ymcagymnationals.org/wp-content/uploads/2014/10/2016-YMCA-Nationals-Logo-Blue1.jpg");
+            arrrayListImage.add("http://www.northpennymca.org/content/wp-content/uploads/2013/01/summer-camp-1.jpg");
+            arrrayListImage.add("http://ymcagymnationals.org/wp-content/uploads/2014/10/2016-YMCA-Nationals-Logo-Blue1.jpg");
+            arrrayListImage.add("http://www.northpennymca.org/content/wp-content/uploads/2013/01/summer-camp-1.jpg");
+            arrrayListImage.add("http://ymcagymnationals.org/wp-content/uploads/2014/10/2016-YMCA-Nationals-Logo-Blue1.jpg");
+//            }
         }
-        viewPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(),getActivity(), arrrayListImage);
+        viewPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), getActivity(), arrrayListImage);
         mPager.setAdapter(viewPagerAdapter);
-        mIndicator = (CirclePageIndicator)view.findViewById(R.id.sliderIndicator);
+        mIndicator = (CirclePageIndicator) view.findViewById(R.id.sliderIndicator);
         mIndicator.setViewPager(mPager);
+
+
+        if (timer == null) {
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    DataManager.getInstance().getAppCompatActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (count <= arrrayListImage.size()) {
+                                mPager.setCurrentItem(count);
+                                count++;
+                            } else {
+                                count = 0;
+                                mPager.setCurrentItem(count);
+                            }
+                        }
+                    });
+                }
+            }, 500, 3000);
+        }
         actionBarUpdate();
         return view;
     }
@@ -174,4 +209,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         }
     }
+
+
 }

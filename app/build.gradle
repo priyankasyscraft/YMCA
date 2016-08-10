@@ -41,6 +41,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:9.4.0'
     compile 'com.google.android.gms:play-services-auth:9.4.0'
     compile project(':twitter4j-core-3.0.5')
+    compile 'com.github.bumptech.glide:glide:3.5.2'
 }
 apply plugin: 'com.google.gms.google-services'
 

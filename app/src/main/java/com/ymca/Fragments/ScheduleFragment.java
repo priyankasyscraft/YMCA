@@ -188,11 +188,12 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         filterImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (filterLayout.getVisibility() == View.VISIBLE) {
-                    filterLayout.setVisibility(View.GONE);
-                } else {
-                    filterLayout.setVisibility(View.VISIBLE);
-                }
+
+//                if (filterLayout.getVisibility() == View.VISIBLE) {
+//                    filterLayout.setVisibility(View.GONE);
+//                } else {
+//                    filterLayout.setVisibility(View.VISIBLE);
+//                }
             }
         });
 

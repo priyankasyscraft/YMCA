@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.ymca.ImageCache.ImageLoader;
 import com.ymca.R;
 
@@ -104,8 +105,10 @@ public class ScreenSlidePageFragment extends Fragment {
 
         ImageView imgSlider = (ImageView) rootView.findViewById(R.id.viewPagerItem_image1);
         if (context != null && banner_url.get(pos) != null && !banner_url.get(pos).equals("")) {
-            imageLoader.DisplayImage(banner_url.get(pos), imgSlider);
-//            Picasso.with(context).load(banner_url.get(pos)).into(imgSlider);
+
+            Glide.with(context)
+                    .load(banner_url.get(pos))
+                    .into(imgSlider);
         }
         return rootView;
     }
