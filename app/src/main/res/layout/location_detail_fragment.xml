@@ -354,9 +354,13 @@
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="@dimen/padding_common_2"
-                    android:weightSum="1">
+                    android:weightSum="1"
+                    >
 
+                    <View
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorTextPurple"/>
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -398,7 +402,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
-                            android:src="@drawable/arrow_black" />
+                            android:src="@drawable/down_arrow" />
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -411,9 +415,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="@dimen/padding_common_2"
                     android:weightSum="1">
-
+                    <View
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorPrimary"/>
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
@@ -455,7 +461,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
-                            android:src="@drawable/arrow_black" />
+                            android:src="@drawable/down_arrow" />
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -468,9 +474,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="@dimen/padding_common_2"
                     android:weightSum="1">
-
+                    <View
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorAccent"/>
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
@@ -512,7 +520,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_alignParentRight="true"
-                            android:src="@drawable/arrow_black" />
+                            android:src="@drawable/down_arrow" />
                     </RelativeLayout>
                 </LinearLayout>
 

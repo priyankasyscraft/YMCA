@@ -81,7 +81,7 @@ public class MyCardsFragment extends Fragment {
         for (int i = 0; i < 10; i++) {
             MyCardModelClass myCardModelClass = new MyCardModelClass();
             myCardModelClass.setUserName("Amit");
-            myCardModelClass.setUserBarCodeNumber("123456789012");
+            myCardModelClass.setUserBarCodeNumber("CODE: 123456789012");
             DataManager.getInstance().addMyCardModelClasses(myCardModelClass);
         }
 

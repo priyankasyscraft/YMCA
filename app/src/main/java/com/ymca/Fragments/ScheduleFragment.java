@@ -93,61 +93,6 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-//    private void actionBarUpdate() {
-//        // TODO Auto-generated method stub
-//
-//
-//        ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
-//
-//
-//        actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
-//        actionBar.setHomeButtonEnabled(false);
-//        actionBar.setDisplayShowTitleEnabled(false);
-////        actionBar.setTitle("");
-//        actionBar.setDisplayHomeAsUpEnabled(false);
-//        actionBar.setDisplayShowHomeEnabled(false);
-////        actionBar.setHomeAsUpIndicator(R.drawable.menu_icon);
-//        actionBar.setDisplayShowTitleEnabled(false);
-//
-////        Drawable actionBar_bg = getResources().getDrawable(
-////                R.drawable.tool_bar_bg);
-////        actionBar.setBackgroundDrawable(actionBar_bg);
-//
-////        actionBar.setDisplayShowCustomEnabled(true);
-//        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
-//                ActionBar.LayoutParams.MATCH_PARENT,
-//                ActionBar.LayoutParams.MATCH_PARENT);
-//        layoutParams.gravity = Gravity.START;
-//        layoutParams.leftMargin = -50;
-//
-//        LayoutInflater inflator = getActivity().getLayoutInflater();
-//        View v = inflator.inflate(R.layout.custom_layout_back_button, null);
-//        ImageView image_action = (ImageView) v.findViewById(R.id.custom_img_action_profile);
-//        ImageView filterImg = (ImageView) v.findViewById(R.id.filterImg);
-//        filterImg.setVisibility(View.VISIBLE);
-//        filterImg.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(filterLayout.getVisibility()==View.VISIBLE){
-//                    filterLayout.setVisibility(View.GONE);
-//                }else {
-//                    filterLayout.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
-//
-//
-//        image_action.setImageResource(R.drawable.bt_back_white);
-//        image_action.setVisibility(View.VISIBLE);
-//        image_action.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                getActivity().onBackPressed();
-//            }
-//        });
-//        actionBar.setCustomView(v, layoutParams);
-//
-//    }
 
     private void actionBarUpdate() {
         // TODO Auto-generated method stub
@@ -239,11 +184,11 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         filterImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (filterLayout.getVisibility() == View.VISIBLE) {
-                    filterLayout.setVisibility(View.GONE);
-                } else {
-                    filterLayout.setVisibility(View.VISIBLE);
-                }
+//                if (filterLayout.getVisibility() == View.VISIBLE) {
+//                    filterLayout.setVisibility(View.GONE);
+//                } else {
+//                    filterLayout.setVisibility(View.VISIBLE);
+//                }
             }
         });
         image_action.setOnClickListener(new View.OnClickListener() {

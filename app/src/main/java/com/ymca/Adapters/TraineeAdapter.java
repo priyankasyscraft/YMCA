@@ -11,23 +11,24 @@ import android.widget.TextView;
 import com.ymca.Activities.HomeActivity;
 import com.ymca.Constants.Constant;
 import com.ymca.Fragments.InstructorDetailFragment;
-import com.ymca.R;
+import com.ymca.Fragments.TraineeDetailFragment;
 import com.ymca.ImageCache.ImageLoader;
-import com.ymca.ModelClass.InstructorModelClass;
+import com.ymca.ModelClass.TraineeModelClass;
+import com.ymca.R;
 
 import java.util.List;
 
 /**
  * Created by Jack-Sparrow on 7/31/2015.
  */
-public class InstructorAdapter extends RecyclerView.Adapter<InstructorAdapter.RecyclerViewHolders> {
+public class TraineeAdapter extends RecyclerView.Adapter<TraineeAdapter.RecyclerViewHolders> {
 
     private final ImageLoader imageLoader;
-    private List<InstructorModelClass> itemList;
+    private List<TraineeModelClass> traineeModelClasses;
     private Context context;
 
-    public InstructorAdapter(Context context, List<InstructorModelClass> itemList) {
-        this.itemList = itemList;
+    public TraineeAdapter(Context context, List<TraineeModelClass> itemList) {
+        this.traineeModelClasses = itemList;
         this.context = context;
         imageLoader = new ImageLoader(context);
     }
@@ -42,25 +43,25 @@ public class InstructorAdapter extends RecyclerView.Adapter<InstructorAdapter.Re
 
     @Override
     public void onBindViewHolder(RecyclerViewHolders holder, int position) {
-        holder.instructorName.setText(itemList.get(position).getInstructorName());
-//        imageLoader.DisplayImage(itemList.get(position).getInstructorImg(), holder.traineeImg);
+        holder.traineeName.setText(traineeModelClasses.get(position).getTraineeName());
+//        imageLoader.DisplayImage(traineeModelClasses.get(position).getInstructorImg(), holder.traineeImg);
     }
 
     @Override
     public int getItemCount() {
-        return this.itemList.size();
+        return this.traineeModelClasses.size();
     }
 
     public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public TextView instructorName;
-        public ImageView instructorImg;
+        public TextView traineeName;
+        public ImageView traineeImg;
 
         public RecyclerViewHolders(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            instructorName = (TextView)itemView.findViewById(R.id.userName);
-            instructorImg = (ImageView)itemView.findViewById(R.id.userImg);
+            traineeName = (TextView)itemView.findViewById(R.id.userName);
+            traineeImg = (ImageView)itemView.findViewById(R.id.userImg);
         }
 
         @Override
@@ -68,7 +69,7 @@ public class InstructorAdapter extends RecyclerView.Adapter<InstructorAdapter.Re
             ((HomeActivity) context)
                     .getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.content_frame, new InstructorDetailFragment(), Constant.instructorDetailFrag)
+                    .replace(R.id.content_frame, new TraineeDetailFragment(), Constant.instructorDetailFrag)
                     .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
                     .commit();
         }

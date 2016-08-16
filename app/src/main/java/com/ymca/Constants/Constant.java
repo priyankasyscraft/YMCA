@@ -41,4 +41,5 @@ public class Constant {
     public static String deviceToken = "device_token";
     public static String areaFragment = "area_fragment";
     public static String eventMapFragment = "event_map_fragment";
+    public static String traineeFragment = "trainee_fragment";
 }

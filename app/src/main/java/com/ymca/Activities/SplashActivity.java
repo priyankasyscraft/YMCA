@@ -77,7 +77,11 @@ public class SplashActivity extends BaseActivity {
 
         if (marshMallowPermission.checkPermissionsLocation()) {
             if (marshMallowPermission.checkPermissionsExternalStorage()) {
-                setUpPane();
+                if (marshMallowPermission.checkPermissionsCall()) {
+                    setUpPane();
+                } else {
+                    marshMallowPermission.requestPermissionForCall();
+                }
             } else {
                 marshMallowPermission.requestPermissionForExternalStorage();
             }
@@ -89,23 +93,29 @@ public class SplashActivity extends BaseActivity {
 
     private void setUpPane() {
 
-        if (marshMallowPermission.checkPermissionsLocation()) {
-            if (marshMallowPermission.checkPermissionsExternalStorage()) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+//        if (marshMallowPermission.checkPermissionsLocation()) {
+//            if (marshMallowPermission.checkPermissionsExternalStorage()) {
+//                if (marshMallowPermission.checkPermissionsCall()) {
+
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                        Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
-                        startActivity(mainIntent);
-                        finish();
-                    }
-                }, SPLASH_DISPLAY_LENGTH);
-            } else {
-                marshMallowPermission.requestPermissionForExternalStorage();
-            }
-        } else {
-            marshMallowPermission.requestPermissionForLocation();
-        }
+                            Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+                            startActivity(mainIntent);
+                            finish();
+                        }
+                    }, SPLASH_DISPLAY_LENGTH);
+//                } else {
+//                    marshMallowPermission.requestPermissionForCall();
+//                }
+//            } else {
+//                marshMallowPermission.requestPermissionForExternalStorage();
+//            }
+//        } else {
+//            marshMallowPermission.requestPermissionForLocation();
+//        }
 
     }
 
@@ -120,15 +130,33 @@ public class SplashActivity extends BaseActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     if (marshMallowPermission.checkPermissionsExternalStorage()) {
-                        setUpPane();
+                        if (marshMallowPermission.checkPermissionsCall()) {
+                            setUpPane();
+                        } else {
+                            marshMallowPermission.requestPermissionForCall();
+                        }
                     } else {
                         marshMallowPermission.requestPermissionForExternalStorage();
                     }
 
-                } else {
+                } else if(grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    if (marshMallowPermission.checkPermissionsExternalStorage()) {
+                        if (marshMallowPermission.checkPermissionsCall()) {
+                            setUpPane();
+                        } else {
+                            marshMallowPermission.requestPermissionForCall();
+                        }
+                    } else {
+                        marshMallowPermission.requestPermissionForExternalStorage();
+                    }
+                }else {
                     if (marshMallowPermission.checkPermissionsLocation()) {
                         if (marshMallowPermission.checkPermissionsExternalStorage()) {
-                            setUpPane();
+                            if (marshMallowPermission.checkPermissionsCall()) {
+                                setUpPane();
+                            } else {
+                                marshMallowPermission.requestPermissionForCall();
+                            }
                         } else {
                             marshMallowPermission.requestPermissionForExternalStorage();
                         }
@@ -142,15 +170,56 @@ public class SplashActivity extends BaseActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
 //                    if(marshMallowPermission.checkPermissionsExternalStorage()){
-                    setUpPane();
+                    if (marshMallowPermission.checkPermissionsCall()) {
+                        setUpPane();
+                    } else {
+                        marshMallowPermission.requestPermissionForCall();
+                    }
 //                    }else {
 //                        marshMallowPermission.requestPermissionForExternalStorage();
 //                    }
 
+                }else if(grantResults[0] == PackageManager.PERMISSION_DENIED) {
+//                    if (marshMallowPermission.checkPermissionsExternalStorage()) {
+                        if (marshMallowPermission.checkPermissionsCall()) {
+                            setUpPane();
+                        } else {
+                            marshMallowPermission.requestPermissionForCall();
+                        }
+//                    } else {
+//                        marshMallowPermission.requestPermissionForExternalStorage();
+//                    }
                 } else {
                     if (marshMallowPermission.checkPermissionsLocation()) {
                         if (marshMallowPermission.checkPermissionsExternalStorage()) {
+                            if (marshMallowPermission.checkPermissionsCall()) {
+                                setUpPane();
+                            } else {
+                                marshMallowPermission.requestPermissionForCall();
+                            }
+                        } else {
+                            marshMallowPermission.requestPermissionForExternalStorage();
+                        }
+                    } else {
+                        marshMallowPermission.requestPermissionForLocation();
+                    }
+                }
+                break;
+
+            case MarshMallowPermission.CALL_PERMISSION:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    setUpPane();
+                } else if(grantResults[0] == PackageManager.PERMISSION_DENIED) {
                             setUpPane();
+                }else {
+                    if (marshMallowPermission.checkPermissionsLocation()) {
+                        if (marshMallowPermission.checkPermissionsExternalStorage()) {
+                            if (marshMallowPermission.checkPermissionsCall()) {
+                                setUpPane();
+                            } else {
+                                marshMallowPermission.requestPermissionForCall();
+                            }
                         } else {
                             marshMallowPermission.requestPermissionForExternalStorage();
                         }

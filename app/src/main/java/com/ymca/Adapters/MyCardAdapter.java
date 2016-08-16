@@ -44,13 +44,13 @@ public class MyCardAdapter extends RecyclerView.Adapter<MyCardAdapter.MyViewHold
         @Override
         public void onClick(View view) {
             DataManager.getInstance().setMemberName(cardUserName.getText().toString());
-            DataManager.getInstance().setMemberCardNumber(cardBarCodeNo.getText().toString());
-
+            DataManager.getInstance().setMemberCardNumber(cardBarCodeNo.getText().toString().replace("CODE: ",""));
+            DataManager.getInstance().setFlagCardShow(true);
             ((HomeActivity) context)
                     .getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.content_frame, new CardShowFragment(), Constant.cardShowFragment)
-                    .addToBackStack(null)
+                    .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
                     .commit();
 
         }
@@ -63,6 +63,10 @@ public class MyCardAdapter extends RecyclerView.Adapter<MyCardAdapter.MyViewHold
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
+
+            // TODO: 12-Aug-16 remove Item from its position
+            myCardModelClasses.remove(getAdapterPosition());
+            notifyItemRemoved(getAdapterPosition());
             return true;
         }
     }

@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -19,9 +18,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -34,7 +30,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -54,7 +49,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.ymca.Adapters.DrawerAdapter;
 import com.ymca.AppManager.DataManager;
-import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
 import com.ymca.Fragments.CampFragment;
 import com.ymca.Fragments.DonateFragment;
@@ -67,8 +61,8 @@ import com.ymca.Fragments.MyCardsFragment;
 import com.ymca.Fragments.NotificationFragment;
 import com.ymca.Fragments.ScheduleFragment;
 import com.ymca.Fragments.SettingFragment;
+import com.ymca.Fragments.TrainerFragment;
 import com.ymca.ModelClass.DrawerModel;
-import com.ymca.PullListLoader.XListView;
 import com.ymca.R;
 
 import org.json.JSONException;
@@ -180,6 +174,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 R.mipmap.nav_schedule,
                 R.mipmap.nav_prog,
                 R.mipmap.nav_class_activ,
+                R.mipmap.nav_trainer,
                 R.mipmap.nav_camp,
                 R.mipmap.nav_sports_league,
                 R.mipmap.nav_event_calender,
@@ -197,6 +192,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 0,
                 0,
                 R.drawable.bg_leftmenu_heading,
+                0,
                 0,
                 0,
                 0,
@@ -222,6 +218,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 Color.WHITE,
                 Color.WHITE,
                 Color.WHITE,
+                Color.WHITE,
 
                 Color.parseColor("#AAAAAA"),
                 Color.WHITE,
@@ -240,6 +237,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 getResources().getString(R.string.schedule),
                 getResources().getString(R.string.program_register),
                 getResources().getString(R.string.clas_activity),
+                getResources().getString(R.string.trainee),
                 getResources().getString(R.string.camp),
                 getResources().getString(R.string.sports),
                 getResources().getString(R.string.event_caln),
@@ -309,6 +307,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         protected Bitmap doInBackground(Object... objects) {
 
             try {
+                // TODO: 12-Aug-16 Change Img Url coming from API
                 URL url = new URL("http://www.northpennymca.org/content/wp-content/uploads/2013/01/summer-camp-1.jpg");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setDoInput(true);
@@ -410,8 +409,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         int count = fm.getBackStackEntryCount();
         Log.e("Count", String.valueOf(count));
         Fragment fr = fm.findFragmentById(R.id.content_frame);
-        isCheck = DataManager.chkStatus(this);
-        if (isCheck) {
+//        isCheck = DataManager.chkStatus(this);
+//        if (isCheck) {
             if (count > 1) {
                 if (fr.getTag().equals(Constant.dateFragment)) {
                     super.onBackPressed();
@@ -431,17 +430,27 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 } else if (fr.getTag().equals(Constant.homeClassDetailFragment)) {
                     super.onBackPressed();
                 } else if (fr.getTag().equals(Constant.cardShowFragment)) {
+                    if(DataManager.getInstance().isFlagCardShow()){
+                     super.onBackPressed();
+                    }else {
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+                                .commit();
+                    }
+                } else if (fr.getTag().equals(Constant.myCardFragment)) {
+//                    fm.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+//                    FragmentManager fragmentManager = getSupportFragmentManager();
+////                    fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                    FragmentTransaction ft = fragmentManager.beginTransaction();
+//                    ft.add(R.id.content_frame, homeFragment,Constant.homeFragment);
+//                    ft.addToBackStack(getSupportFragmentManager().getClass().getName());
+//                    ft.commit();
 
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-                            .commit();
-                } else if (fr.getTag().equals(Constant.myCardFragment)) {
-//                    fm.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    getSupportFragmentManager()
-                            .beginTransaction()
                             .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
-                            .addToBackStack(getSupportFragmentManager().getClass().getName())
                             .commit();
                 } else if (fr.getTag().contains(Constant.homeFragment)) {
                     if (doubleBackToExitPressedOnce) {
@@ -489,7 +498,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
             }
-        }
+//        }
 
 
     }
@@ -497,8 +506,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        isCheck = DataManager.chkStatus(this);
-        if (isCheck) {
+//        isCheck = DataManager.chkStatus(this);
+//        if (isCheck) {
             switch (position) {
                 case 0:
                     break;
@@ -527,6 +536,13 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                             .commit();
                     break;
                 case 4:
+//                    FragmentManager fragmentManager = getSupportFragmentManager();
+//
+//                    FragmentTransaction ft = fragmentManager.beginTransaction();
+//                    ft.replace(R.id.content_frame, notificationFragment,Constant.notificationFragment);
+//                    fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                    ft.addToBackStack(getSupportFragmentManager().getClass().getName());
+//                    ft.commit();
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, notificationFragment, Constant.notificationFragment)
@@ -569,38 +585,45 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     break;
                 case 10:
 
-                    DataManager.getInstance().showIFramePopUp(this);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new TrainerFragment(), Constant.traineeFragment)
+                            .commit();
                     break;
                 case 11:
 
                     DataManager.getInstance().showIFramePopUp(this);
                     break;
                 case 12:
+
+                    DataManager.getInstance().showIFramePopUp(this);
+                    break;
+                case 13:
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, eventCalenderFragment, Constant.eventCalenderFragment)
                             .commit();
                     break;
-                case 13:
+                case 14:
 
                     break;
-                case 14:
+                case 15:
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, donateFragment, Constant.donateFragment)
                             .commit();
                     break;
-                case 15:
+                case 16:
 
                     DataManager.getInstance().showIFramePopUp(this);
                     break;
-                case 16:
+                case 17:
 
                     DataManager.getInstance().showIFramePopUp(this);
                     break;
 
             }
-        }
+//        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }

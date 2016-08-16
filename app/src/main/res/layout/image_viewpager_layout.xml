@@ -8,9 +8,9 @@
     <ImageView
         android:id="@+id/viewPagerItem_image1"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
         android:scaleType="fitXY"
-        android:src="@mipmap/app_icon"/>
+        android:background="@drawable/slider_img"/>
 
 
 </LinearLayout>

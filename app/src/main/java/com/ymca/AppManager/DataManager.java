@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.ymca.ModelClass.AreaModelClass;
 import com.ymca.ModelClass.CampModelClass;
 import com.ymca.ModelClass.ClassesModelClass;
+import com.ymca.ModelClass.CustomTextModelClass;
 import com.ymca.ModelClass.DateModelClass;
 import com.ymca.ModelClass.EventModelClass;
 import com.ymca.ModelClass.FacilityModelClass;
@@ -21,6 +22,7 @@ import com.ymca.ModelClass.HomeClassesModelClass;
 import com.ymca.ModelClass.InstructorModelClass;
 import com.ymca.ModelClass.LocationModelClass;
 import com.ymca.ModelClass.MyCardModelClass;
+import com.ymca.ModelClass.TraineeModelClass;
 import com.ymca.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -54,9 +56,13 @@ public class DataManager {
     private boolean flagCheckIn = false;
     private boolean flagScedule = false;
     private boolean flagLocation = false;
+    private boolean flagCardShow = false;
+    private boolean flagAddCard = false;
     private String memberName;
     private String memberCardNumber;
 
+    private ArrayList<CustomTextModelClass> customTextModelClassArrayList = new ArrayList<>();
+    private ArrayList<TraineeModelClass> traineeModelClasses = new ArrayList<>();
     private ArrayList<InstructorModelClass> instructorModelClassArrayList = new ArrayList<>();
     private ArrayList<EventModelClass> eventModelClasses = new ArrayList<>();
     private ArrayList<MyCardModelClass> myCardModelClasses = new ArrayList<>();
@@ -79,7 +85,7 @@ public class DataManager {
             return true;
         } else {
             try {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getInstance().getAppCompatActivity());
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Alert");
                 builder.setMessage("No Internet Connection");
                 builder.setCancelable(false);
@@ -443,5 +449,53 @@ public class DataManager {
 
     public void setFlagScedule(boolean flagScedule) {
         this.flagScedule = flagScedule;
+    }
+
+    public ArrayList<TraineeModelClass> getTraineeModelClasses() {
+        return traineeModelClasses;
+    }
+
+    public void setTraineeModelClasses(ArrayList<TraineeModelClass> traineeModelClasses) {
+        this.traineeModelClasses = traineeModelClasses;
+    }
+
+    public void addTraineeModelClasses(TraineeModelClass traineeModelClasses) {
+        this.traineeModelClasses.add(traineeModelClasses);
+    }
+
+    public void clearTraineeModelClasses() {
+        this.traineeModelClasses.clear();
+    }
+
+    public ArrayList<CustomTextModelClass> getCustomTextModelClassArrayList() {
+        return customTextModelClassArrayList;
+    }
+
+    public void setCustomTextModelClassArrayList(ArrayList<CustomTextModelClass> customTextModelClassArrayList) {
+        this.customTextModelClassArrayList = customTextModelClassArrayList;
+    }
+
+    public void addCustomTextModelClassArrayList(CustomTextModelClass customTextModelClassArrayList) {
+        this.customTextModelClassArrayList.add(customTextModelClassArrayList);
+    }
+
+    public void clearCustomTextModelClassArrayList() {
+        this.customTextModelClassArrayList.clear();
+    }
+
+    public boolean isFlagCardShow() {
+        return flagCardShow;
+    }
+
+    public void setFlagCardShow(boolean flagCardShow) {
+        this.flagCardShow = flagCardShow;
+    }
+
+    public boolean isFlagAddCard() {
+        return flagAddCard;
+    }
+
+    public void setFlagAddCard(boolean flagAddCard) {
+        this.flagAddCard = flagAddCard;
     }
 }

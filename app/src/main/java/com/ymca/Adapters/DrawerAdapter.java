@@ -75,14 +75,17 @@ public class DrawerAdapter extends BaseAdapter {
             if (position == 0) {
                 viewHolder.imageView.setVisibility(View.GONE);
                 viewHolder.txtTitle.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+                viewHolder.txtTitle.setPadding(10, 0, 0, 0);
             } else if (position == 6) {
                 viewHolder.imageView.setVisibility(View.GONE);
                 viewHolder.txtTitle.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
-            } else if (position == 13) {
+                viewHolder.txtTitle.setPadding(10, 0, 0, 0);
+            } else if (position == 14) {
                 viewHolder.imageView.setVisibility(View.GONE);
                 viewHolder.txtTitle.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+                viewHolder.txtTitle.setPadding(10, 0, 0, 0);
             } else {
-                viewHolder.txtTitle.setPadding(8, 8, 8, 8);
+                viewHolder.txtTitle.setPadding(10, 8,0, 8);
                 viewHolder.imageView.setPadding(8, 0, 0, 0);
             }
             convertView.setTag(viewHolder);

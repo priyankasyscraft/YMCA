@@ -36,6 +36,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.add_my_card_fragment, container, false);
+        
         actionBarUpdate();
         memberName = (EditText) view.findViewById(R.id.memberName);
         memberBarCodeNumber = (EditText) view.findViewById(R.id.memberBarCodeNumber);

@@ -73,7 +73,7 @@
     <string name="sponsers"><![CDATA[SPONSORS & PARTNERS]]></string>
     <string name="about_y">ABOUT YOUR Y</string>
     <string name="event_info">Event Info</string>
-    <string name="areas">Areas</string>
+    <string name="areas">Area</string>
 
     <string-array name="drawerText">
         <item>@string/membership_info</item>
@@ -121,4 +121,5 @@
     <string name="city_1">DOWNTOWN</string>
     <string name="city_2">KERASOTES</string>
     <string name="instructor_info">Instructor Info</string>
+    <string name="trainee">Trainer</string>
 </resources>

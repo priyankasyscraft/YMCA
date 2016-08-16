@@ -65,16 +65,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         blogLayout.setOnClickListener(this);
 
         if (arrrayListImage.size() == 0) {
-//            for (int i = 0; i < 5; i++) {
-            arrrayListImage.add("http://www.northpennymca.org/content/wp-content/uploads/2013/01/summer-camp-1.jpg");
-            arrrayListImage.add("http://ymcagymnationals.org/wp-content/uploads/2014/10/2016-YMCA-Nationals-Logo-Blue1.jpg");
-            arrrayListImage.add("http://www.northpennymca.org/content/wp-content/uploads/2013/01/summer-camp-1.jpg");
-            arrrayListImage.add("http://ymcagymnationals.org/wp-content/uploads/2014/10/2016-YMCA-Nationals-Logo-Blue1.jpg");
-            arrrayListImage.add("http://www.northpennymca.org/content/wp-content/uploads/2013/01/summer-camp-1.jpg");
-            arrrayListImage.add("http://ymcagymnationals.org/wp-content/uploads/2014/10/2016-YMCA-Nationals-Logo-Blue1.jpg");
-            arrrayListImage.add("http://www.northpennymca.org/content/wp-content/uploads/2013/01/summer-camp-1.jpg");
-            arrrayListImage.add("http://ymcagymnationals.org/wp-content/uploads/2014/10/2016-YMCA-Nationals-Logo-Blue1.jpg");
-//            }
+            for (int i = 0; i < 5; i++) {
+            arrrayListImage.add("http://connectionsvolunteercenter.org/wp-content/uploads/2015/08/YMCA-Delaware-Ohio.jpg");
+            arrrayListImage.add("https://doublethedonation.com/wp-content/uploads/2014/12/cincinnati-ymca.png");
+
+            }
         }
         viewPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), getActivity(), arrrayListImage);
         mPager.setAdapter(viewPagerAdapter);
@@ -141,14 +136,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         notificationBell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isCheck = DataManager.chkStatus(getActivity());
-                if (isCheck) {
+//                isCheck = DataManager.chkStatus(getActivity());
+//                if (isCheck) {
                     getActivity()
                             .getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, notificationFragment, Constant.notificationFragment)
                             .commit();
-                }
+//                }
 
             }
         });
@@ -158,8 +153,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        isCheck = DataManager.chkStatus(getActivity());
-        if (isCheck) {
+//        isCheck = DataManager.chkStatus(getActivity());
+//        if (isCheck) {
             switch (view.getId()) {
                 case R.id.scheduleLayout:
                     DataManager.getInstance().setFlagScedule(false);
@@ -208,7 +203,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     break;
             }
         }
-    }
+//    }
 
 
 }

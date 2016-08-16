@@ -12,15 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ymca.Activities.HomeActivity;
-import com.ymca.Adapters.InstructorDetailAdapter;
 import com.ymca.AppManager.DataManager;
-import com.ymca.ModelClass.ClassesModelClass;
 import com.ymca.ModelClass.CustomTextModelClass;
 import com.ymca.R;
 
@@ -30,23 +26,25 @@ import java.util.ArrayList;
 /**
  * Created by Soni on 28-Jul-16.
  */
-public class InstructorDetailFragment extends Fragment {
+public class TraineeDetailFragment extends Fragment {
 
     private View view;
-    LinearLayout experienceLayout,certificateLayout;
-    ListView instructorList;
-    private InstructorDetailAdapter instructorDetailAdapter;
+    LinearLayout experienceLayout, certificateLayout;
+    private TextView instructorName;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.instructor_detail_fragment, container, false);
-        DataManager.getInstance().setFlagInstructorList(true);
+        view = inflater.inflate(R.layout.trainer_detail_fragment, container, false);
+
         actionBarUpdate();
 
-        instructorList = (ListView) view.findViewById(R.id.instructorList);
+        instructorName = (TextView) view.findViewById(R.id.instructorName);
         certificateLayout = (LinearLayout) view.findViewById(R.id.certificateLayout);
         experienceLayout = (LinearLayout) view.findViewById(R.id.experienceLayout);
+
+        instructorName.setText("Trainee Name");
+
         TextView textView = new TextView(getActivity());
         textView.setText("15 year");
         textView.setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -56,51 +54,12 @@ public class InstructorDetailFragment extends Fragment {
         DataManager.getInstance().clearCustomTextModelClassArrayList();
         for (int i = 0; i < 20; i++) {
             CustomTextModelClass customTextModelClass = new CustomTextModelClass();
-            customTextModelClass.setTextViewString("Dummy text ");
+            customTextModelClass.setTextViewString("Dummy text for testing");
             DataManager.getInstance().addCustomTextModelClassArrayList(customTextModelClass);
         }
 
-         instructorDetailAdapter = new InstructorDetailAdapter(getActivity(),DataManager.getInstance().getClassesModelClassArrayList());
-        instructorList.setAdapter(instructorDetailAdapter);
-
-        setData();
         populateLinks(certificateLayout, DataManager.getInstance().getCustomTextModelClassArrayList(), "sample");
-
-
         return view;
-    }
-
-    private void setData() {
-        DataManager.getInstance().clearClassesModelClassArrayList();
-
-        for(int i = 0;i<5;i++){
-            ClassesModelClass classesModelClass = new ClassesModelClass();
-            classesModelClass.setClassesName("Yoga Class");
-            DataManager.getInstance().addClassesModelClassArrayList(classesModelClass);
-        }
-        instructorDetailAdapter.setReloadData(true);
-        setListViewHeightBasedOnChildren(instructorList);
-    }
-
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null)
-            return;
-
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            view = listAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
-        }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
     }
 
     private void actionBarUpdate() {
@@ -162,6 +121,7 @@ public class InstructorDetailFragment extends Fragment {
 
             TextView txtSample = new TextView(getActivity());
             txtSample.setText(header);
+            txtSample.setVisibility(View.GONE);
 
             llAlso.addView(txtSample);
             txtSample.measure(0, 0);
@@ -170,7 +130,7 @@ public class InstructorDetailFragment extends Fragment {
             for (CustomTextModelClass customTextModelClass : collection) {
                 TextView txtSamItem = new TextView(getActivity(), null, android.R.attr.textColorLink);
                 txtSamItem.setText(customTextModelClass.getTextViewString());
-                txtSamItem.setPadding(5, 0, 0, 0);
+                txtSamItem.setPadding(10, 0, 0, 0);
                 txtSamItem.setTag(customTextModelClass);
                 txtSamItem.setCompoundDrawablesWithIntrinsicBounds(R.drawable.img_check, 0, 0, 0);
                 txtSamItem.setOnClickListener(new View.OnClickListener() {
@@ -209,6 +169,5 @@ public class InstructorDetailFragment extends Fragment {
             ll.addView(llAlso);
         }
     }
-
 
 }

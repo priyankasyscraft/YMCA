@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,13 +21,13 @@ import java.util.ArrayList;
 /**
  * Created by Soni on 03-Aug-16.
  */
-public class ClassAdapter extends BaseAdapter {
+public class InstructorDetailAdapter extends BaseAdapter {
     private ArrayList<ClassesModelClass> classesModelClassArrayList = new ArrayList<ClassesModelClass>();
     private LayoutInflater inflater;
     Context context;
     ViewHolder viewHolder;
 
-    public ClassAdapter(Context context, ArrayList<ClassesModelClass> classesModelClassArrayList) {
+    public InstructorDetailAdapter(Context context, ArrayList<ClassesModelClass> classesModelClassArrayList) {
         this.classesModelClassArrayList = classesModelClassArrayList;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -66,12 +67,18 @@ public class ClassAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = inflater.inflate(R.layout.class_item, null);
+            viewHolder.imgButton = (ImageButton) convertView.findViewById(R.id.imgButton);
             viewHolder.className = (TextView) convertView.findViewById(R.id.className);
+            viewHolder.colorText = (TextView) convertView.findViewById(R.id.colorText);
+            viewHolder.colorText.setVisibility(View.VISIBLE);
             viewHolder.classLayout = (LinearLayout) convertView.findViewById(R.id.classLayout);
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        viewHolder.imgButton.setImageResource(R.drawable.arrow_black);
         viewHolder.className.setText(classesModelClassArrayList.get(position).getClassesName());
 
         viewHolder.classLayout.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +98,8 @@ public class ClassAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder {
-        TextView className;
+        TextView className,colorText;
         LinearLayout classLayout;
+        ImageButton imgButton;
     }
 }

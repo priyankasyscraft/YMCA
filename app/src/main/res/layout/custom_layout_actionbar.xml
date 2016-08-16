@@ -32,21 +32,26 @@
                 android:gravity="center"
                 android:text="25"
                 android:textColor="@android:color/white" />
-            <ImageView
-                android:id="@+id/filterImg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/filter_icon"
-                android:visibility="gone"
-                android:paddingTop="@dimen/padding_common_10"
-                android:paddingLeft="@dimen/padding_common_10"
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/badgeCount"
+
                 android:layout_toRightOf="@+id/badgeCount"
-                android:layout_toEndOf="@+id/badgeCount" />
+                android:paddingLeft="@dimen/padding_common_10"
+                android:paddingTop="@dimen/padding_common_10">
+
+                <ImageView
+                    android:id="@+id/filterImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/filter_icon"
+                    android:visibility="gone" />
+            </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
-
 
 
 </LinearLayout>

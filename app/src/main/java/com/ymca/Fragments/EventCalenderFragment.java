@@ -108,8 +108,8 @@ public class EventCalenderFragment extends Fragment implements View.OnClickListe
                     EventModelClass eventModelClass = new EventModelClass();
                     eventModelClass.setEventName("YMCA Trivia Night");
                     eventModelClass.setEventdate("01");
-                    eventModelClass.setEventMonth("AUG");
-                    eventModelClass.setEventDay("Mon");
+                    eventModelClass.setEventMonth("08:30 PM");
+                    eventModelClass.setEventDay("11:30 PM - ");
                     DataManager.getInstance().addEventModelClasses(eventModelClass);
                 }
                 eventAdapter.setReloadData(true);

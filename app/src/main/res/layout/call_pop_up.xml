@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_common_20"
+    android:background="@color/colorTransParent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_common_5"
+        android:background="@drawable/layout_border">
+
+        <LinearLayout
+            android:id="@+id/callNumer1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_common_10">
+
+            <com.ymca.CustomFont.PrimaryFontText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DOWNTOWN"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_common_18"
+                android:textStyle="bold" />
+
+            <com.ymca.CustomFont.PrimaryFontText
+                android:id="@+id/nember1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding_common_10"
+                android:text="12345678900"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_common_18" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white"/>
+        <LinearLayout
+            android:id="@+id/callNumer2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_common_10">
+
+            <com.ymca.CustomFont.PrimaryFontText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KERASOAL"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_common_18"
+                android:textStyle="bold" />
+
+            <com.ymca.CustomFont.PrimaryFontText
+                android:id="@+id/nember2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding_common_10"
+                android:text="12345678900"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_common_18" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

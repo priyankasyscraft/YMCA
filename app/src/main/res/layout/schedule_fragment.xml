@@ -115,12 +115,12 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/filterLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorTransParent"
         android:orientation="vertical"
-        android:visibility="gone"
-        android:id="@+id/filterLayout">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/cityOne"
