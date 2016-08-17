@@ -6,9 +6,11 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.ymca.AppManager.DataManager;
+import com.ymca.UserInterFace.RefreshDataListener;
+import com.ymca.WebManager.JsonCaller;
 
 
-public abstract class BaseActivity extends FragmentActivity  {
+public abstract class BaseActivity extends FragmentActivity implements RefreshDataListener {
     final String TAG = "BaseActivity";
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +19,6 @@ public abstract class BaseActivity extends FragmentActivity  {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 0);
         DataManager.getInstance().setAppCompatActivity(this);
         
-//        JsonCaller.getInstance().setRefreshDataListener(this);
+        JsonCaller.getInstance().setRefreshDataListener(this);
     }
 }

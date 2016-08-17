@@ -21,8 +21,15 @@ import com.google.zxing.oned.Code128Writer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.ymca.Activities.HomeActivity;
 import com.ymca.AppManager.DataManager;
+import com.ymca.AppManager.SharedPreference;
 import com.ymca.BarcodeGenerator.BarQrCodeGenerator;
+import com.ymca.Constants.Constant;
 import com.ymca.R;
+import com.ymca.UserInterFace.Refreshable;
+import com.ymca.WebManager.JsonCaller;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by Soni on 03-Aug-16.
@@ -37,6 +44,18 @@ public class CardShowFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        if(!DataManager.getInstance().isFlagCardShow()) {
+            DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
+            String deviceToken = SharedPreference.getSharedPrefData(getActivity(), Constant.deviceToken);
+            Map<String, Object> params = new LinkedHashMap<>();
+
+            params.put("device_token", deviceToken);
+            params.put("card_name", DataManager.getInstance().getMemberName());
+            params.put("barcode_no", DataManager.getInstance().getMemberCardNumber());
+            JsonCaller.getInstance().getAddCard(params);
+        }
+
         view = inflater.inflate(R.layout.card_show_fragment, container, false);
 
         memberName = (TextView) view.findViewById(R.id.memberName);
@@ -46,6 +65,11 @@ public class CardShowFragment extends Fragment {
         memberName.setText(DataManager.getInstance().getMemberName());
         createEAN13Code(DataManager.getInstance().getMemberCardNumber());
         return view;
+    }
+
+
+    public void onRefreshData(Refreshable refreshable, int requestCode) {
+
     }
 
     private void actionBarUpdate() {
@@ -144,6 +168,7 @@ public class CardShowFragment extends Fragment {
         }
         if (barCodeBitmap != null) {
             barCodeImg.setImageBitmap(barCodeBitmap);
+            DataManager.getInstance().hideProgressMessage();
         }
     }
 }

@@ -36,9 +36,14 @@ import com.ymca.AppManager.MarshMallowPermission;
 import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
 import com.ymca.R;
+import com.ymca.UserInterFace.Refreshable;
+import com.ymca.WebManager.JsonCaller;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by Soni on 28-Jul-16.
@@ -98,15 +103,18 @@ public class SplashActivity extends BaseActivity {
 //                if (marshMallowPermission.checkPermissionsCall()) {
 
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+        Map<String,Object> objectsMap = new LinkedHashMap<>();
+        JsonCaller.getInstance().getErrorCode(objectsMap);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                            Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
-                            startActivity(mainIntent);
-                            finish();
-                        }
-                    }, SPLASH_DISPLAY_LENGTH);
+                Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+                startActivity(mainIntent);
+                finish();
+            }
+        }, SPLASH_DISPLAY_LENGTH);
+
 //                } else {
 //                    marshMallowPermission.requestPermissionForCall();
 //                }
@@ -248,6 +256,23 @@ public class SplashActivity extends BaseActivity {
                 }
             }
         }.execute();
+    }
+
+    @Override
+    public void onRefreshData(Refreshable refreshable, int requestCode) {
+        if(requestCode == JsonCaller.REFRESH_CODE_SERVER_ERROR){
+            SplashActivity.this.finish();
+        }else if(requestCode == JsonCaller.REFRESH_CODE_ERROR_CODE) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                /* Create an Intent that will start the Menu-Activity. */
+                    Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+                    startActivity(mainIntent);
+                    finish();
+                }
+            }, SPLASH_DISPLAY_LENGTH);
+        }
     }
 
     public static class GCMPreference {

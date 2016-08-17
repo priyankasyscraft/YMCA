@@ -19,8 +19,15 @@ import android.widget.Toast;
 
 import com.ymca.Activities.HomeActivity;
 import com.ymca.AppManager.DataManager;
+import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
 import com.ymca.R;
+import com.ymca.UserInterFace.RefreshDataListener;
+import com.ymca.UserInterFace.Refreshable;
+import com.ymca.WebManager.JsonCaller;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /**
@@ -68,13 +75,17 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
                 } else if (memberBarCodeNumber.getText().toString().trim().length()!= 12) {
                     Toast.makeText(getActivity(), "Please enter 12 digit member card number", Toast.LENGTH_SHORT).show();
                 } else {
+
                     DataManager.getInstance().setMemberName(memberName.getText().toString().trim());
                     DataManager.getInstance().setMemberCardNumber(memberBarCodeNumber.getText().toString().trim());
+
+
                     getActivity()
                             .getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, new CardShowFragment(), Constant.cardShowFragment)
                             .commit();
+
                 }
                 break;
         }
@@ -124,4 +135,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
 
 
     }
+
+
+
 }

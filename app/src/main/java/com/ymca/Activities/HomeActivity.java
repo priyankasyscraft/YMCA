@@ -50,7 +50,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.ymca.Adapters.DrawerAdapter;
 import com.ymca.AppManager.DataManager;
 import com.ymca.Constants.Constant;
+import com.ymca.Fragments.AddCardFragment;
 import com.ymca.Fragments.CampFragment;
+import com.ymca.Fragments.CardShowFragment;
 import com.ymca.Fragments.DonateFragment;
 import com.ymca.Fragments.EventCalenderFragment;
 import com.ymca.Fragments.EventFragment;
@@ -64,6 +66,9 @@ import com.ymca.Fragments.SettingFragment;
 import com.ymca.Fragments.TrainerFragment;
 import com.ymca.ModelClass.DrawerModel;
 import com.ymca.R;
+import com.ymca.UserInterFace.RefreshDataListener;
+import com.ymca.UserInterFace.Refreshable;
+import com.ymca.WebManager.JsonCaller;
 
 import org.json.JSONException;
 
@@ -87,7 +92,7 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, LocationListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,RefreshDataListener {
 
 
     // TODO: 08-Aug-16 Left Menu All Fragments
@@ -102,6 +107,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     private SettingFragment settingFragment = new SettingFragment();
     private EventCalenderFragment eventCalenderFragment = new EventCalenderFragment();
     private DonateFragment donateFragment = new DonateFragment();
+    private AddCardFragment addCardFragment = new AddCardFragment();
+    private CardShowFragment cardShowFragment = new CardShowFragment();
 
     private boolean isCheck = false;
     private boolean doubleBackToExitPressedOnce = false;
@@ -126,7 +133,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         AppEventsLogger.activateApp(this);
         setContentView(R.layout.activity_home);
         setData();
-
+        JsonCaller.getInstance().setRefreshDataListener(this);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -301,6 +308,16 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         mDrawerList.setAdapter(drawerAdapter);
     }
 
+    @Override
+    public void onRefreshData(Refreshable refreshable, int requestCode) {
+
+        if(requestCode == JsonCaller.REFRESH_CODE_ADD_CARD){
+//            addCardFragment.onRefreshData(refreshable,requestCode);
+            cardShowFragment.onRefreshData(refreshable,requestCode);
+        }
+
+    }
+
     private class LongOperation extends AsyncTask<Object, Object, Bitmap> {
 
         @Override
@@ -400,15 +417,17 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
 
-        FragmentManager fm = getSupportFragmentManager();
-        int count = fm.getBackStackEntryCount();
-        Log.e("Count", String.valueOf(count));
-        Fragment fr = fm.findFragmentById(R.id.content_frame);
+        try {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            }
+
+            FragmentManager fm = getSupportFragmentManager();
+            int count = fm.getBackStackEntryCount();
+            Log.e("Count", String.valueOf(count));
+            Fragment fr = fm.findFragmentById(R.id.content_frame);
 //        isCheck = DataManager.chkStatus(this);
 //        if (isCheck) {
             if (count > 1) {
@@ -431,6 +450,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     super.onBackPressed();
                 } else if (fr.getTag().equals(Constant.cardShowFragment)) {
                     if(DataManager.getInstance().isFlagCardShow()){
+//                        DataManager.getInstance().setFlagCardShow(false);
                      super.onBackPressed();
                     }else {
                         getSupportFragmentManager()
@@ -499,6 +519,9 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
             }
 //        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -522,6 +545,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+                            .addToBackStack(null)
                             .commit();
                     break;
                 case 3:
@@ -533,6 +557,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, locationFragment, Constant.locationFramgnet)
+                            .addToBackStack(null)
                             .commit();
                     break;
                 case 4:
@@ -543,15 +568,24 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 //                    fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
 //                    ft.addToBackStack(getSupportFragmentManager().getClass().getName());
 //                    ft.commit();
+
+//                    FragmentManager fm = getSupportFragmentManager();
+//                    fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                    FragmentTransaction ft = fm.beginTransaction();
+//                    ft.replace(R.id.content_frame, notificationFragment,Constant.notificationFragment);
+//                    ft.addToBackStack(fm.getClass().getName());
+//                    ft.commit();
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, notificationFragment, Constant.notificationFragment)
+                            .addToBackStack(null)
                             .commit();
                     break;
                 case 5:
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, settingFragment, Constant.settingFragment)
+                            .addToBackStack(null)
                             .commit();
                     break;
                 case 6:
@@ -565,6 +599,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, scheduleFragment, Constant.scheduleFragment)
+                            .addToBackStack(null)
                             .commit();
                     break;
                 case 8:
@@ -588,6 +623,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, new TrainerFragment(), Constant.traineeFragment)
+                            .addToBackStack(null)
                             .commit();
                     break;
                 case 11:
@@ -602,6 +638,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, eventCalenderFragment, Constant.eventCalenderFragment)
+                            .addToBackStack(null)
                             .commit();
                     break;
                 case 14:
@@ -611,6 +648,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, donateFragment, Constant.donateFragment)
+                            .addToBackStack(null)
                             .commit();
                     break;
                 case 16:

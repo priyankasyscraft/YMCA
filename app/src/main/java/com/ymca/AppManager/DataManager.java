@@ -26,6 +26,7 @@ import com.ymca.ModelClass.TraineeModelClass;
 import com.ymca.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.ymca.WebManager.JsonCaller;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -498,4 +499,23 @@ public class DataManager {
     public void setFlagAddCard(boolean flagAddCard) {
         this.flagAddCard = flagAddCard;
     }
+
+
+    public void showServerErrorPopUp(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getResources().getString(R.string.server_error));
+        builder.setMessage(context.getResources().getString(R.string.please_error));
+        builder.setCancelable(false);
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                JsonCaller.getInstance().sendRefreshData(null,JsonCaller.REFRESH_CODE_SERVER_ERROR);
+            }
+        });
+        builder.show();
+    }
+
+
+
 }
