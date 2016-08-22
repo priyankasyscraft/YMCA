@@ -12,13 +12,16 @@ import com.ymca.WebManager.JsonCaller;
 
 public abstract class BaseActivity extends FragmentActivity implements RefreshDataListener {
     final String TAG = "BaseActivity";
+    private boolean isCheck = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 0);
-        DataManager.getInstance().setAppCompatActivity(this);
-        
-        JsonCaller.getInstance().setRefreshDataListener(this);
+
+
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 0);
+            DataManager.getInstance().setAppCompatActivity(this);
+
+            JsonCaller.getInstance().setRefreshDataListener(this);
     }
 }

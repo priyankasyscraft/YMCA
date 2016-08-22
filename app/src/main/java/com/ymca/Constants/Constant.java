@@ -42,13 +42,19 @@ public class Constant {
     public static String areaFragment = "area_fragment";
     public static String eventMapFragment = "event_map_fragment";
     public static String traineeFragment = "trainee_fragment";
+    public static String errorCodes = "error_code";
+    public static String notificationStatus = "notific";
+    public static String settingPunchFragm = "setting_punch_in_frag";
+
 
 
     // TODO: 17-Aug-16 GET POST method constant
     public static String post = "POST";
+
+
     // TODO: 17-Aug-16 LOCAL Demo Api URL
 
     public static String BaseUrl = "http://lampdemos.com/ymca_admin/apis/v1/Apicontroller/";
 
-    public static String errorCodes = "error_code";
+
 }

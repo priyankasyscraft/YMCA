@@ -13,12 +13,18 @@ import com.ymca.Adapters.InstructorAdapter;
 import com.ymca.AppManager.DataManager;
 import com.ymca.ModelClass.InstructorModelClass;
 import com.ymca.R;
+import com.ymca.UserInterFace.RefreshDataListener;
+import com.ymca.UserInterFace.Refreshable;
+import com.ymca.WebManager.JsonCaller;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /**
  * Created by Soni on 28-Jul-16.
  */
-public class InstructorFragment extends Fragment {
+public class InstructorFragment extends Fragment  {
 
     private View view;
     RecyclerView mRecyclerView;
@@ -29,27 +35,34 @@ public class InstructorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.instructor_fragment,container,false );
-
+//        setData();
+        DataManager.getInstance().showProgressMessage(getActivity(),"Progress");
+        Map<String,Object> objectMap2 = new LinkedHashMap<>();
+        objectMap2.put("type","instructor");
+        JsonCaller.getInstance().getScheduleDataInstru(objectMap2);
         mRecyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getActivity(), 3);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        setData();
+
+
 
 
         return view;
     }
 
-    private void setData() {
 
-        for(int i=0; i < 19; i++) {
-            InstructorModelClass instructorModelClass = new InstructorModelClass();
-            instructorModelClass.setInstructorName("Amit");
-            instructorModelClass.setInstructorImg("http://img.rtve.es/i/?w=400&crop=no&o=no&i=1435058352516.png");
-            DataManager.getInstance().addInstructorModelClassArrayList(instructorModelClass);
+
+    public void onRefreshData(Refreshable refreshable, int requestCode) {
+        if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_INSTRU) {
+            mAdapter = new InstructorAdapter(getActivity(), DataManager.getInstance().getInstructorModelClassArrayList());
+            mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+            mRecyclerView.setHasFixedSize(true);
+            mLayoutManager = new GridLayoutManager(getActivity(), 3);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setAdapter(mAdapter);
+            DataManager.getInstance().hideProgressMessage();
         }
-        mAdapter = new InstructorAdapter(getActivity(), DataManager.getInstance().getInstructorModelClassArrayList());
-        mRecyclerView.setAdapter(mAdapter);
     }
 }

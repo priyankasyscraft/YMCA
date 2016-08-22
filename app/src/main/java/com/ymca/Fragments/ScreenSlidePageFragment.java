@@ -29,7 +29,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.ymca.AppManager.DataManager;
 import com.ymca.ImageCache.ImageLoader;
+import com.ymca.ModelClass.SliderModelClass;
 import com.ymca.R;
 
 /**
@@ -53,7 +55,7 @@ public class ScreenSlidePageFragment extends Fragment {
      */
     private int mPageNumber;
 
-    private ArrayList<String> banner_url;
+    private ArrayList<SliderModelClass> banner_url;
 
     private Context context;
 
@@ -74,7 +76,7 @@ public class ScreenSlidePageFragment extends Fragment {
     public ScreenSlidePageFragment() {
     }
 
-    public ScreenSlidePageFragment(ArrayList<String> bannerImage,
+    public ScreenSlidePageFragment(ArrayList<SliderModelClass> bannerImage,
                                    FragmentActivity activity, int position) {
 
         this.banner_url = bannerImage;
@@ -107,8 +109,9 @@ public class ScreenSlidePageFragment extends Fragment {
         if (context != null && banner_url.get(pos) != null && !banner_url.get(pos).equals("")) {
 
             Glide.with(context)
-                    .load(banner_url.get(pos))
+                    .load(banner_url.get(pos).getSliderImgUrl())
                     .into(imgSlider);
+            DataManager.getInstance().hideProgressMessage();
         }
         return rootView;
     }

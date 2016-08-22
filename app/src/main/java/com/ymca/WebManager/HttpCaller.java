@@ -22,6 +22,11 @@ public class HttpCaller {
 
     private static String errorCodeUrl = Constant.BaseUrl + "ErrorCodes";
     private static String addCardUrl = Constant.BaseUrl + "AddCard";
+    private static String getAllCardUrl = Constant.BaseUrl + "GetCodes";
+    private static String getDeleteCardUrl = Constant.BaseUrl + "DeleteCodes";
+    private static String getSettingNotifyUrl = Constant.BaseUrl + "Settings";
+    private static String SliderServiceUrl = Constant.BaseUrl + "Slider";
+    private static String ScheduleServiceUrl = Constant.BaseUrl + "schedule";
     private String response;
 
     public String getErrorCode(Map<String, Object> params) throws MalformedURLException {
@@ -31,6 +36,26 @@ public class HttpCaller {
 
     public String getAddCard(Map<String, Object> addCard) throws MalformedURLException {
         return getPostMethods(addCard, Constant.post, addCardUrl);
+    }
+
+    public String getAllCardData(Map<String, Object> addCard) throws MalformedURLException {
+        return getPostMethods(addCard, Constant.post, getAllCardUrl);
+    }
+
+    public String getDeleteCardData(Map<String, Object> deleteCard) throws MalformedURLException {
+        return getPostMethods(deleteCard, Constant.post, getDeleteCardUrl);
+    }
+
+    public String getSettingNotify(Map<String, Object> settingData) throws MalformedURLException {
+        return getPostMethods(settingData, Constant.post, getSettingNotifyUrl);
+    }
+
+    public String getSliderImg(Map<String, Object> sliderData) throws MalformedURLException {
+        return getPostMethods(sliderData, Constant.post, SliderServiceUrl);
+    }
+
+    public String getScheduleData(Map<String, Object> scheduleData) throws MalformedURLException {
+        return getPostMethods(scheduleData, Constant.post, ScheduleServiceUrl);
     }
 
     // TODO: 17-Aug-16 Here Call Post method

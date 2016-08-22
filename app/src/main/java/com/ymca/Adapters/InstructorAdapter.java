@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ymca.Activities.HomeActivity;
+import com.ymca.AppManager.DataManager;
 import com.ymca.Constants.Constant;
 import com.ymca.Fragments.InstructorDetailFragment;
 import com.ymca.R;
@@ -43,6 +45,9 @@ public class InstructorAdapter extends RecyclerView.Adapter<InstructorAdapter.Re
     @Override
     public void onBindViewHolder(RecyclerViewHolders holder, int position) {
         holder.instructorName.setText(itemList.get(position).getInstructorName());
+        if(!itemList.get(position).getInstructorImg().equals("null") || !itemList.get(position).getInstructorImg().equals("")) {
+            Glide.with(context).load(itemList.get(position).getInstructorImg()).into(holder.instructorImg);
+        }
 //        imageLoader.DisplayImage(itemList.get(position).getInstructorImg(), holder.traineeImg);
     }
 
@@ -51,7 +56,7 @@ public class InstructorAdapter extends RecyclerView.Adapter<InstructorAdapter.Re
         return this.itemList.size();
     }
 
-    public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView instructorName;
         public ImageView instructorImg;
@@ -59,18 +64,22 @@ public class InstructorAdapter extends RecyclerView.Adapter<InstructorAdapter.Re
         public RecyclerViewHolders(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            instructorName = (TextView)itemView.findViewById(R.id.userName);
-            instructorImg = (ImageView)itemView.findViewById(R.id.userImg);
+            instructorName = (TextView) itemView.findViewById(R.id.userName);
+            instructorImg = (ImageView) itemView.findViewById(R.id.userImg);
         }
 
         @Override
         public void onClick(View view) {
-            ((HomeActivity) context)
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.content_frame, new InstructorDetailFragment(), Constant.instructorDetailFrag)
-                    .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
-                    .commit();
+
+            boolean isCheck = DataManager.chkStatus(context);
+            if (isCheck) {
+                ((HomeActivity) context)
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, new InstructorDetailFragment(), Constant.instructorDetailFrag)
+                        .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
+                        .commit();
+            }
         }
     }
 }

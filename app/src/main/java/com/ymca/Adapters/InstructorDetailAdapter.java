@@ -84,13 +84,15 @@ public class InstructorDetailAdapter extends BaseAdapter {
         viewHolder.classLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                ((HomeActivity) context)
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, new ClassDetailFragment(), Constant.classDetailFragment)
-                        .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
-                        .commit();
+                boolean isCheck = DataManager.chkStatus(context);
+                if(isCheck) {
+                    ((HomeActivity) context)
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new ClassDetailFragment(), Constant.classDetailFragment)
+                            .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
+                            .commit();
+                }
             }
         });
 

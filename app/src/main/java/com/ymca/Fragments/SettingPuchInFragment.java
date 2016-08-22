@@ -9,29 +9,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.ymca.Activities.HomeActivity;
 import com.ymca.AppManager.DataManager;
 import com.ymca.R;
 
-
 /**
- * Created by Soni on 28-Jul-16.
+ * Created by Soni on 20-Aug-16.
  */
-public class ClassDetailFragment extends Fragment {
+public class SettingPuchInFragment extends Fragment implements View.OnClickListener {
 
     private View view;
-   TextView classDetailHeader,classDetailDay,classDetailDate,classDetailTime,classDetailDescription,classDetailAddress,classDetailPhoneNo;
-
+    ImageView punchIn,timeCard;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.class_detail_fragment,container,false );
-
+        view = inflater.inflate(R.layout.setting_card_screen,container,false);
         actionBarUpdate();
+        punchIn = (ImageView)view.findViewById(R.id.punchIn);
+        timeCard = (ImageView)view.findViewById(R.id.timeCard);
+
+        punchIn  .setOnClickListener(this);
+        timeCard .setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.timeCard:
+                DataManager.getInstance().showIFramePopUp(getActivity());
+                break;
+            case R.id.punchIn:
+                DataManager.getInstance().showIFramePopUp(getActivity());
+                break;
+        }
     }
 
     private void actionBarUpdate() {

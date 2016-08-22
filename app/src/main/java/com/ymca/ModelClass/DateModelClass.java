@@ -5,6 +5,7 @@ package com.ymca.ModelClass;
  */
 public class DateModelClass {
 
+    private String scheduleDateId;
     private String scheduleDateTime;
     private String scheduleDateName;
     private String scheduleDateNameWith;
@@ -52,5 +53,13 @@ public class DateModelClass {
 
     public void setScheduleDatePlace(String scheduleDatePlace) {
         this.scheduleDatePlace = scheduleDatePlace;
+    }
+
+    public String getScheduleDateId() {
+        return scheduleDateId;
+    }
+
+    public void setScheduleDateId(String scheduleDateId) {
+        this.scheduleDateId = scheduleDateId;
     }
 }

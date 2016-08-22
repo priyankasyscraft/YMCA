@@ -76,9 +76,10 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getActivity(), "Please enter 12 digit member card number", Toast.LENGTH_SHORT).show();
                 } else {
 
+                    DataManager.getInstance().showProgressMessage(getActivity(),"Progress");
                     DataManager.getInstance().setMemberName(memberName.getText().toString().trim());
                     DataManager.getInstance().setMemberCardNumber(memberBarCodeNumber.getText().toString().trim());
-
+                    DataManager.getInstance().setFlagCardShow(false);
 
                     getActivity()
                             .getSupportFragmentManager()

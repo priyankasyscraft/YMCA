@@ -49,6 +49,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.ymca.Adapters.DrawerAdapter;
 import com.ymca.AppManager.DataManager;
+import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
 import com.ymca.Fragments.AddCardFragment;
 import com.ymca.Fragments.CampFragment;
@@ -81,6 +82,8 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
 
 import twitter4j.StatusUpdate;
@@ -314,6 +317,36 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         if(requestCode == JsonCaller.REFRESH_CODE_ADD_CARD){
 //            addCardFragment.onRefreshData(refreshable,requestCode);
             cardShowFragment.onRefreshData(refreshable,requestCode);
+        }else if(requestCode == JsonCaller.REFRESH_CODE_ALL_CARDS){
+            if(DataManager.getInstance().isFlagCheckIn()){
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+                        .addToBackStack(null)
+                        .commit();
+                myCardsFragment.onRefreshData(refreshable,requestCode);
+            }else {
+                homeFragment.onRefreshData(refreshable,requestCode);
+            }
+        }else if(requestCode == JsonCaller.REFRESH_CODE_DELETE_CARDS){
+            homeFragment.onRefreshData(refreshable,requestCode);
+        }else if(requestCode == JsonCaller.REFRESH_CODE_ADD_CARD_NULL){
+            if(DataManager.getInstance().isFlagCheckIn()){
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+                        .addToBackStack(null)
+                        .commit();
+                myCardsFragment.onRefreshData(refreshable,requestCode);
+            }else {
+                homeFragment.onRefreshData(refreshable,requestCode);
+            }
+        }else if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_INSTRU){
+            homeFragment.onRefreshData(refreshable, requestCode);
+        }else if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_CLASS){
+            homeFragment.onRefreshData(refreshable, requestCode);
+        }else if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_AREA){
+            homeFragment.onRefreshData(refreshable, requestCode);
         }
 
     }
@@ -453,10 +486,16 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 //                        DataManager.getInstance().setFlagCardShow(false);
                      super.onBackPressed();
                     }else {
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-                                .commit();
+                        DataManager.getInstance().showProgressMessage(this, "Progress");
+                        String deviceToken = SharedPreference.getSharedPrefData(this, Constant.deviceToken);
+                        Map<String, Object> params = new LinkedHashMap<>();
+
+                        params.put("device_token", deviceToken);
+                        JsonCaller.getInstance().getAllCard(params);
+//                        getSupportFragmentManager()
+//                                .beginTransaction()
+//                                .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+//                                .commit();
                     }
                 } else if (fr.getTag().equals(Constant.myCardFragment)) {
 //                    fm.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -471,6 +510,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
+                            .addToBackStack(null)
                             .commit();
                 } else if (fr.getTag().contains(Constant.homeFragment)) {
                     if (doubleBackToExitPressedOnce) {
@@ -542,11 +582,17 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     break;
                 case 2:
                     DataManager.getInstance().setFlagCheckIn(true);
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-                            .addToBackStack(null)
-                            .commit();
+                    DataManager.getInstance().showProgressMessage(this, "Progress");
+                    String deviceToken = SharedPreference.getSharedPrefData(this, Constant.deviceToken);
+                    Map<String, Object> params = new LinkedHashMap<>();
+
+                    params.put("device_token", deviceToken);
+                    JsonCaller.getInstance().getAllCard(params);
+//                    getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+//                            .addToBackStack(null)
+//                            .commit();
                     break;
                 case 3:
 //                    getSupportFragmentManager()

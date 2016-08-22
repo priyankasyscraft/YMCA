@@ -44,7 +44,7 @@ public class MyCardAdapter extends RecyclerView.Adapter<MyCardAdapter.MyViewHold
         @Override
         public void onClick(View view) {
             DataManager.getInstance().setMemberName(cardUserName.getText().toString());
-            DataManager.getInstance().setMemberCardNumber(cardBarCodeNo.getText().toString().replace("CODE: ",""));
+            DataManager.getInstance().setMemberCardNumber(cardBarCodeNo.getText().toString().replace("CODE: ", ""));
             DataManager.getInstance().setFlagCardShow(true);
             ((HomeActivity) context)
                     .getSupportFragmentManager()
@@ -77,6 +77,8 @@ public class MyCardAdapter extends RecyclerView.Adapter<MyCardAdapter.MyViewHold
         this.context = context;
     }
 
+
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -85,6 +87,17 @@ public class MyCardAdapter extends RecyclerView.Adapter<MyCardAdapter.MyViewHold
         return new MyViewHolder(itemView);
     }
 
+    public void setReloadData(boolean shouldReload) {
+        myCardModelClasses = DataManager.getInstance().getMyCardModelClasses();
+        if (shouldReload) {
+            DataManager.getInstance().getAppCompatActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    notifyDataSetChanged();
+                    DataManager.getInstance().hideProgressMessage();
+                }
+            });
+        }
+    }
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.cardUserName.setText(myCardModelClasses.get(position).getUserName());

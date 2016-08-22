@@ -3,86 +3,128 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/padding_common_16">
+    android:orientation="vertical">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGray"
+        android:background="@android:color/white"
         android:orientation="vertical"
         android:weightSum="1">
 
-        <com.ymca.CustomFont.SecondaryFontText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:padding="@dimen/padding_common_14"
-            android:text="@string/welcome"
-            android:textSize="@dimen/text_size_common_18"
-            app:fontNames="@string/custom_secondary_font" />
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_common_5"
+            android:weightSum="1">
 
-        <com.ymca.CustomFont.PrimaryFontText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:padding="@dimen/padding_common_10"
-            android:text="@string/center"
-            android:textSize="@dimen/text_size_common_18"
-            android:textStyle="bold"
-            app:fontNames="@string/custom_secondary_font" />
+            <com.ymca.CustomFont.PrimaryFontText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".7"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/padding_common_5"
+                android:text="@string/notification"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_common_20"
+                android:textStyle="bold"
+                app:fontNames="@string/custom_secondary_font" />
 
-        <com.ymca.CustomFont.PrimaryFontText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/address"
-            android:textSize="@dimen/text_size_common_18"
-            android:textStyle="bold"
-            app:fontNames="@string/custom_primary_font" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".3"
+                android:gravity="end"
+
+                android:weightSum="1">
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/notifyToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text=""
+                    android:textOff=""
+                    android:textOn="" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:background="@android:color/black" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".1"/>
+            android:layout_weight=".2" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:background="@android:color/black" />
+
+        <LinearLayout
+            android:id="@+id/settingButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/padding_common_5"
+            android:weightSum="1">
+
+            <com.ymca.CustomFont.PrimaryFontText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".85"
+                android:gravity="center_vertical"
+                android:padding="@dimen/padding_common_8"
+                android:text="@string/setting_text"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_common_20"
+                android:textStyle="bold"
+                app:fontNames="@string/custom_secondary_font" />
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight=".15"-->
+            <!--android:gravity="end|center_vertical"-->
+
+            <!--android:weightSum="1">-->
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".15"
+                android:padding="@dimen/padding_common_10"
+                android:src="@drawable/arrow_black" />
+            <!--</LinearLayout>-->
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:background="@android:color/black" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".2" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".6"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/padding_common_14"
-            android:background="@android:color/white"
-            android:layout_margin="@dimen/margin_common_10"
-            android:weightSum="1">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".15"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight=".3"
-                android:src="@drawable/bt_punch"
-                android:id="@+id/punchIn"
-                android:scaleType="fitCenter"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".2"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight=".3"
-                android:src="@drawable/bt_time"
-                android:id="@+id/timeCard"
-                android:scaleType="fitCenter"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".15"/>
-        </LinearLayout>
+            android:gravity="center">
 
+            <com.ymca.CustomFont.RoundedImage
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ymca_icon" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

@@ -1,13 +1,16 @@
 package com.ymca.Activities;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -101,19 +104,48 @@ public class SplashActivity extends BaseActivity {
 //        if (marshMallowPermission.checkPermissionsLocation()) {
 //            if (marshMallowPermission.checkPermissionsExternalStorage()) {
 //                if (marshMallowPermission.checkPermissionsCall()) {
+        final ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        if (connMgr.getActiveNetworkInfo() != null
+                && connMgr.getActiveNetworkInfo().isAvailable()
+                && connMgr.getActiveNetworkInfo().isConnected()) {
+            DataManager.getInstance().showProgressMessage(this, "Progress");
+            Map<String, Object> objectsMap = new LinkedHashMap<>();
+            JsonCaller.getInstance().getErrorCode(objectsMap);
+        } else {
+            try {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Connection Failed");
+                builder.setMessage("No Internet Connection, Please try again later.");
+                builder.setCancelable(false);
+                builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
 
-        Map<String,Object> objectsMap = new LinkedHashMap<>();
-        JsonCaller.getInstance().getErrorCode(objectsMap);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
-                startActivity(mainIntent);
-                finish();
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SplashActivity.this.finish();
+                        dialog.dismiss();
+
+                    }
+                });
+                builder.show();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }, SPLASH_DISPLAY_LENGTH);
+        }
+//        boolean isCheck = DataManager.chkStatus(this);
+//        if (isCheck) {
+//            Map<String, Object> objectsMap = new LinkedHashMap<>();
+//            JsonCaller.getInstance().getErrorCode(objectsMap);
+//        }
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                /* Create an Intent that will start the Menu-Activity. */
+//                Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+//                startActivity(mainIntent);
+//                finish();
+//            }
+//        }, SPLASH_DISPLAY_LENGTH);
 
 //                } else {
 //                    marshMallowPermission.requestPermissionForCall();
@@ -147,7 +179,7 @@ public class SplashActivity extends BaseActivity {
                         marshMallowPermission.requestPermissionForExternalStorage();
                     }
 
-                } else if(grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                     if (marshMallowPermission.checkPermissionsExternalStorage()) {
                         if (marshMallowPermission.checkPermissionsCall()) {
                             setUpPane();
@@ -157,7 +189,7 @@ public class SplashActivity extends BaseActivity {
                     } else {
                         marshMallowPermission.requestPermissionForExternalStorage();
                     }
-                }else {
+                } else {
                     if (marshMallowPermission.checkPermissionsLocation()) {
                         if (marshMallowPermission.checkPermissionsExternalStorage()) {
                             if (marshMallowPermission.checkPermissionsCall()) {
@@ -187,13 +219,13 @@ public class SplashActivity extends BaseActivity {
 //                        marshMallowPermission.requestPermissionForExternalStorage();
 //                    }
 
-                }else if(grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
 //                    if (marshMallowPermission.checkPermissionsExternalStorage()) {
-                        if (marshMallowPermission.checkPermissionsCall()) {
-                            setUpPane();
-                        } else {
-                            marshMallowPermission.requestPermissionForCall();
-                        }
+                    if (marshMallowPermission.checkPermissionsCall()) {
+                        setUpPane();
+                    } else {
+                        marshMallowPermission.requestPermissionForCall();
+                    }
 //                    } else {
 //                        marshMallowPermission.requestPermissionForExternalStorage();
 //                    }
@@ -218,9 +250,9 @@ public class SplashActivity extends BaseActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     setUpPane();
-                } else if(grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                            setUpPane();
-                }else {
+                } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    setUpPane();
+                } else {
                     if (marshMallowPermission.checkPermissionsLocation()) {
                         if (marshMallowPermission.checkPermissionsExternalStorage()) {
                             if (marshMallowPermission.checkPermissionsCall()) {
@@ -260,9 +292,41 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void onRefreshData(Refreshable refreshable, int requestCode) {
-        if(requestCode == JsonCaller.REFRESH_CODE_SERVER_ERROR){
+        if (requestCode == JsonCaller.REFRESH_CODE_SERVER_ERROR) {
             SplashActivity.this.finish();
-        }else if(requestCode == JsonCaller.REFRESH_CODE_ERROR_CODE) {
+        } else if (requestCode == JsonCaller.REFRESH_CODE_ERROR_CODE) {
+            final ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            if (connMgr.getActiveNetworkInfo() != null
+                    && connMgr.getActiveNetworkInfo().isAvailable()
+                    && connMgr.getActiveNetworkInfo().isConnected()) {
+                Map<String, Object> objectsMap = new LinkedHashMap<>();
+                objectsMap.put("meta_key", "_nectar_slider_image");
+                JsonCaller.getInstance().getSliderImg(objectsMap);
+            } else {
+                try {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Connection Failed");
+                    builder.setMessage("No Internet Connection, Please try again later.");
+                    builder.setCancelable(false);
+                    builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SplashActivity.this.finish();
+                            dialog.dismiss();
+
+                        }
+                    });
+                    builder.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        } else if (requestCode == JsonCaller.REFRESH_CODE_SLIDER_IMAGES) {
+            DataManager.getInstance().hideProgressMessage();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -272,6 +336,27 @@ public class SplashActivity extends BaseActivity {
                     finish();
                 }
             }, SPLASH_DISPLAY_LENGTH);
+
+
+        } else if (requestCode == JsonCaller.REFRESH_CODE_SLIDER_IMAGES_NULL) {
+            try {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Connection Failed");
+                builder.setMessage("No Internet Connection, Please try again later.");
+                builder.setCancelable(false);
+                builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SplashActivity.this.finish();
+                        dialog.dismiss();
+
+                    }
+                });
+                builder.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

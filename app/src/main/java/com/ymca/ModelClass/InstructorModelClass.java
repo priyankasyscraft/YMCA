@@ -5,6 +5,7 @@ package com.ymca.ModelClass;
  */
 public class InstructorModelClass {
 
+    private String instructorId;
     private String instructorImg;
     private String instructorName;
 
@@ -22,5 +23,13 @@ public class InstructorModelClass {
 
     public void setInstructorName(String instructorName) {
         this.instructorName = instructorName;
+    }
+
+    public String getInstructorId() {
+        return instructorId;
+    }
+
+    public void setInstructorId(String instructorId) {
+        this.instructorId = instructorId;
     }
 }

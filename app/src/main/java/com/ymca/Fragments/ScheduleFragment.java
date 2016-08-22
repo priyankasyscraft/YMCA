@@ -1,26 +1,43 @@
 package com.ymca.Fragments;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ymca.Activities.HomeActivity;
+import com.ymca.Adapters.PopUpLocationAdapter;
 import com.ymca.AppManager.DataManager;
 import com.ymca.Constants.Constant;
 import com.ymca.Fragments.*;
 import com.ymca.Fragments.ClassFragment;
+import com.ymca.ModelClass.PopUpLocationModel;
 import com.ymca.R;
+import com.ymca.UserInterFace.RefreshDataListener;
+import com.ymca.UserInterFace.Refreshable;
+import com.ymca.WebManager.JsonCaller;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by Soni on 28-Jul-16.
@@ -58,6 +75,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
             classTab.setBackgroundResource(R.drawable.schedule_tabmenu);
             instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
             areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+
+
             getChildFragmentManager()
                     .beginTransaction()
                     .replace(R.id.content_child_frame, classFragment, Constant.classFragment)
@@ -69,6 +88,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
             classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
             instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu);
             areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+
+
             getChildFragmentManager()
                     .beginTransaction()
                     .replace(R.id.content_child_frame, instructorFragment, Constant.instructorFragment)
@@ -128,17 +149,14 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
 
         notificationBell.setVisibility(View.GONE);
         badgeCount.setVisibility(View.GONE);
-        ImageView filterImg = (ImageView)view.findViewById(R.id.filterImg);
+        ImageView filterImg = (ImageView) view.findViewById(R.id.filterImg);
         filterImg.setVisibility(View.VISIBLE);
         filterImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-//                if (filterLayout.getVisibility() == View.VISIBLE) {
-//                    filterLayout.setVisibility(View.GONE);
-//                } else {
-//                    filterLayout.setVisibility(View.VISIBLE);
-//                }
+                showAlertPopUp();
+//                showPopUp();
             }
         });
 
@@ -184,11 +202,9 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         filterImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (filterLayout.getVisibility() == View.VISIBLE) {
-//                    filterLayout.setVisibility(View.GONE);
-//                } else {
-//                    filterLayout.setVisibility(View.VISIBLE);
-//                }
+
+                showAlertPopUp();
+//                showPopUp();
             }
         });
         image_action.setOnClickListener(new View.OnClickListener() {
@@ -223,6 +239,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
                 classTab.setBackgroundResource(R.drawable.schedule_tabmenu);
                 instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
                 areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+
+
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_child_frame, classFragment, Constant.classFragment)
@@ -235,6 +253,12 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
                 classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
                 instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu);
                 areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+
+//                DataManager.getInstance().showProgressMessage(getActivity(),"Progress");
+//                Map<String,Object> objectMap2 = new LinkedHashMap<>();
+//                objectMap2.put("type","instructor");
+//                JsonCaller.getInstance().getScheduleDataInstru(objectMap2);
+
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_child_frame, instructorFragment, Constant.instructorFragment)
@@ -253,6 +277,75 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
                         .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
                         .commit();
                 break;
+        }
+    }
+
+    public void showPopUp() {
+        LayoutInflater layoutInflater = (LayoutInflater) getActivity()
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View popupView = layoutInflater.inflate(R.layout.location_pop_up, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView,
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT,
+                true);
+        popupWindow.setTouchable(true);
+        popupWindow.setFocusable(true);
+        popupWindow.setFocusable(true);
+
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+        DataManager.getInstance().clearPopUpLocationModelArrayList();
+        for (int i = 0; i < 3; i++) {
+            PopUpLocationModel popUpLocationModel = new PopUpLocationModel();
+            popUpLocationModel.setLocationName("DownTown");
+            DataManager.getInstance().addPopUpLocationModelArrayList(popUpLocationModel);
+        }
+
+
+        ListView popUpListView = (ListView) popupView.findViewById(R.id.popUpListView);
+        PopUpLocationAdapter popUpLocationAdapter = new PopUpLocationAdapter(getActivity(), DataManager.getInstance().getPopUpLocationModelArrayList());
+
+        popUpListView.setAdapter(popUpLocationAdapter);
+    }
+
+    public void showAlertPopUp() {
+
+        // TODO: 22-Aug-16 set data into arraylist
+        DataManager.getInstance().clearPopUpLocationModelArrayList();
+        for (int i = 0; i < 3; i++) {
+            PopUpLocationModel popUpLocationModel = new PopUpLocationModel();
+            popUpLocationModel.setLocationName("DownTown");
+            DataManager.getInstance().addPopUpLocationModelArrayList(popUpLocationModel);
+        }
+
+
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        for (int i = 0; i < DataManager.getInstance().getPopUpLocationModelArrayList().size(); i++) {
+            stringArrayList.add(DataManager.getInstance().getPopUpLocationModelArrayList().get(i).getLocationName());
+        }
+
+        CharSequence[] array = stringArrayList.toArray(new String[stringArrayList.size()]);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Select Location");
+
+        builder.setItems(array, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int position) {
+                dialog.dismiss();
+                Toast.makeText(getActivity(), "item position" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+
+    public void onRefreshData(Refreshable refreshable, int requestCode) {
+        if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_INSTRU) {
+            instructorFragment.onRefreshData(refreshable, requestCode);
+        } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_CLASS) {
+            classFragment.onRefreshData(refreshable, requestCode);
+        }else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_AREA) {
+            areaFragment.onRefreshData(refreshable, requestCode);
         }
     }
 }

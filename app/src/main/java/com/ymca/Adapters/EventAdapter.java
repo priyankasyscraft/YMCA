@@ -84,13 +84,15 @@ public class EventAdapter extends BaseAdapter {
         viewHolder.eventLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                ((HomeActivity) context)
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, new EventDetailFragment(), Constant.eventDetailFragment)
-                        .addToBackStack(((HomeActivity) context).getFragmentManager().getClass().getName())
-                        .commit();
+                boolean isCheck = DataManager.chkStatus(context);
+                if(isCheck) {
+                    ((HomeActivity) context)
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new EventDetailFragment(), Constant.eventDetailFragment)
+                            .addToBackStack(((HomeActivity) context).getFragmentManager().getClass().getName())
+                            .commit();
+                }
             }
         });
 

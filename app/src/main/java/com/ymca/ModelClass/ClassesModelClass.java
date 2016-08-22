@@ -5,6 +5,7 @@ package com.ymca.ModelClass;
  */
 public class ClassesModelClass {
 
+    private String classesId;
     private String classesName;
 
     public ClassesModelClass(){}
@@ -15,5 +16,13 @@ public class ClassesModelClass {
 
     public void setClassesName(String classesName) {
         this.classesName = classesName;
+    }
+
+    public String getClassesId() {
+        return classesId;
+    }
+
+    public void setClassesId(String classesId) {
+        this.classesId = classesId;
     }
 }

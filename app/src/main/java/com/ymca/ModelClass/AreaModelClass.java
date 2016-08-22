@@ -5,6 +5,7 @@ package com.ymca.ModelClass;
  */
 public class AreaModelClass {
 
+    private String areaId;
     private String areaName;
     private String areaInstructor;
     private String areaTime;
@@ -31,5 +32,13 @@ public class AreaModelClass {
 
     public void setAreaName(String areaName) {
         this.areaName = areaName;
+    }
+
+    public String getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(String areaId) {
+        this.areaId = areaId;
     }
 }

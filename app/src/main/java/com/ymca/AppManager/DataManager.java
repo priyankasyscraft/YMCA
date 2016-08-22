@@ -22,6 +22,8 @@ import com.ymca.ModelClass.HomeClassesModelClass;
 import com.ymca.ModelClass.InstructorModelClass;
 import com.ymca.ModelClass.LocationModelClass;
 import com.ymca.ModelClass.MyCardModelClass;
+import com.ymca.ModelClass.PopUpLocationModel;
+import com.ymca.ModelClass.SliderModelClass;
 import com.ymca.ModelClass.TraineeModelClass;
 import com.ymca.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -58,6 +60,7 @@ public class DataManager {
     private boolean flagScedule = false;
     private boolean flagLocation = false;
     private boolean flagCardShow = false;
+    private boolean flagCardShowBack = false;
     private boolean flagAddCard = false;
     private String memberName;
     private String memberCardNumber;
@@ -74,6 +77,8 @@ public class DataManager {
     private ArrayList<FacilityModelClass> facilityModelClassArrayList = new ArrayList<>();
     private ArrayList<CampModelClass> campModelClassArrayList = new ArrayList<>();
     private ArrayList<AreaModelClass> areaModelClassArrayList = new ArrayList<>();
+    private ArrayList<SliderModelClass> sliderModelClasses = new ArrayList<>();
+    private ArrayList<PopUpLocationModel> popUpLocationModelArrayList = new ArrayList<>();
 
     public static boolean chkStatus(Context context) {
         // TODO Auto-generated method stub
@@ -510,12 +515,62 @@ public class DataManager {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                JsonCaller.getInstance().sendRefreshData(null,JsonCaller.REFRESH_CODE_SERVER_ERROR);
+                JsonCaller.getInstance().sendRefreshData(null, JsonCaller.REFRESH_CODE_SERVER_ERROR);
             }
         });
         builder.show();
     }
 
 
+    public boolean isFlagCardShowBack() {
+        return flagCardShowBack;
+    }
 
+    public void setFlagCardShowBack(boolean flagCardShowBack) {
+        this.flagCardShowBack = flagCardShowBack;
+    }
+
+    public ArrayList<SliderModelClass> getSliderModelClasses() {
+        return sliderModelClasses;
+    }
+
+    public void setSliderModelClasses(ArrayList<SliderModelClass> sliderModelClasses) {
+        this.sliderModelClasses = sliderModelClasses;
+    }
+
+    public void addSliderModelClasses(SliderModelClass sliderModelClasses) {
+        this.sliderModelClasses.add(sliderModelClasses);
+    }
+
+    public void clearSliderModelClasses() {
+        this.sliderModelClasses.clear();
+    }
+
+    public ArrayList<PopUpLocationModel> getPopUpLocationModelArrayList() {
+        return popUpLocationModelArrayList;
+    }
+
+    public void setPopUpLocationModelArrayList(ArrayList<PopUpLocationModel> popUpLocationModelArrayList) {
+        this.popUpLocationModelArrayList = popUpLocationModelArrayList;
+    }
+
+    public void addPopUpLocationModelArrayList(PopUpLocationModel popUpLocationModelArrayList) {
+        this.popUpLocationModelArrayList.add(popUpLocationModelArrayList);
+    }
+
+    public void clearPopUpLocationModelArrayList() {
+        this.popUpLocationModelArrayList.clear();
+    }
+
+    public String hourConverter(String time){
+
+        try {
+            final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            final Date dateObj = sdf.parse(time);
+            time = new SimpleDateFormat("K:mm a").format(dateObj);
+        } catch (final ParseException e) {
+            e.printStackTrace();
+        }
+        return time;
+    }
 }

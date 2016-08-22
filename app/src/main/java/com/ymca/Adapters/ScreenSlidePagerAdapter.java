@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.ymca.Fragments.ScreenSlidePageFragment;
+import com.ymca.ModelClass.SliderModelClass;
 
 import java.util.ArrayList;
 
@@ -14,10 +15,10 @@ import java.util.ArrayList;
  * Created by Soni on 09-Aug-16.
  */
 public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-    private ArrayList<String> bannerImage = new ArrayList<>();
+    private ArrayList<SliderModelClass> bannerImage = new ArrayList<>();
     private FragmentActivity context;
 
-    public ScreenSlidePagerAdapter(FragmentManager fm, FragmentActivity context, ArrayList<String> arrrayListImage) {
+    public ScreenSlidePagerAdapter(FragmentManager fm, FragmentActivity context, ArrayList<SliderModelClass> arrrayListImage) {
         super(fm);
         this.context = context;
         bannerImage = arrrayListImage;
