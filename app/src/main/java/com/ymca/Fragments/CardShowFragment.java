@@ -37,7 +37,7 @@ import java.util.Map;
 public class CardShowFragment extends Fragment {
 
     private View view;
-    TextView memberName;
+    TextView memberName,barCodeNo;
     ImageView barCodeImg, qrCodeImg;
     private Bitmap barCodeBitmap, qrBitmap;
 
@@ -60,6 +60,7 @@ public class CardShowFragment extends Fragment {
         view = inflater.inflate(R.layout.card_show_fragment, container, false);
 
         memberName = (TextView) view.findViewById(R.id.memberName);
+        barCodeNo = (TextView) view.findViewById(R.id.barCodeNo);
         barCodeImg = (ImageView) view.findViewById(R.id.barCodeImg);
         qrCodeImg = (ImageView) view.findViewById(R.id.qrCodeImg);
         actionBarUpdate();
@@ -119,12 +120,14 @@ public class CardShowFragment extends Fragment {
     }
 
     public void createEAN13Code(String s) {
-        if (s == null || s.length() != 12) return;
+        if (s == null) return;
 
-        BarQrCodeGenerator bb = new BarQrCodeGenerator(s);
+//        BarQrCodeGenerator bb = new BarQrCodeGenerator(s);
 
-
-//        barCodeNumber.setText(bb.getCode());
+//        double miles = distance(22.719568,75.857727,22.9612,76.0514);
+//        String milesDouble = String.format("%.2f", miles);
+//        barCodeNo.setText(milesDouble);
+        barCodeNo.setText(s);
         generateBarCode(s);
         generateQRCode(s);
     }
@@ -155,6 +158,7 @@ public class CardShowFragment extends Fragment {
     public void generateBarCode(String data) {
         com.google.zxing.Writer c9 = new Code128Writer();
         try {
+
             BitMatrix bm = c9.encode(data, BarcodeFormat.CODE_128, 350, 350);
             barCodeBitmap = Bitmap.createBitmap(350, 350, Bitmap.Config.ARGB_8888);
 

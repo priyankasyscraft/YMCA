@@ -1,5 +1,7 @@
 package com.ymca.Fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -43,7 +45,7 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.add_my_card_fragment, container, false);
-        
+
         actionBarUpdate();
         memberName = (EditText) view.findViewById(R.id.memberName);
         memberBarCodeNumber = (EditText) view.findViewById(R.id.memberBarCodeNumber);
@@ -69,14 +71,44 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
             case R.id.addCardButton:
 
                 if (memberName.getText().toString().trim().equals("")) {
-                    Toast.makeText(getActivity(), "Please enter Member Name", Toast.LENGTH_SHORT).show();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Alert");
+                    builder.setMessage("Please enter Member Name");
+                    builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
                 } else if (memberBarCodeNumber.getText().toString().trim().equals("")) {
-                    Toast.makeText(getActivity(), "Please enter Member Card Number", Toast.LENGTH_SHORT).show();
-                } else if (memberBarCodeNumber.getText().toString().trim().length()!= 12) {
-                    Toast.makeText(getActivity(), "Please enter 12 digit member card number", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Alert");
+                    builder.setMessage("Please enter  member card number");
+                    builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
+                } else if (memberBarCodeNumber.getText().toString().trim().length()< 4) {
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Alert");
+                    builder.setMessage("Please enter minimum 4 digit member card number");
+                    builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
                 } else {
 
-                    DataManager.getInstance().showProgressMessage(getActivity(),"Progress");
+                    DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
                     DataManager.getInstance().setMemberName(memberName.getText().toString().trim());
                     DataManager.getInstance().setMemberCardNumber(memberBarCodeNumber.getText().toString().trim());
                     DataManager.getInstance().setFlagCardShow(false);
@@ -136,7 +168,6 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
 
 
     }
-
 
 
 }

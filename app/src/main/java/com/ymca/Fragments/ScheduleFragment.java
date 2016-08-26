@@ -49,6 +49,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
     private TextView cityOne, cityTwo;
     private DateFragment dateFragment = new DateFragment();
     private InstructorFragment instructorFragment = new InstructorFragment();
+    private InstructorDetailFragment instructorDetailFragment = new InstructorDetailFragment();
     private ClassFragment classFragment = new ClassFragment();
     private AreaFragment areaFragment = new AreaFragment();
 
@@ -346,6 +347,14 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
             classFragment.onRefreshData(refreshable, requestCode);
         }else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_AREA) {
             areaFragment.onRefreshData(refreshable, requestCode);
+        }else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA) {
+            dateFragment.onRefreshData(refreshable, requestCode);
+        }else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCTOR_DETAIL) {
+            instructorFragment.onRefreshData(refreshable, requestCode);
+        }else if (requestCode == JsonCaller.REFRESH_CODE_CLASS_DETAIL) {
+            classFragment.onRefreshData(refreshable, requestCode);
+        }else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCT_CLASS_DETAIL) {
+            instructorFragment.onRefreshData(refreshable, requestCode);
         }
     }
 }

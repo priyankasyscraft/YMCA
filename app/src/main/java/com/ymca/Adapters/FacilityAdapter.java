@@ -64,16 +64,16 @@ public class FacilityAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = inflater.inflate(R.layout.facility_item, null);
-            viewHolder.facilityName = (TextView) convertView.findViewById(R.id.facilityName);
+//            viewHolder.facilityName = (TextView) convertView.findViewById(R.id.facilityName);
             viewHolder.facilityAddress = (TextView) convertView.findViewById(R.id.facilityAddress);
             viewHolder.facilityStatus = (TextView) convertView.findViewById(R.id.facilityStatus);
             viewHolder.statusImg = (ImageView) convertView.findViewById(R.id.statusImg);
-            viewHolder.facilityLayout = (LinearLayout) convertView.findViewById(R.id.facilityLayout);
+//            viewHolder.facilityLayout = (LinearLayout) convertView.findViewById(R.id.facilityLayout);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.facilityName.setText(facilityModelClassArrayList.get(position).getFacilityName());
+//        viewHolder.facilityName.setText(facilityModelClassArrayList.get(position).getFacilityName());
         viewHolder.facilityAddress.setText(facilityModelClassArrayList.get(position).getFacilityAddress());
         viewHolder.facilityStatus.setText(facilityModelClassArrayList.get(position).getFacilityOpenClose());
         if (facilityModelClassArrayList.get(position).isFacilityStatus()) {

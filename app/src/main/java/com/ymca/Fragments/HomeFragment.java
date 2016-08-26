@@ -244,6 +244,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             scheduleFragment.onRefreshData(refreshable, requestCode);
         }else if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_AREA){
             scheduleFragment.onRefreshData(refreshable, requestCode);
+        }else if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA){
+            scheduleFragment.onRefreshData(refreshable, requestCode);
+        }else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCTOR_DETAIL) {
+            scheduleFragment.onRefreshData(refreshable, requestCode);
+        }else if (requestCode == JsonCaller.REFRESH_CODE_CLASS_DETAIL) {
+            scheduleFragment.onRefreshData(refreshable, requestCode);
+        }else if (requestCode == JsonCaller.REFRESH_CODE_LOCATION_LIST) {
+            locationFragment.onRefreshData(refreshable, requestCode);
+        }else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCT_CLASS_DETAIL) {
+            scheduleFragment.onRefreshData(refreshable, requestCode);
         }
     }
 //    }

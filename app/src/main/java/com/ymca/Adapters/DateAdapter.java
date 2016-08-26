@@ -72,16 +72,17 @@ public class DateAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        String time = DataManager.getInstance().getNotifyDate(dateModelClasses.get(position).getScheduleDateAppointmentTime());
-        if(!time.equals("") && time!=null && !time.equals("null")) {
-            viewHolder.dateTimeTv.setText(time);
-        }else {
-            viewHolder.dateTimeTv.setText("");
-        }
+//        String time = DataManager.getInstance().getNotifyDate(dateModelClasses.get(position).getScheduleDateAppointmentTime());
+//        if(!time.equals("") && time!=null && !time.equals("null")) {
+//            viewHolder.dateTimeTv.setText(time);
+//        }else {
+//            viewHolder.dateTimeTv.setText("");
+//        }
+        viewHolder.dateTimeTv.setText(dateModelClasses.get(position).getScheduleDateTime());
         viewHolder.dateName.setText(dateModelClasses.get(position).getScheduleDateName());
         viewHolder.dateSubName.setText(dateModelClasses.get(position).getScheduleDateNameWith());
-        viewHolder.dateTTimeWithDays.setText(dateModelClasses.get(position).getScheduleDateAppointmentTime());
-        viewHolder.dateGroupName.setText("in"+" "+dateModelClasses.get(position).getScheduleDatePlace());
+        viewHolder.dateTTimeWithDays.setText(dateModelClasses.get(position).getScheduleDateWeekDays());
+        viewHolder.dateGroupName.setText(dateModelClasses.get(position).getScheduleDatePlace());
 
         return convertView;
     }

@@ -73,11 +73,7 @@ public class BarQrCodeGenerator {
 
     private String createEAN13Code(String rawCode)
     {
-         int firstFlag = Integer.valueOf(
-
-                rawCode.substring(0,1)
-
-         ).intValue();
+         int firstFlag = Integer.valueOf(rawCode.substring(0,1)).intValue();
 
          String leftString = rawCode.substring(1,7);
          String rightString = rawCode.substring(7);

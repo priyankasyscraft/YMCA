@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ymca.Activities.HomeActivity;
+import com.ymca.AppManager.DataManager;
 import com.ymca.R;
 
 
@@ -20,13 +22,35 @@ import com.ymca.R;
 public class LocationDetailFragment extends Fragment {
 
     private View view;
+    TextView locationDetailHeader, locationDetailAddress, locationOpenTime, openTime1, openTime2, openTime3, openTime4, openTime5, openTime6, openTime7;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.location_detail_fragment,container,false );
-
+        view = inflater.inflate(R.layout.location_detail_fragment, container, false);
         actionBarUpdate();
+        locationDetailHeader = (TextView) view.findViewById(R.id.locationDetailHeader);
+        locationDetailAddress = (TextView) view.findViewById(R.id.locationDetailAddress);
+        locationOpenTime = (TextView) view.findViewById(R.id.locationOpenTime);
+        openTime1 = (TextView) view.findViewById(R.id.openTime1);
+        openTime2 = (TextView) view.findViewById(R.id.openTime2);
+        openTime3 = (TextView) view.findViewById(R.id.openTime3);
+        openTime4 = (TextView) view.findViewById(R.id.openTime4);
+        openTime5 = (TextView) view.findViewById(R.id.openTime5);
+        openTime6 = (TextView) view.findViewById(R.id.openTime6);
+        openTime7 = (TextView) view.findViewById(R.id.openTime7);
+
+        locationDetailHeader.setText(DataManager.getInstance().getLocationModelClass().getLocationName());
+        locationDetailAddress.setText(DataManager.getInstance().getLocationModelClass().getLocationAddress());
+        locationOpenTime.setText(DataManager.getInstance().getLocationModelClass().getLocationOpenCloseTime());
+        openTime1.setText(DataManager.getInstance().getLocationModelClass().getLocationOpenCloseTime());
+        openTime2.setText(DataManager.getInstance().getLocationModelClass().getLocationOpenCloseTime());
+        openTime3.setText(DataManager.getInstance().getLocationModelClass().getLocationOpenCloseTime());
+        openTime4.setText(DataManager.getInstance().getLocationModelClass().getLocationOpenCloseTime());
+        openTime5.setText(DataManager.getInstance().getLocationModelClass().getLocationOpenCloseTime());
+        openTime6.setText(DataManager.getInstance().getLocationModelClass().getLocationOpenCloseTime());
+        openTime7.setText(DataManager.getInstance().getLocationModelClass().getLocationOpenCloseTime());
+
 
         return view;
     }

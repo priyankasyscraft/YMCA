@@ -1,6 +1,7 @@
 package com.ymca.Fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,21 +11,30 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.ymca.Activities.HomeActivity;
 import com.ymca.Adapters.InstructorDetailAdapter;
 import com.ymca.AppManager.DataManager;
+import com.ymca.Constants.Constant;
 import com.ymca.ModelClass.ClassesModelClass;
 import com.ymca.ModelClass.CustomTextModelClass;
 import com.ymca.R;
+import com.ymca.UserInterFace.Refreshable;
+import com.ymca.WebManager.JsonCaller;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /**
@@ -33,9 +43,12 @@ import java.util.ArrayList;
 public class InstructorDetailFragment extends Fragment {
 
     private View view;
-    LinearLayout experienceLayout,certificateLayout;
+    LinearLayout experienceLayout, certificateLayout;
     ListView instructorList;
+    ImageView circleInstructorImg;
+    TextView instructorName;
     private InstructorDetailAdapter instructorDetailAdapter;
+    private TextView textView;
 
     @Nullable
     @Override
@@ -44,27 +57,51 @@ public class InstructorDetailFragment extends Fragment {
         DataManager.getInstance().setFlagInstructorList(true);
         actionBarUpdate();
 
+        instructorName = (TextView) view.findViewById(R.id.instructorName);
+        circleInstructorImg = (ImageView) view.findViewById(R.id.circleInstructorImg);
         instructorList = (ListView) view.findViewById(R.id.instructorList);
         certificateLayout = (LinearLayout) view.findViewById(R.id.certificateLayout);
         experienceLayout = (LinearLayout) view.findViewById(R.id.experienceLayout);
-        TextView textView = new TextView(getActivity());
-        textView.setText("15 year");
-        textView.setTextColor(getResources().getColor(R.color.colorPrimary));
-        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.img_check, 0, 0, 0);
-        textView.setPadding(5, 2, 0, 2);
-        experienceLayout.addView(textView);
+        textView = new TextView(getActivity());
         DataManager.getInstance().clearCustomTextModelClassArrayList();
-        for (int i = 0; i < 20; i++) {
-            CustomTextModelClass customTextModelClass = new CustomTextModelClass();
-            customTextModelClass.setTextViewString("Dummy text ");
-            DataManager.getInstance().addCustomTextModelClassArrayList(customTextModelClass);
-        }
 
-         instructorDetailAdapter = new InstructorDetailAdapter(getActivity(),DataManager.getInstance().getClassesModelClassArrayList());
+
+        instructorDetailAdapter = new InstructorDetailAdapter(getActivity(), DataManager.getInstance().getInstructorDetailModelArrayList());
         instructorList.setAdapter(instructorDetailAdapter);
 
-        setData();
-        populateLinks(certificateLayout, DataManager.getInstance().getCustomTextModelClassArrayList(), "sample");
+        instructorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                DataManager.getInstance().showProgressMessage(DataManager.getInstance().getAppCompatActivity(), "Progress");
+
+                Map<String, Object> objectMap = new LinkedHashMap<String, Object>();
+                objectMap.put("class_id", DataManager.getInstance().getInstructorDetailModelArrayList().get(0).getModelClasses().get(i).getClassesId());
+
+                JsonCaller.getInstance().getClassDetail(objectMap);
+            }
+        });
+        setListViewHeightBasedOnChildren(instructorList);
+        textView.setText(DataManager.getInstance().getInstructorDetailModelArrayList().get(0).getInstructorInfo());
+        textView.setTextColor(getResources().getColor(R.color.colorPrimary));
+        textView.setPadding(5, 2, 0, 2);
+        experienceLayout.addView(textView);
+
+
+        instructorName.setText(DataManager.getInstance().getInstructorDetailModelArrayList().get(0).getInstructorName());
+        ImageLoader imageLoader = ImageLoader.getInstance();
+
+        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+
+       DisplayImageOptions options = new DisplayImageOptions.Builder().displayer(new RoundedBitmapDisplayer(1000)).cacheInMemory(true)
+                .cacheOnDisc(true).resetViewBeforeLoading(true)
+                .showImageForEmptyUri(R.mipmap.user_default)
+                .showImageOnFail(R.mipmap.user_default)
+                .showImageOnLoading(R.mipmap.user_default).bitmapConfig(Bitmap.Config.RGB_565).build();
+
+        imageLoader.displayImage(DataManager.getInstance().getInstructorDetailModelArrayList().get(0).getInstructorImgUrl(),circleInstructorImg,options);
+//        Glide.with(getActivity()).load(DataManager.getInstance().getInstructorDetailModelArrayList().get(0).getInstructorImgUrl()).into(circleInstructorImg);
+        instructorDetailAdapter.setReloadData(true);
+        DataManager.getInstance().hideProgressMessage();
 
 
         return view;
@@ -73,13 +110,13 @@ public class InstructorDetailFragment extends Fragment {
     private void setData() {
         DataManager.getInstance().clearClassesModelClassArrayList();
 
-        for(int i = 0;i<5;i++){
+        for (int i = 0; i < 5; i++) {
             ClassesModelClass classesModelClass = new ClassesModelClass();
             classesModelClass.setClassesName("Yoga Class");
             DataManager.getInstance().addClassesModelClassArrayList(classesModelClass);
         }
         instructorDetailAdapter.setReloadData(true);
-        setListViewHeightBasedOnChildren(instructorList);
+
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
@@ -110,20 +147,12 @@ public class InstructorDetailFragment extends Fragment {
         ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
 
 
-        actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
         actionBar.setHomeButtonEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
 //        actionBar.setTitle("");
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayShowHomeEnabled(false);
-//        actionBar.setHomeAsUpIndicator(R.drawable.menu_icon);
         actionBar.setDisplayShowTitleEnabled(false);
-
-//        Drawable actionBar_bg = getResources().getDrawable(
-//                R.drawable.tool_bar_bg);
-//        actionBar.setBackgroundDrawable(actionBar_bg);
-
-//        actionBar.setDisplayShowCustomEnabled(true);
         ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
                 ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT);
@@ -149,66 +178,16 @@ public class InstructorDetailFragment extends Fragment {
     }
 
 
-    private void populateLinks(LinearLayout ll, ArrayList<CustomTextModelClass> collection, String header) {
 
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        int maxWidth = display.getWidth() - 10;
 
-        if (collection.size() > 0) {
-            LinearLayout llAlso = new LinearLayout(getActivity());
-            llAlso.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-            llAlso.setOrientation(LinearLayout.HORIZONTAL);
-
-            TextView txtSample = new TextView(getActivity());
-            txtSample.setText(header);
-
-            llAlso.addView(txtSample);
-            txtSample.measure(0, 0);
-
-            int widthSoFar = txtSample.getMeasuredWidth();
-            for (CustomTextModelClass customTextModelClass : collection) {
-                TextView txtSamItem = new TextView(getActivity(), null, android.R.attr.textColorLink);
-                txtSamItem.setText(customTextModelClass.getTextViewString());
-                txtSamItem.setPadding(5, 0, 0, 0);
-                txtSamItem.setTag(customTextModelClass);
-                txtSamItem.setCompoundDrawablesWithIntrinsicBounds(R.drawable.img_check, 0, 0, 0);
-                txtSamItem.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // TODO: 12-Aug-16 textview click listener
-//                        TextView self = (TextView) v;
-//                        Sample ds = (Sample) self.getTag();
-//
-//                        Intent myIntent = new Intent();
-//                        myIntent.putExtra("link_info", ds.Sample);
-//                        setResult("link_clicked", myIntent);
-//                        finish();
-                    }
-                });
-
-                txtSamItem.measure(0, 0);
-                widthSoFar += txtSamItem.getMeasuredWidth();
-
-                if (widthSoFar >= maxWidth) {
-                    ll.addView(llAlso);
-
-                    llAlso = new LinearLayout(getActivity());
-                    llAlso.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.FILL_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT));
-                    llAlso.setOrientation(LinearLayout.HORIZONTAL);
-
-                    llAlso.addView(txtSamItem);
-                    widthSoFar = txtSamItem.getMeasuredWidth();
-                } else {
-                    llAlso.addView(txtSamItem);
-                }
-            }
-
-            ll.addView(llAlso);
+    public void onRefreshData(Refreshable refreshable, int requestCode) {
+        if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCT_CLASS_DETAIL) {
+            getActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame,new ClassDetailFragment(), Constant.classDetailFragment)
+                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                    .commit();
         }
     }
-
-
 }

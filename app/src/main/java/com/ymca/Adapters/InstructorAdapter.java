@@ -1,5 +1,6 @@
 package com.ymca.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,8 +17,11 @@ import com.ymca.Fragments.InstructorDetailFragment;
 import com.ymca.R;
 import com.ymca.ImageCache.ImageLoader;
 import com.ymca.ModelClass.InstructorModelClass;
+import com.ymca.WebManager.JsonCaller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jack-Sparrow on 7/31/2015.
@@ -46,7 +50,7 @@ public class InstructorAdapter extends RecyclerView.Adapter<InstructorAdapter.Re
     public void onBindViewHolder(RecyclerViewHolders holder, int position) {
         holder.instructorName.setText(itemList.get(position).getInstructorName());
         if(!itemList.get(position).getInstructorImg().equals("null") || !itemList.get(position).getInstructorImg().equals("")) {
-            Glide.with(context).load(itemList.get(position).getInstructorImg()).into(holder.instructorImg);
+            Glide.with(context).load(itemList.get(position).getInstructorImg()).into(holder.instructorImg).onLoadCleared(context.getResources().getDrawable(R.mipmap.user_default));
         }
 //        imageLoader.DisplayImage(itemList.get(position).getInstructorImg(), holder.traineeImg);
     }
@@ -73,12 +77,19 @@ public class InstructorAdapter extends RecyclerView.Adapter<InstructorAdapter.Re
 
             boolean isCheck = DataManager.chkStatus(context);
             if (isCheck) {
-                ((HomeActivity) context)
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, new InstructorDetailFragment(), Constant.instructorDetailFrag)
-                        .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
-                        .commit();
+
+                DataManager.getInstance().setInstructorModelClass(itemList.get(getAdapterPosition()));
+
+                DataManager.getInstance().showProgressMessage((HomeActivity) context, "Progress");
+                Map<String, Object> objectMap = new LinkedHashMap<>();
+                objectMap.put("instructor_id", DataManager.getInstance().getInstructorModelClass().getInstructorId());
+                JsonCaller.getInstance().getInstructorDetail(objectMap);
+//                ((HomeActivity) context)
+//                        .getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.content_frame, new InstructorDetailFragment(), Constant.instructorDetailFrag)
+//                        .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
+//                        .commit();
             }
         }
     }

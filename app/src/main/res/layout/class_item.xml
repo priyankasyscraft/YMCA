@@ -1,51 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:focusable="false">
-    <TextView
-        android:layout_width="5dp"
-        android:layout_height="match_parent"
-        android:background="@color/colorTextPurple"
-        android:visibility="gone"
-        android:id="@+id/colorText"/>
+    android:focusable="false"
+    android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/padding_common_5"
-        android:weightSum="1"
-        android:id="@+id/classLayout">
+        android:orientation="horizontal">
 
-
-        <com.ymca.CustomFont.SecondaryFontText
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/colorText"
+            android:layout_width="5dp"
             android:layout_height="match_parent"
-            android:layout_weight=".8"
-            android:padding="@dimen/padding_common_10"
-            android:text="XXXXXX"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_common_22"
-            app:fontName="@string/custom_secondary_font"
-            android:id="@+id/className"
-            android:focusable="false"/>
+            android:background="@color/colorTextPurple"
+            android:visibility="visible" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".2"
-            android:background="@null"
-            android:gravity="center">
+            android:id="@+id/classLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_common_5"
+            android:weightSum="1">
 
-            <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/arrow_gray"
+
+            <com.ymca.CustomFont.SecondaryFontText
+                android:id="@+id/className"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".8"
                 android:focusable="false"
-                android:id="@+id/imgButton"/>
+                android:padding="@dimen/padding_common_10"
+                android:text="XXXXXX"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_common_22"
+                app:fontName="@string/custom_secondary_font" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:background="@null"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/imgButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:focusable="false"
+                    android:src="@drawable/arrow_gray" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

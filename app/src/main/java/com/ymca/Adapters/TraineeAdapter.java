@@ -8,15 +8,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ymca.Activities.HomeActivity;
+import com.ymca.AppManager.DataManager;
 import com.ymca.Constants.Constant;
-import com.ymca.Fragments.InstructorDetailFragment;
-import com.ymca.Fragments.TraineeDetailFragment;
+import com.ymca.Fragments.TrainerDetailFragment;
 import com.ymca.ImageCache.ImageLoader;
 import com.ymca.ModelClass.TraineeModelClass;
 import com.ymca.R;
+import com.ymca.WebManager.JsonCaller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jack-Sparrow on 7/31/2015.
@@ -44,6 +48,8 @@ public class TraineeAdapter extends RecyclerView.Adapter<TraineeAdapter.Recycler
     @Override
     public void onBindViewHolder(RecyclerViewHolders holder, int position) {
         holder.traineeName.setText(traineeModelClasses.get(position).getTraineeName());
+        Glide.with(context).load(traineeModelClasses.get(position).getTraineeImg()).into(holder.traineeImg).onLoadCleared(context.getResources().getDrawable(R.mipmap.user_default));
+        DataManager.getInstance().hideProgressMessage();
 //        imageLoader.DisplayImage(traineeModelClasses.get(position).getInstructorImg(), holder.traineeImg);
     }
 
@@ -52,7 +58,7 @@ public class TraineeAdapter extends RecyclerView.Adapter<TraineeAdapter.Recycler
         return this.traineeModelClasses.size();
     }
 
-    public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView traineeName;
         public ImageView traineeImg;
@@ -60,18 +66,19 @@ public class TraineeAdapter extends RecyclerView.Adapter<TraineeAdapter.Recycler
         public RecyclerViewHolders(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            traineeName = (TextView)itemView.findViewById(R.id.userName);
-            traineeImg = (ImageView)itemView.findViewById(R.id.userImg);
+            traineeName = (TextView) itemView.findViewById(R.id.userName);
+            traineeImg = (ImageView) itemView.findViewById(R.id.userImg);
         }
 
         @Override
         public void onClick(View view) {
-            ((HomeActivity) context)
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.content_frame, new TraineeDetailFragment(), Constant.instructorDetailFrag)
-                    .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
-                    .commit();
+            DataManager.getInstance().setTraineeModelClass(traineeModelClasses.get(getAdapterPosition()));
+
+            DataManager.getInstance().showProgressMessage(DataManager.getInstance().getAppCompatActivity(),"Progress");
+            Map<String,Object> objectMap = new LinkedHashMap<>();
+            objectMap.put("trainer_id",DataManager.getInstance().getTraineeModelClass().getTraineeId());
+            JsonCaller.getInstance().getTrainerDetail(objectMap);
+
         }
     }
 }

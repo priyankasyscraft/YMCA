@@ -13,29 +13,32 @@ import com.ymca.Activities.HomeActivity;
 import com.ymca.AppManager.DataManager;
 import com.ymca.Constants.Constant;
 import com.ymca.Fragments.ClassDetailFragment;
-import com.ymca.ModelClass.ClassesModelClass;
+import com.ymca.ModelClass.InstructorDetailModel;
 import com.ymca.R;
+import com.ymca.WebManager.JsonCaller;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by Soni on 03-Aug-16.
  */
 public class InstructorDetailAdapter extends BaseAdapter {
-    private ArrayList<ClassesModelClass> classesModelClassArrayList = new ArrayList<ClassesModelClass>();
+    private ArrayList<InstructorDetailModel> instructorDetailModelArrayList = new ArrayList<>();
     private LayoutInflater inflater;
     Context context;
     ViewHolder viewHolder;
 
-    public InstructorDetailAdapter(Context context, ArrayList<ClassesModelClass> classesModelClassArrayList) {
-        this.classesModelClassArrayList = classesModelClassArrayList;
+    public InstructorDetailAdapter(Context context, ArrayList<InstructorDetailModel> classesModelClassArrayList) {
+        this.instructorDetailModelArrayList = classesModelClassArrayList;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
 
     public void setReloadData(boolean shouldReload) {
-        classesModelClassArrayList = DataManager.getInstance().getClassesModelClassArrayList();
+        instructorDetailModelArrayList = DataManager.getInstance().getInstructorDetailModelArrayList();
         if (shouldReload) {
             DataManager.getInstance().getAppCompatActivity().runOnUiThread(new Runnable() {
                 public void run() {
@@ -48,7 +51,7 @@ public class InstructorDetailAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return classesModelClassArrayList.size();
+        return instructorDetailModelArrayList.get(0).getModelClasses().size();
     }
 
     @Override
@@ -62,7 +65,7 @@ public class InstructorDetailAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
             viewHolder = new ViewHolder();
@@ -79,19 +82,26 @@ public class InstructorDetailAdapter extends BaseAdapter {
         }
 
         viewHolder.imgButton.setImageResource(R.drawable.arrow_black);
-        viewHolder.className.setText(classesModelClassArrayList.get(position).getClassesName());
+        viewHolder.className.setText(instructorDetailModelArrayList.get(0).getModelClasses().get(position).getClassesName());
 
         viewHolder.classLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 boolean isCheck = DataManager.chkStatus(context);
-                if(isCheck) {
-                    ((HomeActivity) context)
-                            .getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.content_frame, new ClassDetailFragment(), Constant.classDetailFragment)
-                            .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
-                            .commit();
+                if (isCheck) {
+
+                    DataManager.getInstance().showProgressMessage(DataManager.getInstance().getAppCompatActivity(), "Progress");
+
+                    Map<String, Object> objectMap = new LinkedHashMap<String, Object>();
+                    objectMap.put("class_id", instructorDetailModelArrayList.get(0).getModelClasses().get(position).getClassesId());
+
+                    JsonCaller.getInstance().getInstructorClassDetail(objectMap);
+//                    ((HomeActivity) context)
+//                            .getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.content_frame, new ClassDetailFragment(), Constant.classDetailFragment)
+//                            .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
+//                            .commit();
                 }
             }
         });
@@ -100,7 +110,7 @@ public class InstructorDetailAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder {
-        TextView className,colorText;
+        TextView className, colorText;
         LinearLayout classLayout;
         ImageButton imgButton;
     }

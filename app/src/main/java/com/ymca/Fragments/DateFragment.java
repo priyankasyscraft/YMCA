@@ -14,10 +14,15 @@ import com.ymca.AppManager.DataManager;
 import com.ymca.ModelClass.DateModelClass;
 import com.ymca.PullListLoader.XListView;
 import com.ymca.R;
+import com.ymca.UserInterFace.RefreshDataListener;
+import com.ymca.UserInterFace.Refreshable;
+import com.ymca.WebManager.JsonCaller;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /**
@@ -26,12 +31,12 @@ import java.util.Date;
 public class DateFragment extends Fragment implements View.OnClickListener {
 
     private View view;
-    ImageView prevButton,forwadButton;
-    TextView dateTv,dayTv;
+    ImageView prevButton, forwadButton;
+    TextView dateTv, dayTv;
     Calendar c;
-    SimpleDateFormat df;
+    SimpleDateFormat df, df1;
     String formattedDate;
-    private SimpleDateFormat outFormat,outFormat1;
+    private SimpleDateFormat outFormat, outFormat1;
     XListView dateScheduleListView;
     DateAdapter dateAdapter;
 
@@ -39,9 +44,10 @@ public class DateFragment extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.date_fragment,container,false );
+        view = inflater.inflate(R.layout.date_fragment, container, false);
         c = Calendar.getInstance();
         df = new SimpleDateFormat("dd-MMM-yyyy");
+        df1 = new SimpleDateFormat("yyyy-MM-dd");
         outFormat = new SimpleDateFormat("EEE");
         outFormat1 = new SimpleDateFormat("MMM dd");
         formattedDate = df.format(c.getTime());
@@ -49,44 +55,45 @@ public class DateFragment extends Fragment implements View.OnClickListener {
         dateScheduleListView = (XListView) view.findViewById(R.id.dateScheduleListView);
         dateTv = (TextView) view.findViewById(R.id.dateTv);
         dayTv = (TextView) view.findViewById(R.id.dayTv);
-        prevButton   = (ImageView)view.findViewById(R.id.prevButton);
-        forwadButton = (ImageView)view.findViewById(R.id.forwadButton);
+        prevButton = (ImageView) view.findViewById(R.id.prevButton);
+        forwadButton = (ImageView) view.findViewById(R.id.forwadButton);
         formattedDate = df.format(c.getTime());
         dateTv.setText(outFormat1.format(new Date(formattedDate)));
         dayTv.setText(outFormat.format(new Date(formattedDate)));
         prevButton.setOnClickListener(this);
         forwadButton.setOnClickListener(this);
 
+        String date = df1.format(c.getTime());
+        DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
+        Map<String, Object> objectMap = new LinkedHashMap<>();
+        objectMap.put("type", "date");
+        objectMap.put("date", date);
+        JsonCaller.getInstance().getScheduleData(objectMap);
         dateAdapter = new DateAdapter(getActivity(), DataManager.getInstance().getDateModelClasses());
         dateScheduleListView.setAdapter(dateAdapter);
 
-        setData();
+//        setData();
 
         return view;
-    }
-
-    private void setData() {
-        for(int i = 0;i<20;i++){
-            DateModelClass dateModelClass = new DateModelClass();
-            dateModelClass.setScheduleDateAppointmentTime("2016-08-03 15:23:00");
-            dateModelClass.setScheduleDateName("CYCLE + TRX - Beginner");
-            dateModelClass.setScheduleDateNameWith("with James MacMann");
-            dateModelClass.setScheduleDateTime("Th Tu @07:40 AM (50 min)");
-            dateModelClass.setScheduleDatePlace("Group Exercise studio");
-            DataManager.getInstance().addDateModelClasses(dateModelClass);
-        }
-        dateAdapter.setReloadData(true);
     }
 
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.prevButton:
+
                 c.add(Calendar.DATE, -1);
                 formattedDate = df.format(c.getTime());
                 dateTv.setText(outFormat1.format(new Date(formattedDate)));
                 dayTv.setText(outFormat.format(new Date(formattedDate)));
+                DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
+                String date = df1.format(c.getTime());
+                Map<String, Object> objectMap = new LinkedHashMap<>();
+                objectMap.put("type", "date");
+                objectMap.put("date", date);
+                JsonCaller.getInstance().getScheduleData(objectMap);
+
                 break;
 
             case R.id.forwadButton:
@@ -94,7 +101,20 @@ public class DateFragment extends Fragment implements View.OnClickListener {
                 formattedDate = df.format(c.getTime());
                 dateTv.setText(outFormat1.format(new Date(formattedDate)));
                 dayTv.setText(outFormat.format(new Date(formattedDate)));
+                DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
+                String date1 = df1.format(c.getTime());
+                Map<String, Object> objectMap1 = new LinkedHashMap<>();
+                objectMap1.put("type", "date");
+                objectMap1.put("date", date1);
+                JsonCaller.getInstance().getScheduleData(objectMap1);
                 break;
+        }
+    }
+
+
+    public void onRefreshData(Refreshable refreshable, int requestCode) {
+        if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA) {
+            dateAdapter.setReloadData(true);
         }
     }
 }

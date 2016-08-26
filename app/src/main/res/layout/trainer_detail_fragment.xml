@@ -6,22 +6,35 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/circleInstructorLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
 
-            <com.ymca.CustomFont.RoundedImage
+            <ImageView
+                android:id="@+id/bgImg"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/img_box" />
+
+            <ImageView
                 android:id="@+id/circleInstructorImg"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:src="@drawable/blog_icon" />
-        </LinearLayout>
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/user_default" />
+        </RelativeLayout>
 
         <com.ymca.CustomFont.PrimaryFontText
             android:id="@+id/instructorName"
@@ -38,8 +51,9 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/instructorName">
+            android:layout_height="0dp"
+            android:layout_below="@+id/instructorName"
+            android:layout_weight=".97">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -95,8 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/certificationTag"
                     android:orientation="vertical"
-                    android:paddingLeft="@dimen/padding_common_5"/>
-
+                    android:paddingLeft="@dimen/padding_common_5" />
 
 
                 <com.ymca.CustomFont.PrimaryFontText
@@ -122,14 +135,15 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/certificationTag"
                     android:orientation="vertical"
-                    android:paddingLeft="@dimen/padding_common_5"/>
+                    android:paddingLeft="@dimen/padding_common_5" />
             </LinearLayout>
         </ScrollView>
+
         <View
             android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_alignParentBottom="true"
+            android:layout_height="0dp"
+            android:layout_weight=".03"
             android:background="@drawable/bottom_img" />
 
-    </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

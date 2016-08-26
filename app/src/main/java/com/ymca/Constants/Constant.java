@@ -8,6 +8,13 @@ import twitter4j.auth.RequestToken;
  */
 public class Constant {
 
+    // TODO: 17-Aug-16 GET POST method constant
+    public static String post = "POST";
+
+    // TODO: 17-Aug-16 LOCAL Demo Api URL
+    public static String BaseUrl = "http://lampdemos.com/ymca_admin/apis/v1/Apicontroller/";
+
+
     public static RequestToken rToken = null;
     public static String TWITTER_CONSUMER_KEY = "VfAP9Q9WPxTJ8ocIMzt42aJnn";
     public static String TWITTER_CONSUMER_SECRET = "vSA2XKEONN2UlJaCrO3nykp3te4vJEov4A29JuqW0pJbAlBsOp";
@@ -45,16 +52,6 @@ public class Constant {
     public static String errorCodes = "error_code";
     public static String notificationStatus = "notific";
     public static String settingPunchFragm = "setting_punch_in_frag";
-
-
-
-    // TODO: 17-Aug-16 GET POST method constant
-    public static String post = "POST";
-
-
-    // TODO: 17-Aug-16 LOCAL Demo Api URL
-
-    public static String BaseUrl = "http://lampdemos.com/ymca_admin/apis/v1/Apicontroller/";
-
-
+    public static String lati = "Latitude";
+    public static String longi = "Longitude";
 }

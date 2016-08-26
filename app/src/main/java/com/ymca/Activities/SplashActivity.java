@@ -109,8 +109,13 @@ public class SplashActivity extends BaseActivity {
         if (connMgr.getActiveNetworkInfo() != null
                 && connMgr.getActiveNetworkInfo().isAvailable()
                 && connMgr.getActiveNetworkInfo().isConnected()) {
+            String deviceToken = SharedPreference.getSharedPrefData(this,Constant.deviceToken);
             DataManager.getInstance().showProgressMessage(this, "Progress");
             Map<String, Object> objectsMap = new LinkedHashMap<>();
+
+            objectsMap.put("device_token",deviceToken);
+            objectsMap.put("device_type","1");
+
             JsonCaller.getInstance().getErrorCode(objectsMap);
         } else {
             try {

@@ -26,6 +26,7 @@
             android:orientation="vertical">
 
             <com.ymca.CustomFont.PrimaryFontText
+                android:id="@+id/eventName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -36,16 +37,18 @@
                 app:fontName="@string/custom_primary_font" />
 
             <com.ymca.CustomFont.SecondaryFontText
+                android:id="@+id/eventAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="xxxxxxxxx"
+                android:text="Activity Pool Hours"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_size_common_16"
                 android:textStyle="bold"
                 app:fontNames="@string/custom_secondary_font" />
 
             <com.ymca.CustomFont.SecondaryFontText
+                android:id="@+id/eventDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/event_detail_icon"
@@ -116,6 +119,7 @@
 
 
                         <com.ymca.CustomFont.SecondaryFontText
+                            android:id="@+id/eventDescr"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="I used TextViews in this example, but you can use whatever you want for the footer views. To avoid the footer items overlapping with the bottom of the menu, add some dummy items to the end of your menu resource file (these will act like spacers"

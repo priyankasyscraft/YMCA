@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.ymca.Adapters.InstructorAdapter;
 import com.ymca.AppManager.DataManager;
+import com.ymca.Constants.Constant;
 import com.ymca.ModelClass.InstructorModelClass;
 import com.ymca.R;
 import com.ymca.UserInterFace.RefreshDataListener;
@@ -24,38 +25,35 @@ import java.util.Map;
 /**
  * Created by Soni on 28-Jul-16.
  */
-public class InstructorFragment extends Fragment  {
+public class InstructorFragment extends Fragment {
 
     private View view;
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
+    InstructorDetailFragment instructorDetailFragment = new InstructorDetailFragment();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.instructor_fragment,container,false );
+        view = inflater.inflate(R.layout.instructor_fragment, container, false);
 //        setData();
-        DataManager.getInstance().showProgressMessage(getActivity(),"Progress");
-        Map<String,Object> objectMap2 = new LinkedHashMap<>();
-        objectMap2.put("type","instructor");
+        DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
+        Map<String, Object> objectMap2 = new LinkedHashMap<>();
+        objectMap2.put("type", "instructor");
+        // TODO: 26-Aug-16 Here change location id,Set default location id here.
+        objectMap2.put("location_id", "1");
         JsonCaller.getInstance().getScheduleDataInstru(objectMap2);
-        mRecyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getActivity(), 3);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-
-
-
-
         return view;
     }
 
 
-
     public void onRefreshData(Refreshable refreshable, int requestCode) {
-        if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_INSTRU) {
+        if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_INSTRU) {
             mAdapter = new InstructorAdapter(getActivity(), DataManager.getInstance().getInstructorModelClassArrayList());
             mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
             mRecyclerView.setHasFixedSize(true);
@@ -63,6 +61,16 @@ public class InstructorFragment extends Fragment  {
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(mAdapter);
             DataManager.getInstance().hideProgressMessage();
+        } else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCTOR_DETAIL) {
+            getActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, instructorDetailFragment, Constant.instructorDetailFrag)
+                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                    .commit();
+//            instructorDetailFragment.onRefreshData(refreshable, requestCode);
+        }else if(requestCode == JsonCaller.REFRESH_CODE_INSTRUCT_CLASS_DETAIL){
+            instructorDetailFragment.onRefreshData(refreshable, requestCode);
         }
     }
 }

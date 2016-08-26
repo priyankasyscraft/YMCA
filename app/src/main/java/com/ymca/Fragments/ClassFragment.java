@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.ymca.Adapters.ClassAdapter;
 import com.ymca.AppManager.DataManager;
+import com.ymca.Constants.Constant;
 import com.ymca.ModelClass.ClassesModelClass;
 import com.ymca.PullListLoader.XListView;
 import com.ymca.R;
@@ -28,6 +29,7 @@ public class ClassFragment extends Fragment {
     private View view;
     XListView classScheduleListView;
     ClassAdapter classAdapter;
+    private ClassDetailFragment classDetailFragment = new ClassDetailFragment();
 
     @Nullable
     @Override
@@ -47,6 +49,13 @@ public class ClassFragment extends Fragment {
             classScheduleListView = (XListView) view.findViewById(R.id.classScheduleListView);
             classAdapter = new ClassAdapter(getActivity(), DataManager.getInstance().getClassesModelClassArrayList());
             classScheduleListView.setAdapter(classAdapter);
+        } else if (requestCode == JsonCaller.REFRESH_CODE_CLASS_DETAIL) {
+            getActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, classDetailFragment, Constant.classDetailFragment)
+                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                    .commit();
         }
     }
 }

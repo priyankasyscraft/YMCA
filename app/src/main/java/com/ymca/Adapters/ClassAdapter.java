@@ -14,8 +14,11 @@ import com.ymca.Constants.Constant;
 import com.ymca.Fragments.ClassDetailFragment;
 import com.ymca.ModelClass.ClassesModelClass;
 import com.ymca.R;
+import com.ymca.WebManager.JsonCaller;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by Soni on 03-Aug-16.
@@ -61,7 +64,7 @@ public class ClassAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
             viewHolder = new ViewHolder();
@@ -79,15 +82,15 @@ public class ClassAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 boolean isCheck = DataManager.chkStatus(context);
-                if(isCheck) {
+                if (isCheck) {
 
                     DataManager.getInstance().setFlagClassList(true);
-                    ((HomeActivity) context)
-                            .getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.content_frame, new ClassDetailFragment(), Constant.classDetailFragment)
-                            .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
-                            .commit();
+                    DataManager.getInstance().showProgressMessage(DataManager.getInstance().getAppCompatActivity(), "Progress");
+
+                    Map<String, Object> objectMap = new LinkedHashMap<String, Object>();
+                    objectMap.put("class_id", classesModelClassArrayList.get(position).getClassesId());
+
+                    JsonCaller.getInstance().getClassDetail(objectMap);
                 }
             }
         });

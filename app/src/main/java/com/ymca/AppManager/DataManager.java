@@ -13,18 +13,23 @@ import android.widget.TextView;
 
 import com.ymca.ModelClass.AreaModelClass;
 import com.ymca.ModelClass.CampModelClass;
+import com.ymca.ModelClass.ClassDetailModelClass;
 import com.ymca.ModelClass.ClassesModelClass;
 import com.ymca.ModelClass.CustomTextModelClass;
 import com.ymca.ModelClass.DateModelClass;
+import com.ymca.ModelClass.EventDetailModelClass;
 import com.ymca.ModelClass.EventModelClass;
+import com.ymca.ModelClass.EventNewModelClass;
 import com.ymca.ModelClass.FacilityModelClass;
 import com.ymca.ModelClass.HomeClassesModelClass;
+import com.ymca.ModelClass.InstructorDetailModel;
 import com.ymca.ModelClass.InstructorModelClass;
 import com.ymca.ModelClass.LocationModelClass;
 import com.ymca.ModelClass.MyCardModelClass;
 import com.ymca.ModelClass.PopUpLocationModel;
 import com.ymca.ModelClass.SliderModelClass;
 import com.ymca.ModelClass.TraineeModelClass;
+import com.ymca.ModelClass.TrainerDetailModelClass;
 import com.ymca.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -34,7 +39,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -69,6 +76,7 @@ public class DataManager {
     private ArrayList<TraineeModelClass> traineeModelClasses = new ArrayList<>();
     private ArrayList<InstructorModelClass> instructorModelClassArrayList = new ArrayList<>();
     private ArrayList<EventModelClass> eventModelClasses = new ArrayList<>();
+    private ArrayList<EventNewModelClass> eventNewModelClassArrayList = new ArrayList<>();
     private ArrayList<MyCardModelClass> myCardModelClasses = new ArrayList<>();
     private ArrayList<ClassesModelClass> classesModelClassArrayList = new ArrayList<>();
     private ArrayList<HomeClassesModelClass> homeClassesModelClassArrayList = new ArrayList<>();
@@ -79,6 +87,15 @@ public class DataManager {
     private ArrayList<AreaModelClass> areaModelClassArrayList = new ArrayList<>();
     private ArrayList<SliderModelClass> sliderModelClasses = new ArrayList<>();
     private ArrayList<PopUpLocationModel> popUpLocationModelArrayList = new ArrayList<>();
+    private ArrayList<InstructorDetailModel> instructorDetailModelArrayList = new ArrayList<>();
+    private ArrayList<ClassDetailModelClass> classDetailModelClassArrayList = new ArrayList<>();
+    private ArrayList<TrainerDetailModelClass> trainerDetailModelClassArrayList = new ArrayList<>();
+    private ArrayList<EventDetailModelClass> eventDetailModelClassArrayList = new ArrayList<>();
+
+    private InstructorModelClass instructorModelClass = new InstructorModelClass();
+    private LocationModelClass locationModelClass = new LocationModelClass();
+    private TraineeModelClass traineeModelClass = new TraineeModelClass();
+    private EventNewModelClass eventModelClass = new EventNewModelClass();
 
     public static boolean chkStatus(Context context) {
         // TODO Auto-generated method stub
@@ -202,6 +219,33 @@ public class DataManager {
         }
     }
 
+
+    public String getDayAndDate(String notifyDate) {
+        if (!notifyDate.equals("") || !notifyDate.equals(null)) {
+            DateFormat theDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = null;
+            theDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            try {
+
+                date = theDateFormat.parse(notifyDate);
+            } catch (ParseException parseException) {
+                // Date is invalid. Do what you want.
+            } catch (Exception exception) {
+                // Generic catch. Do what you want.
+            }
+//            theDateFormat.setTimeZone(TimeZone.getDefault());
+            theDateFormat = new SimpleDateFormat("EEE");
+            SimpleDateFormat theDayFormat = new SimpleDateFormat("MMM dd");
+
+            if (date != null) {
+                notifyDate = theDateFormat.format(date) + "," + theDayFormat.format(date);
+
+            }
+            return notifyDate;
+        } else {
+            return notifyDate;
+        }
+    }
 
     public double distance(double lat1, double lon1, double lat2, double lon2) {
 
@@ -515,6 +559,7 @@ public class DataManager {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                DataManager.getInstance().hideProgressMessage();
                 JsonCaller.getInstance().sendRefreshData(null, JsonCaller.REFRESH_CODE_SERVER_ERROR);
             }
         });
@@ -562,7 +607,7 @@ public class DataManager {
         this.popUpLocationModelArrayList.clear();
     }
 
-    public String hourConverter(String time){
+    public String hourConverter(String time) {
 
         try {
             final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -572,5 +617,180 @@ public class DataManager {
             e.printStackTrace();
         }
         return time;
+    }
+
+    public String differenceTwoTime(String startTime, String endTime) {
+        String diffTime = null;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        Date date1 = null;
+        try {
+            date1 = simpleDateFormat.parse(startTime);
+
+            Date date2 = simpleDateFormat.parse(endTime);
+
+            long difference = date2.getTime() - date1.getTime();
+            int days = (int) (difference / (1000 * 60 * 60 * 24));
+            int hours = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+            int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hours)) / (1000 * 60);
+            hours = (hours < 0 ? -hours : hours);
+            if (hours == 0) {
+                diffTime = "" + min;
+            } else {
+                diffTime = "" + hours + ":";
+            }
+
+            if (diffTime.equalsIgnoreCase("0:")) {
+                diffTime = diffTime + " min";
+            } else if (diffTime.equalsIgnoreCase("1:")) {
+                diffTime = diffTime.replace(":", " hour");
+            } else {
+                diffTime = diffTime.replace(":", " hours");
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return diffTime;
+    }
+
+    public ArrayList<InstructorDetailModel> getInstructorDetailModelArrayList() {
+        return instructorDetailModelArrayList;
+    }
+
+    public void setInstructorDetailModelArrayList(ArrayList<InstructorDetailModel> instructorDetailModelArrayList) {
+        this.instructorDetailModelArrayList = instructorDetailModelArrayList;
+    }
+
+    public void addInstructorDetailModelArrayList(InstructorDetailModel instructorDetailModelArrayList) {
+        this.instructorDetailModelArrayList.add(instructorDetailModelArrayList);
+    }
+
+    public void clearInstructorDetailModelArrayList() {
+        this.instructorDetailModelArrayList.clear();
+    }
+
+    public InstructorModelClass getInstructorModelClass() {
+        return instructorModelClass;
+    }
+
+    public void setInstructorModelClass(InstructorModelClass instructorModelClass) {
+        this.instructorModelClass = instructorModelClass;
+    }
+
+    public ArrayList<ClassDetailModelClass> getClassDetailModelClassArrayList() {
+        return classDetailModelClassArrayList;
+    }
+
+    public void setClassDetailModelClassArrayList(ArrayList<ClassDetailModelClass> classDetailModelClassArrayList) {
+        this.classDetailModelClassArrayList = classDetailModelClassArrayList;
+    }
+
+    public void addClassDetailModelClassArrayList(ClassDetailModelClass classDetailModelClassArrayList) {
+        this.classDetailModelClassArrayList.add(classDetailModelClassArrayList);
+    }
+
+    public void clearClassDetailModelClassArrayList() {
+        this.classDetailModelClassArrayList.clear();
+    }
+
+    public LocationModelClass getLocationModelClass() {
+        return locationModelClass;
+    }
+
+    public void setLocationModelClass(LocationModelClass locationModelClass) {
+        this.locationModelClass = locationModelClass;
+    }
+
+    public ArrayList<TrainerDetailModelClass> getTrainerDetailModelClassArrayList() {
+        return trainerDetailModelClassArrayList;
+    }
+
+    public void setTrainerDetailModelClassArrayList(ArrayList<TrainerDetailModelClass> trainerDetailModelClassArrayList) {
+        this.trainerDetailModelClassArrayList = trainerDetailModelClassArrayList;
+    }
+
+    public void addTrainerDetailModelClassArrayList(TrainerDetailModelClass trainerDetailModelClassArrayList) {
+        this.trainerDetailModelClassArrayList.add(trainerDetailModelClassArrayList);
+    }
+
+    public void clearTrainerDetailModelClassArrayList() {
+        this.trainerDetailModelClassArrayList.clear();
+    }
+
+    public TraineeModelClass getTraineeModelClass() {
+        return traineeModelClass;
+    }
+
+    public void setTraineeModelClass(TraineeModelClass traineeModelClass) {
+        this.traineeModelClass = traineeModelClass;
+    }
+
+    public EventNewModelClass getEventModelClass() {
+        return eventModelClass;
+    }
+
+    public void setEventModelClass(EventNewModelClass eventModelClass) {
+        this.eventModelClass = eventModelClass;
+    }
+
+    public ArrayList<EventNewModelClass> getEventNewModelClassArrayList() {
+        return eventNewModelClassArrayList;
+    }
+
+    public void setEventNewModelClassArrayList(ArrayList<EventNewModelClass> eventNewModelClassArrayList) {
+        this.eventNewModelClassArrayList = eventNewModelClassArrayList;
+    }
+
+    public void addEventNewModelClassArrayList(EventNewModelClass eventNewModelClassArrayList) {
+        this.eventNewModelClassArrayList.add(eventNewModelClassArrayList);
+    }
+
+    public void clearEventNewModelClassArrayList() {
+        this.eventNewModelClassArrayList.clear();
+    }
+
+    public ArrayList<EventDetailModelClass> getEventDetailModelClassArrayList() {
+        return eventDetailModelClassArrayList;
+    }
+
+    public void setEventDetailModelClassArrayList(ArrayList<EventDetailModelClass> eventDetailModelClassArrayList) {
+        this.eventDetailModelClassArrayList = eventDetailModelClassArrayList;
+    }
+
+    public void addEventDetailModelClassArrayList(EventDetailModelClass eventDetailModelClassArrayList) {
+        this.eventDetailModelClassArrayList.add(eventDetailModelClassArrayList);
+    }
+
+    public void clearEventDetailModelClassArrayList() {
+        this.eventDetailModelClassArrayList.clear();
+    }
+
+    public List<Date> getDates(String dateString1, String dateString2)
+    {
+        ArrayList<Date> dates = new ArrayList<Date>();
+        DateFormat df1 = new SimpleDateFormat("yyyy/MM/dd");
+
+        Date date1 = null;
+        Date date2 = null;
+
+        try {
+            date1 = df1 .parse(dateString1);
+            date2 = df1 .parse(dateString2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+
+
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
+
+        while(!cal1.after(cal2))
+        {
+            dates.add(cal1.getTime());
+            cal1.add(Calendar.DATE, 1);
+        }
+        return dates;
     }
 }

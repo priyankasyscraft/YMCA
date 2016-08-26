@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ymca.Activities.HomeActivity;
+import com.ymca.AppManager.DataManager;
 import com.ymca.Constants.Constant;
 import com.ymca.R;
 
@@ -24,7 +25,7 @@ import com.ymca.R;
 public class EventDetailFragment extends Fragment {
 
     private View view;
-    TextView showMapButton;
+    TextView showMapButton,eventName,eventDate,eventDescr;
 
     @Nullable
     @Override
@@ -33,7 +34,16 @@ public class EventDetailFragment extends Fragment {
         actionBarUpdate();
 
         showMapButton = (TextView)view.findViewById(R.id.showMapButton);
+        eventName = (TextView)view.findViewById(R.id.eventName);
+        eventDate = (TextView)view.findViewById(R.id.eventDate);
+        eventDescr = (TextView)view.findViewById(R.id.eventDescr);
 
+        eventName.setText(DataManager.getInstance().getEventModelClass().getEventName());
+        eventDate.setText(DataManager.getInstance().getEventDetailModelClassArrayList().get(0).getDateTime());
+        showMapButton.setText(DataManager.getInstance().getEventDetailModelClassArrayList().get(0).getLocationAddress());
+        eventDescr.setText(DataManager.getInstance().getEventDetailModelClassArrayList().get(0).getDescription());
+
+        DataManager.getInstance().hideProgressMessage();
         showMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,7 +56,7 @@ public class EventDetailFragment extends Fragment {
 //                        .commit();
 
                 // TODO: 09-Aug-16 Redirect to the Map app
-                Uri gmmIntentUri = Uri.parse("geo:"+""+40.723008+","+-74.000633+"?q=<"+40.723008+">,<"+-74.000633+">"+"Event Name");
+                Uri gmmIntentUri = Uri.parse("geo:"+""+ DataManager.getInstance().getEventDetailModelClassArrayList().get(0).getLati()+","+DataManager.getInstance().getEventDetailModelClassArrayList().get(0).getLongi()+"?q=<"+DataManager.getInstance().getEventDetailModelClassArrayList().get(0).getLati()+">,<"+DataManager.getInstance().getEventDetailModelClassArrayList().get(0).getLongi()+">"+"Event Name");
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 startActivity(mapIntent);

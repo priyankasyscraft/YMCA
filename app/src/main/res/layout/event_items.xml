@@ -1,79 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/eventLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
     android:weightSum="1"
-    android:gravity="center_vertical"
-    android:id="@+id/eventLayout"
     >
 
-    <com.ymca.CustomFont.PrimaryFontText
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/padding_common_8"
-        android:text="XXX XXXX XXXXXX"
-        android:textColor="@android:color/black"
-        android:background="@drawable/classes_bg"
-        android:id="@+id/eventName"
-        android:textSize="@dimen/text_size_common_16"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/event_date_bg_one"
         android:orientation="horizontal"
-        android:padding="@dimen/padding_common_5"
-        android:weightSum="1"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="47dp"
-        android:layout_marginEnd="47dp"
-        android:gravity="center_vertical"
-        >
-        <com.ymca.CustomFont.PrimaryFontText
-            android:id="@+id/eventDay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="08:30"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_common_13"
-            app:fontName="@string/custom_primary_font"/>
-        <com.ymca.CustomFont.PrimaryFontText
-            android:id="@+id/eventDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="01"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_common_22"
-            android:textStyle="bold"
-            app:fontName="@string/custom_primary_font"
-            android:visibility="gone"/>
+        android:weightSum="1">
 
-        <com.ymca.CustomFont.SecondaryFontText
-            android:id="@+id/eventMonth"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".5"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <com.ymca.CustomFont.PrimaryFontText
+                android:id="@+id/eventName"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".7"
+                android:background="@drawable/classes_bg"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/padding_common_8"
+                android:text="XXX fafsdfasfdsaffdaXXXXX"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_common_14" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="11:30"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_common_13"
-            app:fontNames="@string/custom_secondary_font"/>
+            android:layout_weight=".4"
+            android:background="@color/colorTextPurple"
+            android:paddingTop="@dimen/padding_common_20"
+            android:paddingBottom="@dimen/padding_common_20"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <com.ymca.CustomFont.PrimaryFontText
+                android:id="@+id/eventDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="08:30Am - 1130Pm"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_common_13"
+                app:fontName="@string/custom_primary_font" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".1"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight=".7"
+                android:background="@drawable/classes_bg"
+                android:padding="@dimen/padding_common_10"
+                android:src="@drawable/event_forwd_aarow" />
+        </LinearLayout>
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/padding_common_10"
-        android:src="@drawable/event_forwd_aarow"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/eventName" />
-
 </RelativeLayout>

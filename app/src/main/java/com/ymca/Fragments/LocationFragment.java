@@ -17,6 +17,12 @@ import com.ymca.AppManager.DataManager;
 import com.ymca.ModelClass.LocationModelClass;
 import com.ymca.PullListLoader.XListView;
 import com.ymca.R;
+import com.ymca.UserInterFace.RefreshDataListener;
+import com.ymca.UserInterFace.Refreshable;
+import com.ymca.WebManager.JsonCaller;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /**
@@ -37,26 +43,24 @@ public class LocationFragment extends Fragment {
         } else {
             actionBarUpdateBack();
         }
+
+
         locationListView = (XListView)view.findViewById(R.id.locationListView);
         locationAdapter = new LocationAdapter(getActivity(), DataManager.getInstance().getLocationModelClasses());
         locationListView.setAdapter(locationAdapter);
-        setData();
+
+
+
+        DataManager.getInstance().showProgressMessage(getActivity(),"Progress");
+        Map<String,Object> objectMap = new LinkedHashMap<>();
+        JsonCaller.getInstance().getLocationList(objectMap);
+
+
 
         return view;
     }
 
-    private void setData() {
-        for(int i = 0; i<20; i++){
-            LocationModelClass locationModelClass = new LocationModelClass();
-            locationModelClass.setLocationName("Gordon family YMCA");
 
-            locationModelClass.setLocationMiles(String.format("%.2f",DataManager.getInstance().distance(22.719569,75.857726,22.962267,76.050795)));
-
-            DataManager.getInstance().addLocationModelClasses(locationModelClass);
-        }
-
-        locationAdapter.setReloadData(true);
-    }
 
     private void actionBarUpdate() {
         // TODO Auto-generated method stub
@@ -139,5 +143,12 @@ public class LocationFragment extends Fragment {
         actionBar.setCustomView(v, layoutParams);
 
 
+    }
+
+
+    public void onRefreshData(Refreshable refreshable, int requestCode) {
+        if(requestCode == JsonCaller.REFRESH_CODE_LOCATION_LIST) {
+            locationAdapter.setReloadData(true);
+        }
     }
 }

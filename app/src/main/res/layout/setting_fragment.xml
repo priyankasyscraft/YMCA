@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.ymca.CustomFont.PrimaryFontText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_common_5"
+        android:text="@string/setting"
+        android:textAllCaps="true"
+        android:textColor="@color/colorScheduleBottomUnSelect"
+        android:textSize="@dimen/text_size_common_22"
+        android:textStyle="bold"
+        app:fontNames="@string/custom_primary_font" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,15 +66,49 @@
             android:layout_height="0.5dp"
             android:background="@android:color/black" />
 
-        <View
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight=".2" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/padding_common_5"
+            android:weightSum="1">
+
+            <com.ymca.CustomFont.PrimaryFontText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".85"
+                android:gravity="center_vertical"
+                android:padding="@dimen/padding_common_8"
+                android:text="@string/default_loc"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_common_20"
+                android:textStyle="bold"
+                app:fontNames="@string/custom_secondary_font" />
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight=".15"-->
+            <!--android:gravity="end|center_vertical"-->
+
+            <!--android:weightSum="1">-->
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".15"
+                android:padding="@dimen/padding_common_10"
+                android:src="@drawable/arrow_black"
+                android:visibility="gone" />
+            <!--</LinearLayout>-->
+        </LinearLayout>
 
         <View
             android:layout_width="wrap_content"
             android:layout_height="0.5dp"
             android:background="@android:color/black" />
+
 
         <LinearLayout
             android:id="@+id/settingButton"
@@ -99,7 +143,50 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".15"
                 android:padding="@dimen/padding_common_10"
-                android:src="@drawable/arrow_black" />
+                android:src="@drawable/arrow_black"
+                android:visibility="gone" />
+            <!--</LinearLayout>-->
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:background="@android:color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/padding_common_5"
+            android:weightSum="1">
+
+            <com.ymca.CustomFont.PrimaryFontText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".85"
+                android:gravity="center_vertical"
+                android:padding="@dimen/padding_common_8"
+                android:text="@string/reportProb"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_common_20"
+                android:textStyle="bold"
+                app:fontNames="@string/custom_secondary_font" />
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight=".15"-->
+            <!--android:gravity="end|center_vertical"-->
+
+            <!--android:weightSum="1">-->
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".15"
+                android:padding="@dimen/padding_common_10"
+                android:src="@drawable/arrow_black"
+                android:visibility="gone" />
             <!--</LinearLayout>-->
         </LinearLayout>
 

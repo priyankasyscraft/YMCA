@@ -16,9 +16,16 @@ import com.ymca.Activities.HomeActivity;
 import com.ymca.Adapters.InstructorAdapter;
 import com.ymca.Adapters.TraineeAdapter;
 import com.ymca.AppManager.DataManager;
+import com.ymca.Constants.Constant;
 import com.ymca.ModelClass.InstructorModelClass;
 import com.ymca.ModelClass.TraineeModelClass;
 import com.ymca.R;
+import com.ymca.UserInterFace.RefreshDataListener;
+import com.ymca.UserInterFace.Refreshable;
+import com.ymca.WebManager.JsonCaller;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by Soni on 12-Aug-16.
@@ -29,30 +36,26 @@ public class TrainerFragment extends Fragment {
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
-
+    private TrainerDetailFragment trainerDetailFragment = new TrainerDetailFragment();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.trainee_fragment,container,false);
+        view = inflater.inflate(R.layout.trainee_fragment, container, false);
         actionBarUpdate();
-        mRecyclerView = (RecyclerView)view.findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getActivity(), 3);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        setData();
+
+
+        // TODO: 8/25/2016 Here add static location id ,Change when filter location list data come.
+        DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
+        Map<String, Object> objectMap = new LinkedHashMap<>();
+        objectMap.put("location_id", "1");
+        JsonCaller.getInstance().getTrainerLIst(objectMap);
+
+//        setData();
         return view;
-    }
-
-    private void setData() {
-
-        for(int i=0; i < 19; i++) {
-            TraineeModelClass traineeModelClass = new TraineeModelClass();
-            traineeModelClass.setTraineeName("Amit");
-            traineeModelClass.setTraineeImg("http://img.rtve.es/i/?w=400&crop=no&o=no&i=1435058352516.png");
-            DataManager.getInstance().addTraineeModelClasses(traineeModelClass);
-        }
-        mAdapter = new TraineeAdapter(getActivity(), DataManager.getInstance().getTraineeModelClasses());
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void actionBarUpdate() {
@@ -90,5 +93,20 @@ public class TrainerFragment extends Fragment {
 
 
         actionBar.setCustomView(view, layoutParams);
+    }
+
+
+    public void onRefreshData(Refreshable refreshable, int requestCode) {
+        if (requestCode == JsonCaller.REFRESH_CODE_TRAINER_LIST) {
+            mAdapter = new TraineeAdapter(getActivity(), DataManager.getInstance().getTraineeModelClasses());
+            mRecyclerView.setAdapter(mAdapter);
+        }else if(requestCode == JsonCaller.REFRESH_CODE_TRAINER_DETAIL){
+            getActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, new TrainerDetailFragment(), Constant.instructorDetailFrag)
+                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                    .commit();
+        }
     }
 }

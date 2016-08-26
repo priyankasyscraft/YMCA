@@ -1,5 +1,6 @@
 package com.ymca.Fragments;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.ymca.Activities.HomeActivity;
 import com.ymca.AppManager.DataManager;
 import com.ymca.R;
@@ -22,12 +28,52 @@ import com.ymca.R;
 public class ClassDetailFragment extends Fragment {
 
     private View view;
-   TextView classDetailHeader,classDetailDay,classDetailDate,classDetailTime,classDetailDescription,classDetailAddress,classDetailPhoneNo;
+    TextView classDetailHeader,trainerName, classDetailDay, classDetailDate, classDetailWeekDays, intensityLevel, classDetailDescription, classDetailAddress;
+    ImageView circleInstructorImg, classBgImg;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.class_detail_fragment,container,false );
+        view = inflater.inflate(R.layout.class_detail_fragment, container, false);
+
+        classBgImg = (ImageView) view.findViewById(R.id.classBgImg);
+        circleInstructorImg = (ImageView) view.findViewById(R.id.circleInstructorImg);
+        classDetailHeader = (TextView) view.findViewById(R.id.classDetailHeader);
+        classDetailDay = (TextView) view.findViewById(R.id.classDetailDay);
+        classDetailDate = (TextView) view.findViewById(R.id.classDetailDate);
+        classDetailWeekDays = (TextView) view.findViewById(R.id.classDetailWeekDays);
+        intensityLevel = (TextView) view.findViewById(R.id.intensityLevel);
+        classDetailDescription = (TextView) view.findViewById(R.id.classDetailDescription);
+        classDetailAddress = (TextView) view.findViewById(R.id.classDetailAddress);
+        trainerName = (TextView) view.findViewById(R.id.trainerName);
+
+        classDetailHeader.setText(DataManager.getInstance().getClassDetailModelClassArrayList().get(0).getClassDetailName());
+        classDetailDay.setText(DataManager.getInstance().getClassDetailModelClassArrayList().get(0).getClassDetailDate());
+        classDetailDate.setText(DataManager.getInstance().getClassDetailModelClassArrayList().get(0).getClassDetailDay());
+        classDetailWeekDays.setText(DataManager.getInstance().getClassDetailModelClassArrayList().get(0).getClassDetailWeekDays());
+        classDetailDescription.setText(DataManager.getInstance().getClassDetailModelClassArrayList().get(0).getClassDetailDescription());
+        classDetailAddress.setText(DataManager.getInstance().getClassDetailModelClassArrayList().get(0).getClassDetailLocationName());
+        intensityLevel.setText(DataManager.getInstance().getClassDetailModelClassArrayList().get(0).getClassDetailIntensityLevel());
+        trainerName.setText(DataManager.getInstance().getClassDetailModelClassArrayList().get(0).getClassDetailInstrName());
+
+
+        ImageLoader imageLoader = ImageLoader.getInstance();
+
+        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+
+        DisplayImageOptions options = new DisplayImageOptions.Builder().displayer(new RoundedBitmapDisplayer(1000)).cacheInMemory(true)
+                .cacheOnDisc(true).resetViewBeforeLoading(true)
+                .showImageForEmptyUri(R.drawable.bg_dot)
+                .showImageOnFail(R.drawable.bg_dot)
+                .showImageOnLoading(R.drawable.bg_dot).bitmapConfig(Bitmap.Config.RGB_565).build();
+
+        imageLoader.displayImage(DataManager.getInstance().getClassDetailModelClassArrayList().get(0).getClassDetailInstrImg(), circleInstructorImg, options);
+
+
+
+        Glide.with(getActivity()).load(DataManager.getInstance().getClassDetailModelClassArrayList().get(0).getClassDetailBgImg()).into(classBgImg);
+        DataManager.getInstance().hideProgressMessage();
+
 
         actionBarUpdate();
 

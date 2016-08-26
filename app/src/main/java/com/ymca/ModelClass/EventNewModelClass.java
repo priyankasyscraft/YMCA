@@ -1,17 +1,15 @@
 package com.ymca.ModelClass;
 
-import java.util.ArrayList;
-
 /**
  * Created by Soni on 30-Jul-16.
  */
-public class EventModelClass {
+public class EventNewModelClass {
 
     private String eventId;
     private String eventName;
     private String eventStartDates;
     private String eventEndDates;
-    private ArrayList<String> startDates = new ArrayList<>();
+
 
 
     public String getEventId() {
@@ -44,21 +42,5 @@ public class EventModelClass {
 
     public void setEventStartDates(String eventStartDates) {
         this.eventStartDates = eventStartDates;
-    }
-
-    public ArrayList<String> getStartDates() {
-        return startDates;
-    }
-
-    public void setStartDates(ArrayList<String> startDates) {
-        this.startDates = startDates;
-    }
-
-    public void addStartDates(String startDates) {
-        this.startDates.add(startDates);
-    }
-
-    public void clearStartDates() {
-        this.startDates.clear();
     }
 }

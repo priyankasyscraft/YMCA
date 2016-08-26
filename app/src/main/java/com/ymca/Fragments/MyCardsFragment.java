@@ -79,7 +79,7 @@ public class MyCardsFragment extends Fragment implements RefreshDataListener {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
                 DataManager.getInstance().setMemberName(DataManager.getInstance().getMyCardModelClasses().get(i).getUserName());
-                DataManager.getInstance().setMemberCardNumber(DataManager.getInstance().getMyCardModelClasses().get(i).getUserBarCodeNumber().toString().replace("CODE: ", ""));
+                DataManager.getInstance().setMemberCardNumber(DataManager.getInstance().getMyCardModelClasses().get(i).getUserBarCodeNumber().toString().replace("CARD NUMBER: ", ""));
                 DataManager.getInstance().setFlagCardShow(true);
 
                 getActivity()
@@ -127,7 +127,7 @@ public class MyCardsFragment extends Fragment implements RefreshDataListener {
         DataManager.getInstance().showProgressMessage(DataManager.getInstance().getAppCompatActivity(), "Progress");
         String deviceToken = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.deviceToken);
         Map<String, Object> params = new LinkedHashMap<>();
-        String barcodeno = DataManager.getInstance().getMyCardModelClasses().get(info.position).getUserBarCodeNumber().toString().replace("CODE:", "");
+        String barcodeno = DataManager.getInstance().getMyCardModelClasses().get(info.position).getUserBarCodeNumber().toString().replace("CARD NUMBER:", "");
         params.put("card_id", barcodeno);
         params.put("device_token", deviceToken);
         JsonCaller.getInstance().getDeleteCard(params);

@@ -5,6 +5,7 @@ package com.ymca.ModelClass;
  */
 public class TraineeModelClass {
 
+    private String traineeId;
     private String traineeImg;
     private String traineeName;
 
@@ -23,5 +24,13 @@ public class TraineeModelClass {
 
     public void setTraineeImg(String traineeImg) {
         this.traineeImg = traineeImg;
+    }
+
+    public String getTraineeId() {
+        return traineeId;
+    }
+
+    public void setTraineeId(String traineeId) {
+        this.traineeId = traineeId;
     }
 }

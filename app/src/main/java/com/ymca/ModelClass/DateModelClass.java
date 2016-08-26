@@ -9,7 +9,7 @@ public class DateModelClass {
     private String scheduleDateTime;
     private String scheduleDateName;
     private String scheduleDateNameWith;
-    private String scheduleDateAppointmentTime;
+    private String scheduleDateWeekDays;
     private String scheduleDatePlace;
 
     public DateModelClass(){}
@@ -39,13 +39,7 @@ public class DateModelClass {
         this.scheduleDateNameWith = scheduleDateNameWith;
     }
 
-    public String getScheduleDateAppointmentTime() {
-        return scheduleDateAppointmentTime;
-    }
 
-    public void setScheduleDateAppointmentTime(String scheduleDateAppointmentTime) {
-        this.scheduleDateAppointmentTime = scheduleDateAppointmentTime;
-    }
 
     public String getScheduleDatePlace() {
         return scheduleDatePlace;
@@ -61,5 +55,13 @@ public class DateModelClass {
 
     public void setScheduleDateId(String scheduleDateId) {
         this.scheduleDateId = scheduleDateId;
+    }
+
+    public String getScheduleDateWeekDays() {
+        return scheduleDateWeekDays;
+    }
+
+    public void setScheduleDateWeekDays(String scheduleDateWeekDays) {
+        this.scheduleDateWeekDays = scheduleDateWeekDays;
     }
 }

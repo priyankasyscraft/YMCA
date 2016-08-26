@@ -1,36 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/locationLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/classes_bg"
-    android:orientation="vertical"
     android:focusable="false"
-    android:id="@+id/facilityLayout">
+    android:orientation="vertical"
+    android:gravity="center_vertical">
 
     <com.ymca.CustomFont.PrimaryFontText
-        android:id="@+id/facilityName"
-        android:textSize="@dimen/text_size_common_16"
+        android:id="@+id/locationName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_common_5"
+        android:focusable="false"
         android:text="DOWNTOWN FACILITY"
         android:textAllCaps="true"
         android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_common_14"
         android:textStyle="bold"
-        app:fontName="@string/custom_primary_font"
-        android:focusable="false"/>
+        android:paddingLeft="@dimen/padding_common_2"
+        app:fontName="@string/custom_primary_font" />
 
-    <com.ymca.CustomFont.SecondaryFontText
-        android:id="@+id/facilityAddress"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_common_5"
-        android:text="601,South 4th spreed filed"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/text_size_common_12"
-        app:fontNames="@string/custom_secondary_font"
-        android:focusable="false"/>
+        android:orientation="horizontal"
+        android:paddingRight="@dimen/padding_common_2"
+        android:paddingLeft="@dimen/padding_common_2"
+        android:weightSum="1">
+
+        <com.ymca.CustomFont.SecondaryFontText
+            android:id="@+id/facilityAddress"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".68"
+            android:focusable="false"
+            android:gravity="center_vertical"
+            android:text="601,South 4th spreed filed"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_common_12"
+            app:fontNames="@string/custom_secondary_font" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight=".32"
+            android:gravity="right"
+            android:layout_height="wrap_content">
+
+            <com.ymca.CustomFont.SecondaryFontText
+                android:id="@+id/locationDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_border"
+                android:focusable="false"
+                android:gravity="center"
+                android:padding="@dimen/padding_common_2"
+                android:text="169228.23 mi"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_common_13"
+                android:textStyle="bold"
+                app:fontNames="@string/custom_secondary_font" />
+        </LinearLayout>
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,31 +76,31 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".8"
-            android:padding="@dimen/padding_common_5"
+            android:paddingLeft="@dimen/padding_common_2"
+            android:focusable="false"
             android:text="we are open"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_common_12"
-            app:fontNames="@string/custom_secondary_font"
-            android:focusable="false" />
+            app:fontNames="@string/custom_secondary_font" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".2"
-            android:src="@drawable/event_forwd_aarow"
             android:focusable="false"
+            android:gravity="end|center_vertical"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
-            >
+            android:paddingRight="@dimen/padding_common_5"
+            android:src="@drawable/event_forwd_aarow">
+
             <ImageView
+                android:id="@+id/statusImg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/close"
-                android:id="@+id/statusImg"
-                />
+                android:src="@mipmap/open" />
 
 
-            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

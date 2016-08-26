@@ -25,7 +25,7 @@
                 android:weightSum="1">
 
                 <com.ymca.CustomFont.PrimaryFontText
-                    android:id="@+id/locationDetaildHeader"
+                    android:id="@+id/locationDetailHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -70,6 +70,7 @@
                         android:src="@drawable/arrow_next" />
 
                     <com.ymca.CustomFont.PrimaryFontText
+                        android:id="@+id/locationOpenTime"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
@@ -100,6 +101,7 @@
                         android:textStyle="bold" />
 
                     <com.ymca.CustomFont.PrimaryFontText
+                        android:id="@+id/openTime1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".8"
@@ -133,6 +135,7 @@
                         android:textStyle="bold" />
 
                     <com.ymca.CustomFont.PrimaryFontText
+                        android:id="@+id/openTime2"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".8"
@@ -166,6 +169,7 @@
                         android:textStyle="bold" />
 
                     <com.ymca.CustomFont.PrimaryFontText
+                        android:id="@+id/openTime3"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".8"
@@ -199,6 +203,7 @@
                         android:textStyle="bold" />
 
                     <com.ymca.CustomFont.PrimaryFontText
+                        android:id="@+id/openTime4"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".8"
@@ -232,6 +237,7 @@
                         android:textStyle="bold" />
 
                     <com.ymca.CustomFont.PrimaryFontText
+                        android:id="@+id/openTime5"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".8"
@@ -264,6 +270,7 @@
                         android:textStyle="bold" />
 
                     <com.ymca.CustomFont.PrimaryFontText
+                        android:id="@+id/openTime6"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".8"
@@ -297,6 +304,7 @@
                         android:textStyle="bold" />
 
                     <com.ymca.CustomFont.PrimaryFontText
+                        android:id="@+id/openTime7"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".8"
@@ -384,7 +392,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:text="XXXXXXXXX"
+                            android:text="Activity Pool Hours"
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
                             app:fontName="@string/custom_primary_font" />
@@ -394,8 +402,8 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/poolHours"
                             android:gravity="center_horizontal"
-                            android:text="XXXXXXXXX"
-                            android:textColor="@android:color/black"
+                            android:text="open untill 5 pm"
+                            android:textColor="@color/colorTextPurple"
                             app:fontName="@string/custom_primary_font" />
 
                         <ImageView
@@ -443,7 +451,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:text="XXXXXXXXX"
+                            android:text="Arts Center Hours"
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
                             app:fontName="@string/custom_primary_font" />
@@ -453,9 +461,8 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/centerHours"
                             android:gravity="center_horizontal"
-                            android:text="XXXXXXXXX"
-                            android:textColor="@android:color/black"
-                            app:fontName="@string/custom_primary_font" />
+                            android:text="open untill 5 pm"
+                            android:textColor="@color/colorTextPurple" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -502,7 +509,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:text="XXXXXXXXX"
+                            android:text="Climbing Wall hours"
                             android:textColor="@android:color/black"
                             android:textStyle="bold"
                             app:fontName="@string/custom_primary_font" />
@@ -512,9 +519,8 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/climbHours"
                             android:gravity="center_horizontal"
-                            android:text="XXXXXXXXX"
-                            android:textColor="@android:color/black"
-                            app:fontName="@string/custom_primary_font" />
+                            android:text="open untill 5 pm"
+                            android:textColor="@color/colorTextPurple" />
 
                         <ImageView
                             android:layout_width="wrap_content"

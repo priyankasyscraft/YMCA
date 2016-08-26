@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -62,24 +63,37 @@ public class LocationAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.location_item, null);
+            convertView = inflater.inflate(R.layout.facility_item, null);
+            viewHolder.statusImg = (ImageView) convertView.findViewById(R.id.statusImg);
             viewHolder.locationLayout = (LinearLayout) convertView.findViewById(R.id.locationLayout);
             viewHolder.locationName = (TextView) convertView.findViewById(R.id.locationName);
             viewHolder.locationDistance = (TextView) convertView.findViewById(R.id.locationDistance);
+            viewHolder.facilityAddress = (TextView) convertView.findViewById(R.id.facilityAddress);
+            viewHolder.facilityStatus = (TextView) convertView.findViewById(R.id.facilityStatus);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.locationName.setText(locationModelClasses.get(position).getLocationName());
-        viewHolder.locationDistance.setText(locationModelClasses.get(position).getLocationMiles()+" "+"Mi");
+        viewHolder.locationDistance.setText(locationModelClasses.get(position).getLocationMiles());
+        viewHolder.facilityAddress.setText(locationModelClasses.get(position).getLocationAddress());
+        viewHolder.facilityStatus.setText(locationModelClasses.get(position).getLocationOpenCloseTime());
+
+        if (locationModelClasses.get(position).getLocationOpenCloseStatus().equals("1")) {
+            viewHolder.statusImg.setImageResource(R.mipmap.open);
+        } else {
+            viewHolder.statusImg.setImageResource(R.mipmap.close);
+        }
 
         viewHolder.locationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                DataManager.getInstance().setLocationModelClass(locationModelClasses.get(position));
 
                 ((HomeActivity) context)
                         .getSupportFragmentManager()
@@ -94,7 +108,8 @@ public class LocationAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder {
-        TextView locationName, locationDistance;
+        TextView locationName, locationDistance, facilityAddress,facilityStatus;
+        ImageView statusImg;
         LinearLayout locationLayout;
     }
 }
