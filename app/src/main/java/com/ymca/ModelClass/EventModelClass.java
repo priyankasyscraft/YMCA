@@ -11,6 +11,7 @@ public class EventModelClass {
     private String eventName;
     private String eventStartDates;
     private String eventEndDates;
+    private String eventStratEndTime;
     private ArrayList<String> startDates = new ArrayList<>();
 
 
@@ -60,5 +61,13 @@ public class EventModelClass {
 
     public void clearStartDates() {
         this.startDates.clear();
+    }
+
+    public String getEventStratEndTime() {
+        return eventStratEndTime;
+    }
+
+    public void setEventStratEndTime(String eventStratEndTime) {
+        this.eventStratEndTime = eventStratEndTime;
     }
 }

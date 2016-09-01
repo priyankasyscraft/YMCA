@@ -32,6 +32,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.ymca.Activities.*;
 import com.ymca.Activities.HomeActivity;
 import com.ymca.AppManager.DataManager;
@@ -109,12 +110,18 @@ public class SplashActivity extends BaseActivity {
         if (connMgr.getActiveNetworkInfo() != null
                 && connMgr.getActiveNetworkInfo().isAvailable()
                 && connMgr.getActiveNetworkInfo().isConnected()) {
+
+            String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+            Log.e("Refreshed token: ","" + refreshedToken);
+
+
             String deviceToken = SharedPreference.getSharedPrefData(this,Constant.deviceToken);
             DataManager.getInstance().showProgressMessage(this, "Progress");
             Map<String, Object> objectsMap = new LinkedHashMap<>();
 
             objectsMap.put("device_token",deviceToken);
             objectsMap.put("device_type","1");
+            objectsMap.put("device_token_FCM",refreshedToken);
 
             JsonCaller.getInstance().getErrorCode(objectsMap);
         } else {

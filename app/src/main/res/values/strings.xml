@@ -134,4 +134,5 @@
     <string name="gcm_deleted">From GCM: error (%1$s).</string>
     <string name="gcm_recoverable_error">From GCM: recoverable error (%1$s).</string>
     <string name="gcm_error">From GCM: error (%1$s).</string>
+    <string name="search">Search</string>
 </resources>

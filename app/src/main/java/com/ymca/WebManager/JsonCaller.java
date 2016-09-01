@@ -15,10 +15,12 @@ import com.ymca.ModelClass.CustomTextModelClass;
 import com.ymca.ModelClass.DateModelClass;
 import com.ymca.ModelClass.EventDetailModelClass;
 import com.ymca.ModelClass.EventModelClass;
+import com.ymca.ModelClass.FacilityModelClass;
 import com.ymca.ModelClass.InstructorDetailModel;
 import com.ymca.ModelClass.InstructorModelClass;
 import com.ymca.ModelClass.LocationModelClass;
 import com.ymca.ModelClass.MyCardModelClass;
+import com.ymca.ModelClass.NotificationModelClass;
 import com.ymca.ModelClass.SliderModelClass;
 import com.ymca.ModelClass.TraineeModelClass;
 import com.ymca.ModelClass.TrainerDetailModelClass;
@@ -34,6 +36,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -69,11 +72,11 @@ public class JsonCaller {
     private HttpCaller httpCaller = new HttpCaller();
 
     public void setRefreshDataListener(RefreshDataListener refreshDataListene) {
-        this.refreshDataListeners.add(refreshDataListener);
-
-        for (int i = 0; i < refreshDataListeners.size(); i++) {
+//        this.refreshDataListeners.add(refreshDataListener);
+//
+//        for (int i = 0; i < refreshDataListeners.size(); i++) {
             this.refreshDataListener = refreshDataListene;
-        }
+//        }
 
     }
 
@@ -100,7 +103,10 @@ public class JsonCaller {
         TRAINER_LIST,
         TRAINER_DETAIL,
         EVENT_LIST,
-        EVENT_DETAIL, SCHEDULE_DATA_INSTRUCTOR_CLASS_DETAIL,
+        EVENT_DETAIL,
+        SCHEDULE_DATA_INSTRUCTOR_CLASS_DETAIL,
+        FACILITY_LIST,
+        ANNOUNCEMENT_LIST, ANNOUNCEMENT_RESET,BADGE_COUNT
     }
 
     public static final int REFRESH_CODE_SERVER_ERROR = 0;
@@ -113,6 +119,7 @@ public class JsonCaller {
     public static final int REFRESH_CODE_SLIDER_IMAGES_NULL = 500;
     public static final int REFRESH_CODE_SCHEDULE_DATA = 6;
     public static final int REFRESH_CODE_SCHEDULE_DATA_NULL = 600;
+    public static final int REFRESH_CODE_SCHEDULE_DATA_DATE_NULL = 6000;
     public static final int REFRESH_CODE_SCHEDULE_DATA_CLASS = 7;
     public static final int REFRESH_CODE_SCHEDULE_DATA_INSTRU = 8;
     public static final int REFRESH_CODE_SCHEDULE_DATA_AREA = 9;
@@ -127,6 +134,9 @@ public class JsonCaller {
     public static final int REFRESH_CODE_EVENT_LIST_NULL = 1600;
     public static final int REFRESH_CODE_EVENT_DETAIL = 17;
     public static final int REFRESH_CODE_INSTRUCT_CLASS_DETAIL = 18;
+    public static final int REFRESH_CODE_FACILITY_LIST = 19;
+    public static final int REFRESH_CODE_NOTIFY_LIST = 20;
+    public static final int REFRESH_CODE_BADGE_COUNT = 21;
 
     public void getErrorCode(Map<String, Object> params) {
 
@@ -241,6 +251,29 @@ public class JsonCaller {
         SoapCaller soapCaller = new SoapCaller();
         soapCaller.setInstructorDetail(params);
         soapCaller.execute(ParseOp.EVENT_DETAIL);
+    }
+
+    public void getFacilityList(Map<String, Object> params) {
+        SoapCaller soapCaller = new SoapCaller();
+        soapCaller.setInstructorDetail(params);
+        soapCaller.execute(ParseOp.FACILITY_LIST);
+    }
+
+    public void getAnnouncementList(Map<String, Object> params) {
+        SoapCaller soapCaller = new SoapCaller();
+        soapCaller.setInstructorDetail(params);
+        soapCaller.execute(ParseOp.ANNOUNCEMENT_LIST);
+    }
+    public void getBadgeCount(Map<String, Object> params) {
+        SoapCaller soapCaller = new SoapCaller();
+        soapCaller.setInstructorDetail(params);
+        soapCaller.execute(ParseOp.BADGE_COUNT);
+    }
+
+    public void getAnnouncementReset(Map<String, Object> params) {
+        SoapCaller soapCaller = new SoapCaller();
+        soapCaller.setInstructorDetail(params);
+        soapCaller.execute(ParseOp.ANNOUNCEMENT_RESET);
     }
 
     private class SoapCaller extends AsyncTask<ParseOp, Void, String> {
@@ -421,6 +454,35 @@ public class JsonCaller {
                         e.printStackTrace();
                     }
                     break;
+                case FACILITY_LIST:
+                    try {
+                        return httpCaller.getFacilityListData(deleteCard);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case ANNOUNCEMENT_LIST:
+                    try {
+                        return httpCaller.getAnnouncementListData(deleteCard);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case BADGE_COUNT:
+                    try {
+                        return httpCaller.getAnnouncementListData(deleteCard);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case ANNOUNCEMENT_RESET:
+                    try {
+                        return httpCaller.getAnnouncementResetData(deleteCard);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                    break;
             }
 
             return null;
@@ -443,7 +505,7 @@ public class JsonCaller {
             switch (lastOP) {
                 case ERROR_CODES:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
                             SharedPreference.setDataInSharedPreference(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes, response);
@@ -457,7 +519,7 @@ public class JsonCaller {
 
                 case ADD_CARD:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
@@ -472,11 +534,8 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
-//                                        String msgs[] = msg.split("--");
-//                                        String msg1 = msgs[0];
-//                                        String msg2 = msgs[1];
-                                        String type = jsonObject1.getString("type");
+                                        String msg = jsonObject2.getString("message");
+                                        String type = jsonObject2.getString("messagetype");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
                                         builder.setCancelable(false);
@@ -522,14 +581,14 @@ public class JsonCaller {
                     break;
                 case GET_ALL_CARDS:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -537,8 +596,8 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
-                                        String type = jsonObject1.getString("type");
+                                        String msg = jsonObject2.getString("message");
+                                        String type = jsonObject1.getString("messagetype");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
                                         builder.setCancelable(false);
@@ -548,30 +607,12 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
-                                                sendRefreshData(null, REFRESH_CODE_ADD_CARD);
+                                                sendRefreshData(null, REFRESH_CODE_ADD_CARD_NULL);
                                             }
                                         });
                                         builder.show();
                                     }
                                 }
-
-
-                            } else if (!errorStr.equals("")) {
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
-                                builder.setTitle("Alert");
-                                builder.setCancelable(false);
-                                builder.setMessage(errorStr);
-                                builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        DataManager.getInstance().hideProgressMessage();
-                                        sendRefreshData(null, REFRESH_CODE_ADD_CARD_NULL);
-                                    }
-                                });
-                                builder.show();
 
 
                             } else {
@@ -598,7 +639,7 @@ public class JsonCaller {
                 case GET_DELETE_CARD:
 
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
@@ -613,7 +654,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
+                                        String msg = jsonObject2.getString("message");
 
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
@@ -659,7 +700,7 @@ public class JsonCaller {
 
                 case SETTING_NOTIFY:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
@@ -674,21 +715,19 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
-                                        String msgs[] = msg.split("--");
-                                        String msg1 = msgs[0];
-                                        String msg2 = msgs[1];
+                                        String msg = jsonObject2.getString("message");
+
+                                        String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
+                                        builder.setTitle(type);
                                         builder.setCancelable(false);
-                                        builder.setTitle(msg1);
-                                        builder.setMessage(msg2);
+                                        builder.setMessage(msg);
                                         builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
 
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
                                                 DataManager.getInstance().hideProgressMessage();
-//                                                sendRefreshData(null, REFRESH_CODE_ADD_CARD);
                                             }
                                         });
                                         builder.show();
@@ -710,14 +749,14 @@ public class JsonCaller {
                     break;
                 case SLIDER_IMGS:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -725,7 +764,10 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
+
+
+                                        String msg = jsonObject2.getString("message");
+
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -736,30 +778,13 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
-                                                sendRefreshData(null, REFRESH_CODE_ALL_CARDS);
+//                                                sendRefreshData(null, REFRESH_CODE_ALL_CARDS);
+                                                DataManager.getInstance().hideProgressMessage();
                                             }
                                         });
                                         builder.show();
                                     }
                                 }
-
-
-                            } else if (!errorStr.equals("")) {
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
-                                builder.setTitle("Alert");
-                                builder.setCancelable(false);
-                                builder.setMessage(errorStr);
-                                builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        DataManager.getInstance().hideProgressMessage();
-                                        sendRefreshData(null, REFRESH_CODE_SLIDER_IMAGES_NULL);
-                                    }
-                                });
-                                builder.show();
 
 
                             } else {
@@ -779,19 +804,20 @@ public class JsonCaller {
 
                     } catch (Exception e) {
                         e.printStackTrace();
+                        DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                     }
 
                     break;
                 case SCHEDULE_DATA_DATE:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -799,7 +825,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
+                                        String msg = jsonObject2.getString("message");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -810,7 +836,7 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
-                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
+                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_DATE_NULL);
                                             }
                                         });
                                         builder.show();
@@ -818,27 +844,11 @@ public class JsonCaller {
                                 }
 
 
-                            } else if (!errorStr.equals("")) {
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
-                                builder.setTitle("Alert");
-                                builder.setCancelable(false);
-                                builder.setMessage(errorStr);
-                                builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        DataManager.getInstance().hideProgressMessage();
-                                        sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
-                                    }
-                                });
-                                builder.show();
-
-
                             } else {
                                 JSONArray jsonArray = jsonObject1.getJSONArray("data");
-                                DataManager.getInstance().clearDateModelClasses();
+                                if (deleteCard.containsValue("0")) {
+                                    DataManager.getInstance().clearDateModelClasses();
+                                }
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     DateModelClass dateModelClass = new DateModelClass();
@@ -869,14 +879,14 @@ public class JsonCaller {
                     break;
                 case SCHEDULE_DATA_CLASS:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -884,7 +894,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
+                                        String msg = jsonObject2.getString("message");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -901,24 +911,6 @@ public class JsonCaller {
                                         builder.show();
                                     }
                                 }
-
-
-                            } else if (!errorStr.equals("")) {
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
-                                builder.setTitle("Alert");
-                                builder.setCancelable(false);
-                                builder.setMessage(errorStr);
-                                builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        DataManager.getInstance().hideProgressMessage();
-                                        sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
-                                    }
-                                });
-                                builder.show();
 
 
                             } else {
@@ -944,14 +936,14 @@ public class JsonCaller {
                     break;
                 case SCHEDULE_DATA_INSTRUC:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -959,7 +951,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
+                                        String msg = jsonObject2.getString("message");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -976,24 +968,6 @@ public class JsonCaller {
                                         builder.show();
                                     }
                                 }
-
-
-                            } else if (!errorStr.equals("")) {
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
-                                builder.setTitle("Alert");
-                                builder.setCancelable(false);
-                                builder.setMessage(errorStr);
-                                builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        DataManager.getInstance().hideProgressMessage();
-                                        sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
-                                    }
-                                });
-                                builder.show();
 
 
                             } else {
@@ -1020,14 +994,14 @@ public class JsonCaller {
                     break;
                 case SCHEDULE_DATA_AREA:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -1035,7 +1009,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
+                                        String msg = jsonObject2.getString("message");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1046,30 +1020,13 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
-                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
+                                                DataManager.getInstance().hideProgressMessage();
+//                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
                                             }
                                         });
                                         builder.show();
                                     }
                                 }
-
-
-                            } else if (!errorStr.equals("")) {
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
-                                builder.setTitle("Alert");
-                                builder.setCancelable(false);
-                                builder.setMessage(errorStr);
-                                builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        DataManager.getInstance().hideProgressMessage();
-                                        sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
-                                    }
-                                });
-                                builder.show();
 
 
                             } else {
@@ -1098,14 +1055,14 @@ public class JsonCaller {
                     break;
                 case SCHEDULE_DATA_INSTRUC_DETAIL:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -1113,7 +1070,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
+                                        String msg = jsonObject2.getString("messsage");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1130,24 +1087,6 @@ public class JsonCaller {
                                         builder.show();
                                     }
                                 }
-
-
-                            } else if (!errorStr.equals("")) {
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
-                                builder.setTitle("Alert");
-                                builder.setCancelable(false);
-                                builder.setMessage(errorStr);
-                                builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        DataManager.getInstance().hideProgressMessage();
-                                        sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
-                                    }
-                                });
-                                builder.show();
 
 
                             } else {
@@ -1181,14 +1120,14 @@ public class JsonCaller {
                     break;
                 case SCHEDULE_DATA_INSTRUCTOR_CLASS_DETAIL:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -1196,7 +1135,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
+                                        String msg = jsonObject2.getString("messsage");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1213,24 +1152,6 @@ public class JsonCaller {
                                         builder.show();
                                     }
                                 }
-
-
-                            } else if (!errorStr.equals("")) {
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
-                                builder.setTitle("Alert");
-                                builder.setCancelable(false);
-                                builder.setMessage(errorStr);
-                                builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        DataManager.getInstance().hideProgressMessage();
-                                        sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
-                                    }
-                                });
-                                builder.show();
 
 
                             } else {
@@ -1306,14 +1227,14 @@ public class JsonCaller {
                     break;
                 case SCHEDULE_DATA_CLASS_DETAIL:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -1321,7 +1242,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
+                                        String msg = jsonObject2.getString("messsage");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1432,14 +1353,14 @@ public class JsonCaller {
 
                 case LOCATION_LIST:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -1447,7 +1368,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
+                                        String msg = jsonObject2.getString("messsage");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1497,23 +1418,22 @@ public class JsonCaller {
                                     String lon1 = jsonObject.getString("location_long");
                                     String openTime = jsonObject.optString("opening_time");
                                     String closeTime = jsonObject.optString("closing_time");
-                                    String time = DataManager.getInstance().differenceTwoTime(closeTime, openTime);
-                                    if (!time.contains("0")) {
+//                                    String time = DataManager.getInstance().differenceTwoTime(closeTime, openTime);
+//                                    if (!time.contains("0")) {
                                         locationModelClass.setLocationOpenCloseStatus("1");
-                                    } else {
-                                        locationModelClass.setLocationOpenCloseStatus("2");
-                                    }
+//                                    } else {
+//                                        locationModelClass.setLocationOpenCloseStatus("2");
+//                                    }
 
                                     String openCloseTime = DataManager.getInstance().hourConverter(openTime) + " " + "to" + " " + DataManager.getInstance().hourConverter(closeTime);
                                     locationModelClass.setLocationOpenCloseTime(openCloseTime);
-                                    double currentLat = Double.parseDouble(SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.lati));
-                                    double currentLong = Double.parseDouble(SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.longi));
 
-                                    double miles = DataManager.getInstance().distance(currentLat, currentLong, 22.9612, 76.0514);
+                                    double miles = DataManager.getInstance().distance(Double.parseDouble(lat1), Double.parseDouble(lon1), Double.parseDouble(lat1), Double.parseDouble(lon1));
                                     String milesDouble = String.format("%.2f", miles);
                                     locationModelClass.setLocationMiles(milesDouble + " Mi");
                                     DataManager.getInstance().addLocationModelClasses(locationModelClass);
                                 }
+                                DataManager.getInstance().hideProgressMessage();
                                 sendRefreshData(null, REFRESH_CODE_LOCATION_LIST);
                             }
 
@@ -1527,14 +1447,14 @@ public class JsonCaller {
                     break;
                 case LOCATION_DETAIL:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -1542,7 +1462,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
+                                        String msg = jsonObject2.getString("messsage");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1629,14 +1549,14 @@ public class JsonCaller {
 
                 case TRAINER_LIST:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -1644,7 +1564,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
+                                        String msg = jsonObject2.getString("messsage");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1707,14 +1627,14 @@ public class JsonCaller {
 
                 case TRAINER_DETAIL:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -1722,7 +1642,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
+                                        String msg = jsonObject2.getString("messsage");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1790,14 +1710,14 @@ public class JsonCaller {
 
                 case EVENT_LIST:
                     try {
-                        if (response.equals("") || response.contains("<div")) {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
 
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -1805,8 +1725,8 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
-                                        String type = jsonObject1.getString("type");
+                                        String msg = jsonObject2.getString("messsage");
+                                        String type = jsonObject1.getString("messagetype");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
                                         builder.setCancelable(false);
@@ -1855,6 +1775,7 @@ public class JsonCaller {
                                     String endDate = jsonObject.optString("end_date_time").substring(0, 10);
                                     String endTime = jsonObject.optString("end_date_time").substring(10);
 
+                                    eventModelClass.setEventStratEndTime(DataManager.getInstance().hourConverter(startTime) + " to " + DataManager.getInstance().hourConverter(endTime));
                                     List<Date> dates = DataManager.getInstance().getDates(startDate, endDate);
                                     for (Date date : dates) {
                                         SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy/MM/dd");
@@ -1884,7 +1805,7 @@ public class JsonCaller {
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
-                            if (!errorStr.equals("") && message.equals("")) {
+                            if (!errorStr.equals("")) {
                                 String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
                                 JSONObject jsonObject = new JSONObject(errorCode);
                                 JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
@@ -1892,8 +1813,8 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("msg");
-                                        String type = jsonObject1.getString("type");
+                                        String msg = jsonObject2.getString("messsage");
+                                        String type = jsonObject1.getString("messagetype");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
                                         builder.setCancelable(false);
@@ -1937,8 +1858,9 @@ public class JsonCaller {
                                     EventDetailModelClass eventDetailModelClass = new EventDetailModelClass();
                                     eventDetailModelClass.setDescription(jsonObject.optString("post_content"));
                                     eventDetailModelClass.setLocationAddress(jsonObject.optString("location_name"));
-                                    if(jsonObject.optString("start_date_time").length()!=0) {
-                                        eventDetailModelClass.setLocationAddress(jsonObject.optString("date_time").substring(0, 10));
+
+                                    if (jsonObject.optString("start_date_time").length() != 0) {
+                                        eventDetailModelClass.setDateTime(jsonObject.optString("start_date_time").substring(0, 10));
                                     }
                                     String latLong = jsonObject.optString("lat_long");
                                     String msg[] = latLong.split(",");
@@ -1958,6 +1880,177 @@ public class JsonCaller {
                         e.printStackTrace();
                     }
 
+                    break;
+
+                case FACILITY_LIST:
+                    try {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
+                            DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
+                        } else {
+
+                            JSONObject jsonObject1 = new JSONObject(response);
+                            String errorStr = jsonObject1.getString("error");
+                            String message = jsonObject1.getString("message");
+                            if (!errorStr.equals("")) {
+                                String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
+                                JSONObject jsonObject = new JSONObject(errorCode);
+                                JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+                                    String code = jsonObject2.getString("code");
+                                    if (code.equals(errorStr)) {
+                                        String msg = jsonObject2.getString("messsage");
+                                        String type = jsonObject1.getString("messagetype");
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
+                                        builder.setTitle(type);
+                                        builder.setCancelable(false);
+                                        builder.setMessage(msg);
+                                        builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
+                                            }
+                                        });
+                                        builder.show();
+                                    }
+                                }
+
+
+                            }else {
+                                JSONArray jsonArray = jsonObject1.getJSONArray("data");
+                                DataManager.getInstance().clearFacilityModelClassArrayList();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    FacilityModelClass facilityModelClass = new FacilityModelClass();
+                                    facilityModelClass.setFacilityId(jsonObject.optString("facility_id"));
+                                    facilityModelClass.setFacilityName(jsonObject.optString("facility_name"));
+                                    facilityModelClass.setFacilityAddress(jsonObject.optString("facility_address"));
+                                    String lat1 = jsonObject.getString("facility_lat");
+                                    String lon1 = jsonObject.getString("facility_lon");
+                                    String openTime = jsonObject.optString("opening_time");
+                                    String closeTime = jsonObject.optString("closing_time");
+                                    String weekDays = jsonObject.optString("week_days");
+                                    List<String> myList = new ArrayList<String>(Arrays.asList(weekDays.split(",")));
+                                    facilityModelClass.clearFacilityWeekDays();
+                                    for(int j =0; j<myList.size();j++) {
+                                        facilityModelClass.addFacilityWeekDays(myList.get(j));
+                                    }
+
+                                    Calendar c = Calendar.getInstance();
+
+                                    String formattedDate = new SimpleDateFormat("HH:mm:ss").format(c.getTime());
+
+                                    String time = DataManager.getInstance().differenceTwoTime(formattedDate, closeTime);
+                                    if (!time.contains("0")) {
+                                        facilityModelClass.setFacilityOpenCloseStatus("1");
+                                    } else {
+                                        facilityModelClass.setFacilityOpenCloseStatus("2");
+                                    }
+
+                                    String openCloseTime = DataManager.getInstance().hourConverter(openTime) + " " + "to" + " " + DataManager.getInstance().hourConverter(closeTime);
+                                    facilityModelClass.setFacilityOpenCloseTime(openCloseTime);
+                                    double currentLat = Double.parseDouble(SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.lati));
+                                    double currentLong = Double.parseDouble(SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.longi));
+
+                                    double miles = DataManager.getInstance().distance(currentLat, currentLong, Double.parseDouble(lat1), Double.parseDouble(lon1));
+                                    String milesDouble = String.format("%.2f", miles);
+                                    facilityModelClass.setFacilityMiles(milesDouble + " Mi");
+                                    DataManager.getInstance().addFacilityModelClassArrayList(facilityModelClass);
+                                }
+                                sendRefreshData(null, REFRESH_CODE_FACILITY_LIST);
+                            }
+
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+
+                case ANNOUNCEMENT_LIST:
+                    try {
+                        if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
+                            DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
+                        } else {
+
+                            JSONObject jsonObject1 = new JSONObject(response);
+                            String errorStr = jsonObject1.getString("error");
+                            String message = jsonObject1.getString("message");
+                            if (!errorStr.equals("")) {
+                                String errorCode = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.errorCodes);
+                                JSONObject jsonObject = new JSONObject(errorCode);
+                                JSONArray jsonArray = jsonObject.getJSONArray("app_error_code");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+                                    String code = jsonObject2.getString("code");
+                                    if (code.equals(errorStr)) {
+                                        String msg = jsonObject2.getString("messsage");
+                                        String type = jsonObject1.getString("messagetype");
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
+                                        builder.setTitle(type);
+                                        builder.setCancelable(false);
+                                        builder.setMessage(msg);
+                                        builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
+                                            }
+                                        });
+                                        builder.show();
+                                    }
+                                }
+
+
+                            } else {
+                                JSONObject jsonObject = jsonObject1.getJSONObject("data");
+                                JSONArray jsonArray = jsonObject.getJSONArray("announements");
+                                DataManager.getInstance().clearNotificationModelClassArrayList();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+                                    NotificationModelClass notificationModelClass = new NotificationModelClass();
+                                    notificationModelClass.setNotiMessage(jsonObject2.optString("text"));
+
+                                    String date = DataManager.getInstance().dateTimeConverter(jsonObject2.optString("notify_date"));
+                                    notificationModelClass.setNotiDate(date);
+                                    DataManager.getInstance().addNotificationModelClassArrayList(notificationModelClass);
+                                }
+                                sendRefreshData(null, REFRESH_CODE_NOTIFY_LIST);
+                            }
+
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+
+                case ANNOUNCEMENT_RESET:
+                    if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
+                        DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
+                    } else {
+                        DataManager.getInstance().hideProgressMessage();
+                    }
+                    break;
+
+                case  BADGE_COUNT:
+                    if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
+                        DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
+                    } else {
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                        String badgeCount = jsonObject1.optString("badge_count");
+                        DataManager.getInstance().setBadgeCount(badgeCount);
+                        DataManager.getInstance().hideProgressMessage();
+                        sendRefreshData(null,REFRESH_CODE_BADGE_COUNT);
+                    }
                     break;
             }
         }

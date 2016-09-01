@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:text="fasfhsfkjshfksajdfhkafhdsfkjhfsjdhfkjsafsj,dfhasjkdfhsf"
         android:textColor="@android:color/black"
-        app:fontName="@string/custom_primary_font"/>
+        app:fontName="@string/custom_primary_font"
+        android:id="@+id/notifyText"/>
 
     <com.ymca.CustomFont.SecondaryFontText
         style="@android:style/TextAppearance.DeviceDefault.Small"
@@ -22,6 +23,7 @@
         android:textColor="@android:color/darker_gray"
         android:gravity="end"
         android:paddingTop="@dimen/padding_common_5"
-        app:fontNames="@string/custom_secondary_font"/>
+        app:fontNames="@string/custom_secondary_font"
+        android:id="@+id/notifyDate"/>
 
 </LinearLayout>

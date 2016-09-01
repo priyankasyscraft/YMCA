@@ -4,6 +4,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,12 +34,22 @@ public class FireBaseIntentService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         //Displaying data in log
         //It is optional
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-        Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
+//        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Log.e(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
+        Log.e(TAG, "Notification Message Body2: " + remoteMessage.getNotification().getIcon());
+        Log.e(TAG, "Notification Message Body3: " + remoteMessage.getNotification().getTag());
+        Log.e(TAG, "Notification Message Body4: " + remoteMessage.getMessageType());
+        Log.e(TAG, "Notification Message Body5: " + remoteMessage.getFrom());
+        Log.e(TAG, "Notification Message Body6: " + remoteMessage.getCollapseKey());
+        Log.e(TAG, "Notification Message Body7: " + remoteMessage.getNotification().getIcon());
 
         //Calling method to generate notification
 
-        sendNotification(remoteMessage.getNotification().getBody());
+        if(remoteMessage.getNotification().getBody()!=null) {
+            sendNotification(remoteMessage.getNotification().getBody());
+        }else {
+            sendNotification(""+remoteMessage.getData());
+        }
     }
 
     //This method is only generating push notification
@@ -50,11 +62,12 @@ public class FireBaseIntentService extends FirebaseMessagingService {
 
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("noti","noti");
 
-        PendingIntent replyIntent = PendingIntent.getActivity(this,
-                REPLY_INTENT_ID,
-                getDirectReplyIntent(this, LABEL_REPLY),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+//        PendingIntent replyIntent = PendingIntent.getActivity(this,
+//                REPLY_INTENT_ID,
+//                getDirectReplyIntent(this, LABEL_REPLY),
+//                PendingIntent.FLAG_UPDATE_CURRENT);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
@@ -73,15 +86,18 @@ public class FireBaseIntentService extends FirebaseMessagingService {
 //        remoteViews.setTextViewText(R.id.text_title, "title");
 //        remoteViews.setTextViewText(R.id.text_message, "message");
 //        remoteViews.setImageViewResource(R.id.image_end, R.drawable.custom_marker);
-
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.app_icon);
+        NotificationCompat.BigPictureStyle s = new NotificationCompat.BigPictureStyle().bigPicture(largeIcon);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Firebase Push Notification")
+                .setContentTitle("YMCA")
                 .setContentText(messageBody)
-                .setStyle(new NotificationCompat.BigTextStyle().setSummaryText("Messages content"))
+                .setSubText(messageBody)
+                .setStyle(s)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
-                .setContentIntent(replyIntent);
+                .setLargeIcon(largeIcon)
+                .setSmallIcon(R.mipmap.app_icon)
+                .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

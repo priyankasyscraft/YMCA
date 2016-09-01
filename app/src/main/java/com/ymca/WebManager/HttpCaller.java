@@ -3,6 +3,7 @@ package com.ymca.WebManager;
 import android.util.Base64;
 import android.util.Log;
 
+import com.ymca.AppManager.DataManager;
 import com.ymca.Constants.Constant;
 
 import java.io.BufferedInputStream;
@@ -35,6 +36,9 @@ public class HttpCaller {
     private static String TrainerDetailServiceUrl = Constant.BaseUrl + "trainer_detail";
     private static String EventListServiceUrl = Constant.BaseUrl + "Event";
     private static String EventDetailServiceUrl = Constant.BaseUrl + "Event_detail";
+    private static String FacilityListServiceUrl = Constant.BaseUrl + "facilities";
+    private static String AnnouncementListServiceUrl = Constant.BaseUrl + "announcement";
+    private static String AnnouncementResetServiceUrl = Constant.BaseUrl + "ResetBadgeCount";
     private String response;
 
     public String getErrorCode(Map<String, Object> params) throws MalformedURLException {
@@ -93,8 +97,22 @@ public class HttpCaller {
 
     public String getEventListData(Map<String, Object> eventList) throws MalformedURLException {
         return getPostMethods(eventList, Constant.post, EventListServiceUrl);
-    } public String getEventDetailData(Map<String, Object> eventList) throws MalformedURLException {
+    }
+
+    public String getEventDetailData(Map<String, Object> eventList) throws MalformedURLException {
         return getPostMethods(eventList, Constant.post, EventDetailServiceUrl);
+    }
+
+    public String getFacilityListData(Map<String, Object> eventList) throws MalformedURLException {
+        return getPostMethods(eventList, Constant.post, FacilityListServiceUrl);
+    }
+
+    public String getAnnouncementListData(Map<String, Object> eventList) throws MalformedURLException {
+        return getPostMethods(eventList, Constant.post, AnnouncementListServiceUrl);
+    }
+
+    public String getAnnouncementResetData(Map<String, Object> eventList) throws MalformedURLException {
+        return getPostMethods(eventList, Constant.post, AnnouncementResetServiceUrl);
     }
 
     // TODO: 17-Aug-16 Here Call Post method
@@ -103,29 +121,11 @@ public class HttpCaller {
         URL url = new URL(uri);
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//            conn.setReadTimeout(20000);
-//            conn.setConnectTimeout(20000);
-            // TODO: TimeOut region
-
-//            SharedPreferences sharedPreferences1 = DataManager.getInstance().getActivity().getSharedPreferences(Constant.PREF_NAME, Context.MODE_PRIVATE);
-//            String responses = sharedPreferences1.getString(Constant.TIME_OUT_RESPONSE, "");
-//            JSONObject object = new JSONObject(responses);
-//            JSONArray jsonData = object.optJSONArray("data");
-//            for (int i = 0; i < jsonData.length(); i++) {
-//                JSONObject jsonObject = jsonData.getJSONObject(i);
-//                String value = jsonObject.optString("value");
-//                if (value.equals("check_register")) {
-//                    int timeOut = jsonObject.optInt(value + "_timeout");
-//                    conn.setReadTimeout(timeOut * 1000);
-//                    conn.setConnectTimeout(timeOut * 1000);
-//                }
-//            }
-
-            // TODO : end region
             String basicAuth = "Basic " + Base64.encodeToString("syscraft:sis999sis".getBytes(), Base64.NO_WRAP);
             conn.setRequestMethod(methodName);
             conn.setDoInput(true);
             conn.setDoOutput(true);
+            // conn.setConnectTimeout(20000); // 20 sec = 20000 milliSecond
             conn.setRequestProperty("Authorization", basicAuth);
 
             StringBuilder postData = new StringBuilder();
@@ -145,10 +145,13 @@ public class HttpCaller {
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            response = e.toString();
         } catch (Exception e) {
             Log.e("getPostMethods: ", e.toString());
-            e.printStackTrace();
+            response = e.toString();
+//            e.printStackTrace();
+
         }
         return response;
     }

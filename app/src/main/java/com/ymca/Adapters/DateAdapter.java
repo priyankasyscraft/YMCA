@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
 import android.widget.TextView;
 
 import com.ymca.AppManager.DataManager;
@@ -12,6 +13,7 @@ import com.ymca.ModelClass.DateModelClass;
 import com.ymca.R;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Soni on 03-Aug-16.
@@ -41,8 +43,20 @@ public class DateAdapter extends BaseAdapter {
         }
     }
 
+//    public void loadData(ArrayList<DateModelClass> dateModelArrayList) {
+//        dateModelClasses.clear();
+//        dateModelClasses.addAll(dateModelArrayList);
+//        DataManager.getInstance().getAppCompatActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                notifyDataSetChanged();
+//            }
+//        });
+//    }
+
     @Override
     public int getCount() {
+
         return dateModelClasses.size();
     }
 
@@ -87,7 +101,26 @@ public class DateAdapter extends BaseAdapter {
         return convertView;
     }
 
+
     public static class ViewHolder {
         TextView dateTimeTv, dateName, dateSubName, dateTTimeWithDays, dateGroupName;
     }
+
+
+    // Filter Class
+//    public void filter(String charText) {
+//        charText = charText.toLowerCase(Locale.getDefault());
+//        dateModelClassArrayList.clear();
+//        if (charText.length() == 0) {
+//            dateModelClassArrayList.addAll(dateModelClasses);
+//        } else {
+//            for (DateModelClass wp : dateModelClasses) {
+//                if (wp.getScheduleDateName().toLowerCase(Locale.getDefault())
+//                        .contains(charText)) {
+//                    dateModelClassArrayList.add(wp);
+//                }
+//            }
+//        }
+//        notifyDataSetChanged();
+//    }
 }

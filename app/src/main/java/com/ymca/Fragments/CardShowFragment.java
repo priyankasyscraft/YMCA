@@ -53,6 +53,7 @@ public class CardShowFragment extends Fragment {
             params.put("device_token", deviceToken);
             params.put("card_name", DataManager.getInstance().getMemberName());
             params.put("barcode_no", DataManager.getInstance().getMemberCardNumber());
+            params.put("device_type","1");
             DataManager.getInstance().setFlagCardShowBack(true);
             JsonCaller.getInstance().getAddCard(params);
         }

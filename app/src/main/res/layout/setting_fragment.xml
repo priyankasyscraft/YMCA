@@ -38,7 +38,7 @@
                 android:paddingLeft="@dimen/padding_common_5"
                 android:text="@string/notification"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_size_common_20"
+                android:textSize="@dimen/text_size_common_16"
                 android:textStyle="bold"
                 app:fontNames="@string/custom_secondary_font" />
 
@@ -72,36 +72,36 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/padding_common_5"
+            android:paddingTop="@dimen/padding_common_5"
+            android:paddingBottom="@dimen/padding_common_5"
             android:weightSum="1">
 
             <com.ymca.CustomFont.PrimaryFontText
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".85"
+                android:layout_weight=".5"
                 android:gravity="center_vertical"
                 android:padding="@dimen/padding_common_8"
                 android:text="@string/default_loc"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_size_common_20"
+                android:textSize="@dimen/text_size_common_16"
                 android:textStyle="bold"
                 app:fontNames="@string/custom_secondary_font" />
 
-            <!--<LinearLayout-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight=".15"-->
-            <!--android:gravity="end|center_vertical"-->
-
-            <!--android:weightSum="1">-->
-
-            <ImageView
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight=".15"
-                android:padding="@dimen/padding_common_10"
-                android:src="@drawable/arrow_black"
-                android:visibility="gone" />
-            <!--</LinearLayout>-->
+                android:layout_weight=".495"
+                android:background="@drawable/spinenr_border">
+
+                <Spinner
+                    android:id="@+id/spinnerLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:popupBackground="@android:color/white"
+                    android:spinnerMode="dropdown" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <View
@@ -126,7 +126,7 @@
                 android:padding="@dimen/padding_common_8"
                 android:text="@string/setting_text"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_size_common_20"
+                android:textSize="@dimen/text_size_common_16"
                 android:textStyle="bold"
                 app:fontNames="@string/custom_secondary_font" />
 
@@ -158,17 +158,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/padding_common_5"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:id="@+id/reportProblem">
 
             <com.ymca.CustomFont.PrimaryFontText
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight=".85"
                 android:gravity="center_vertical"
                 android:padding="@dimen/padding_common_8"
                 android:text="@string/reportProb"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_size_common_20"
+                android:textSize="@dimen/text_size_common_16"
                 android:textStyle="bold"
                 app:fontNames="@string/custom_secondary_font" />
 

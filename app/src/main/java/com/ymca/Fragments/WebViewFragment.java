@@ -9,65 +9,59 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.ymca.Activities.HomeActivity;
-import com.ymca.Adapters.FacilityAdapter;
 import com.ymca.AppManager.DataManager;
-import com.ymca.AppManager.SharedPreference;
-import com.ymca.Constants.Constant;
-import com.ymca.PullListLoader.XListView;
 import com.ymca.R;
-import com.ymca.UserInterFace.Refreshable;
-import com.ymca.WebManager.JsonCaller;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 
 /**
- * Created by Soni on 28-Jul-16.
+ * Created by Soni on 01-Sep-16.
  */
-public class LocationFragment extends Fragment {
+public class WebViewFragment extends Fragment {
 
     private View view;
-    XListView locationListView;
-    FacilityAdapter facilityAdapter;
-    private String locationid;
-
+    WebView aboutUsFragment;
+    private ProgressBar progressBar1;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.location_fragment,container,false );
-        if (DataManager.getInstance().isFlagLocation()) {
+        view = inflater.inflate(R.layout.web_view_scree,container,false);
+        actionBarUpdate();
+        if (DataManager.getInstance().isFlagWebView()) {
             actionBarUpdate();
         } else {
             actionBarUpdateBack();
         }
-
-
-        locationListView = (XListView)view.findViewById(R.id.locationListView);
-        facilityAdapter = new FacilityAdapter(getActivity(), DataManager.getInstance().getFacilityModelClassArrayList());
-        locationListView.setAdapter(facilityAdapter);
-
-
-
-        DataManager.getInstance().showProgressMessage(getActivity(),"Progress");
-        Map<String,Object> objectMap = new LinkedHashMap<>(); if(SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocationId)!=null) {
-            locationid = SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocationId);
-        }else {
-            locationid = "1";
-        }
-        objectMap.put("location_id",locationid);
-        JsonCaller.getInstance().getFacilityList(objectMap);
-
-
-
+        progressBar1=(ProgressBar) view.findViewById(R.id.progressBar1);
+        aboutUsFragment=(WebView)view.findViewById(R.id.aboutUsFragment);
+        aboutUsFragment.getSettings().setJavaScriptEnabled(true);
+        aboutUsFragment.getSettings().setLoadWithOverviewMode(true);
+        aboutUsFragment.getSettings().setUseWideViewPort(true);
+        aboutUsFragment.getSettings().setBuiltInZoomControls(true);
+        aboutUsFragment.getSettings().setPluginState(WebSettings.PluginState.ON);
+        aboutUsFragment.setWebViewClient(new HelloWebViewClient());
+        aboutUsFragment.loadUrl("http://www.springfieldymca.org/");
         return view;
     }
 
+    private class HelloWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            return false;
+        }
 
-
+        @Override
+        public void onPageFinished(final WebView view, final String url) {
+            progressBar1.setVisibility(View.GONE);
+            super.onPageFinished(view, url);
+        }
+    }
     private void actionBarUpdate() {
         // TODO Auto-generated method stub
 
@@ -105,7 +99,6 @@ public class LocationFragment extends Fragment {
         actionBar.setCustomView(view, layoutParams);
     }
 
-
     private void actionBarUpdateBack() {
         // TODO Auto-generated method stub
 
@@ -138,23 +131,23 @@ public class LocationFragment extends Fragment {
         ImageView image_action = (ImageView) v.findViewById(R.id.custom_img_action_profile);
         image_action.setImageResource(R.drawable.bt_back_white);
         image_action.setVisibility(View.VISIBLE);
+
+        ImageView filterImg = (ImageView) v.findViewById(R.id.filterImg);
+        filterImg.setVisibility(View.GONE);
+        filterImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//                showAlertPopUp();
+//                showPopUp();
+            }
+        });
         image_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().onBackPressed();
             }
         });
-
-
         actionBar.setCustomView(v, layoutParams);
-
-
-    }
-
-
-    public void onRefreshData(Refreshable refreshable, int requestCode) {
-        if(requestCode == JsonCaller.REFRESH_CODE_FACILITY_LIST) {
-            facilityAdapter.setReloadData(true);
-        }
     }
 }

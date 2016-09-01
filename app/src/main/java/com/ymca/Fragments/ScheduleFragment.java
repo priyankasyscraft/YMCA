@@ -1,17 +1,24 @@
 package com.ymca.Fragments;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +30,18 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.ymca.Activities.HomeActivity;
 import com.ymca.Adapters.PopUpLocationAdapter;
+import com.ymca.Adapters.SpinnerAdapter;
 import com.ymca.AppManager.DataManager;
+import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
 import com.ymca.Fragments.*;
 import com.ymca.Fragments.ClassFragment;
@@ -42,16 +58,20 @@ import java.util.Map;
 /**
  * Created by Soni on 28-Jul-16.
  */
-public class ScheduleFragment extends Fragment implements View.OnClickListener {
+public class ScheduleFragment extends Fragment implements View.OnClickListener, LocationListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private View view;
-    private LinearLayout dateTab, classTab, instructorTab, areasTab, filterLayout;
-    private TextView cityOne, cityTwo;
+    private LinearLayout dateTab, classTab, instructorTab, areasTab;
     private DateFragment dateFragment = new DateFragment();
     private InstructorFragment instructorFragment = new InstructorFragment();
-    private InstructorDetailFragment instructorDetailFragment = new InstructorDetailFragment();
     private ClassFragment classFragment = new ClassFragment();
     private AreaFragment areaFragment = new AreaFragment();
+    LocationRequest mLocationRequest;
+    GoogleApiClient mGoogleApiClient;
+    Location mCurrentLocation;
+    private String TAG = "ScheduleFragment";
 
     @Nullable
     @Override
@@ -66,9 +86,6 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         classTab = (LinearLayout) view.findViewById(R.id.classTab);
         areasTab = (LinearLayout) view.findViewById(R.id.areasTab);
         instructorTab = (LinearLayout) view.findViewById(R.id.instructorTab);
-        filterLayout = (LinearLayout) view.findViewById(R.id.filterLayout);
-        cityOne = (TextView) view.findViewById(R.id.cityOne);
-        cityTwo = (TextView) view.findViewById(R.id.cityTwo);
 
         if (DataManager.getInstance().isFlagClassList()) {
             DataManager.getInstance().setFlagClassList(false);
@@ -101,6 +118,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
             classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
             instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
             areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+
+
             getChildFragmentManager()
                     .beginTransaction()
                     .replace(R.id.content_child_frame, dateFragment, Constant.dateFragment)
@@ -151,7 +170,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         notificationBell.setVisibility(View.GONE);
         badgeCount.setVisibility(View.GONE);
         ImageView filterImg = (ImageView) view.findViewById(R.id.filterImg);
-        filterImg.setVisibility(View.VISIBLE);
+        filterImg.setVisibility(View.GONE);
         filterImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -199,7 +218,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         image_action.setVisibility(View.VISIBLE);
 
         ImageView filterImg = (ImageView) v.findViewById(R.id.filterImg);
-        filterImg.setVisibility(View.VISIBLE);
+        filterImg.setVisibility(View.GONE);
         filterImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -216,69 +235,128 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         });
         actionBar.setCustomView(v, layoutParams);
     }
-
+    public static void startInstalledAppDetailsActivity(final Activity context) {
+        if (context == null) {
+            return;
+        }
+        final Intent i = new Intent();
+        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        i.addCategory(Intent.CATEGORY_DEFAULT);
+        i.setData(Uri.parse("package:" + context.getPackageName()));
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        context.startActivity(i);
+    }
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.dateTab:
+        if(SharedPreference.getSharedPrefData(getActivity(),Constant.lati)!=null) {
+            String lat = SharedPreference.getSharedPrefData(getActivity(), Constant.lati);
+            if(lat!=null || lat.length()!=0 || lat.equals("")) {
+                switch (view.getId()) {
+                    case R.id.dateTab:
 
-                dateTab.setBackgroundResource(R.drawable.schedule_tabmenu);
-                classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                        dateTab.setBackgroundResource(R.drawable.schedule_tabmenu);
+                        classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                        instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                        areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
 
-                getChildFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_child_frame, dateFragment, Constant.dateFragment)
-                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                        .commit();
+                        getChildFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.content_child_frame, dateFragment, Constant.dateFragment)
+                                .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                                .commit();
 
-                break;
-            case R.id.classTab:
+                        break;
+                    case R.id.classTab:
 
-                dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                classTab.setBackgroundResource(R.drawable.schedule_tabmenu);
-                instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                        dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                        classTab.setBackgroundResource(R.drawable.schedule_tabmenu);
+                        instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                        areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
 
 
-                getChildFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_child_frame, classFragment, Constant.classFragment)
-                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                        .commit();
-                break;
-            case R.id.instructorTab:
+                        getChildFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.content_child_frame, classFragment, Constant.classFragment)
+                                .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                                .commit();
+                        break;
+                    case R.id.instructorTab:
 
-                dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu);
-                areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                        dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                        classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                        instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu);
+                        areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
 
 //                DataManager.getInstance().showProgressMessage(getActivity(),"Progress");
 //                Map<String,Object> objectMap2 = new LinkedHashMap<>();
 //                objectMap2.put("type","instructor");
 //                JsonCaller.getInstance().getScheduleDataInstru(objectMap2);
 
-                getChildFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_child_frame, instructorFragment, Constant.instructorFragment)
-                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                        .commit();
-                break;
-            case R.id.areasTab:
+                        getChildFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.content_child_frame, instructorFragment, Constant.instructorFragment)
+                                .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                                .commit();
+                        break;
+                    case R.id.areasTab:
 
-                dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                areasTab.setBackgroundResource(R.drawable.schedule_tabmenu);
-                getChildFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_child_frame, areaFragment, Constant.areaFragment)
-                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                        .commit();
-                break;
+                        dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                        classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                        instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                        areasTab.setBackgroundResource(R.drawable.schedule_tabmenu);
+                        getChildFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.content_child_frame, areaFragment, Constant.areaFragment)
+                                .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                                .commit();
+                        break;
+                }
+            }else {
+                startInstalledAppDetailsActivity(getActivity());
+            }
+        }else {
+
+            startInstalledAppDetailsActivity(getActivity());
         }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        startLocationUpdates();
+    }
+
+    protected void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+        PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+        Log.e(TAG, "Location update started ..............: ");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e(TAG, "Connection failed: " + connectionResult.toString());
+    }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.e(TAG, "Firing onLocationChanged..............................................");
+        mCurrentLocation = location;
+        String lat = "" + mCurrentLocation.getLatitude();
+        String lon = "" + mCurrentLocation.getLongitude();
+        Log.e(TAG, "Firing Lat/Longs........" + lat + "........" + lon);
+        SharedPreference.setDataInSharedPreference(getActivity(), Constant.lati, lat);
+        SharedPreference.setDataInSharedPreference(getActivity(), Constant.longi, lon);
     }
 
     public void showPopUp() {
@@ -349,12 +427,16 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
             areaFragment.onRefreshData(refreshable, requestCode);
         }else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA) {
             dateFragment.onRefreshData(refreshable, requestCode);
+        }else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_DATE_NULL) {
+            dateFragment.onRefreshData(refreshable, requestCode);
         }else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCTOR_DETAIL) {
             instructorFragment.onRefreshData(refreshable, requestCode);
         }else if (requestCode == JsonCaller.REFRESH_CODE_CLASS_DETAIL) {
             classFragment.onRefreshData(refreshable, requestCode);
         }else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCT_CLASS_DETAIL) {
             instructorFragment.onRefreshData(refreshable, requestCode);
+        }else if(requestCode == JsonCaller.REFRESH_CODE_LOCATION_LIST){
+            dateFragment.onRefreshData(refreshable, requestCode);
         }
     }
 }

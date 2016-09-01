@@ -31,7 +31,8 @@
                 android:background="@drawable/bg_dot"
                 android:gravity="center"
                 android:text="25"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/white"
+                android:visibility="gone"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

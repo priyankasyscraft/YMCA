@@ -16,7 +16,7 @@
             android:layout_width="5dp"
             android:layout_height="match_parent"
             android:background="@color/colorTextPurple"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/classLayout"

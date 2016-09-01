@@ -18,7 +18,7 @@ public class Constant {
     public static RequestToken rToken = null;
     public static String TWITTER_CONSUMER_KEY = "VfAP9Q9WPxTJ8ocIMzt42aJnn";
     public static String TWITTER_CONSUMER_SECRET = "vSA2XKEONN2UlJaCrO3nykp3te4vJEov4A29JuqW0pJbAlBsOp";
-    public static final String TWITTER_CALLBACK_URL = "oauth://cartrizeProduction";
+    public static final String TWITTER_CALLBACK_URL = "http://www.ymca.net/";
     public static final String URL_TWITTER_OAUTH_VERIFIER = "oauth_verifier";
     public static Twitter twitter = null;
     public static final String SENDER_ID = "950653925542";
@@ -54,4 +54,8 @@ public class Constant {
     public static String settingPunchFragm = "setting_punch_in_frag";
     public static String lati = "Latitude";
     public static String longi = "Longitude";
+    public static int locationRequestInt = 10;
+    public static String defaultLocation = "dafault_location";
+    public static String defaultLocationId = "dafault_location_id";
+    public static String webViewFragment = "webview_fragment";
 }

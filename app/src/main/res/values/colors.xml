@@ -13,4 +13,6 @@
     <color name="colorTextGreeen">#51B100</color>
     <color name="colorTextRed">#F73204</color>
     <color name="colorTextPurple">#832990</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>

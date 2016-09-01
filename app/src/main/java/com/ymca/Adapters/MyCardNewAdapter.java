@@ -123,6 +123,7 @@ public class MyCardNewAdapter extends BaseAdapter implements View.OnCreateContex
         Map<String, Object> params = new LinkedHashMap<>();
         params.put("card_id", viewHolder.cardBarCodeNo.getText().toString().replace("CODE:", ""));
         params.put("device_token", deviceToken);
+        params.put("device_type","1");
         JsonCaller.getInstance().getDeleteCard(params);
 //        pos = (int) viewHolder.cardLayout.getTag();
         myCardModelClassArrayList.remove(pos);

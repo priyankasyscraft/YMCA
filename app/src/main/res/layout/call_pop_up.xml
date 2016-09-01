@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/padding_common_10"
-                android:text="12345678900"
+                android:text="+12175449846"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_common_18" />
         </LinearLayout>
@@ -55,7 +55,7 @@
             <com.ymca.CustomFont.PrimaryFontText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="KERASOAL"
+                android:text="KERASOTES"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_common_18"
                 android:textStyle="bold" />
@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/padding_common_10"
-                android:text="12345678900"
+                android:text="+12176791625"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_common_18" />
         </LinearLayout>

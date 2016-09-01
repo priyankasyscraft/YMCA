@@ -5,12 +5,23 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.IntentSender;
 import android.net.ConnectivityManager;
 import android.text.Html;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.ymca.ModelClass.AreaModelClass;
 import com.ymca.ModelClass.CampModelClass;
 import com.ymca.ModelClass.ClassDetailModelClass;
@@ -26,6 +37,7 @@ import com.ymca.ModelClass.InstructorDetailModel;
 import com.ymca.ModelClass.InstructorModelClass;
 import com.ymca.ModelClass.LocationModelClass;
 import com.ymca.ModelClass.MyCardModelClass;
+import com.ymca.ModelClass.NotificationModelClass;
 import com.ymca.ModelClass.PopUpLocationModel;
 import com.ymca.ModelClass.SliderModelClass;
 import com.ymca.ModelClass.TraineeModelClass;
@@ -58,6 +70,7 @@ public class DataManager {
     private DataManager() {
     }
 
+    private String badgeCount;
     private ImageLoader imageLoader;
     private Activity appCompatActivity;
     private boolean isProgressDialogRunning = false;
@@ -69,6 +82,9 @@ public class DataManager {
     private boolean flagCardShow = false;
     private boolean flagCardShowBack = false;
     private boolean flagAddCard = false;
+    private boolean flagSettingLocation = false;
+    private boolean flagNotification = false;
+    private boolean flagWebView = false;
     private String memberName;
     private String memberCardNumber;
 
@@ -81,6 +97,7 @@ public class DataManager {
     private ArrayList<ClassesModelClass> classesModelClassArrayList = new ArrayList<>();
     private ArrayList<HomeClassesModelClass> homeClassesModelClassArrayList = new ArrayList<>();
     private ArrayList<DateModelClass> dateModelClasses = new ArrayList<>();
+    private ArrayList<DateModelClass> dateModelClassArrayList = new ArrayList<>();
     private ArrayList<LocationModelClass> locationModelClasses = new ArrayList<>();
     private ArrayList<FacilityModelClass> facilityModelClassArrayList = new ArrayList<>();
     private ArrayList<CampModelClass> campModelClassArrayList = new ArrayList<>();
@@ -91,9 +108,11 @@ public class DataManager {
     private ArrayList<ClassDetailModelClass> classDetailModelClassArrayList = new ArrayList<>();
     private ArrayList<TrainerDetailModelClass> trainerDetailModelClassArrayList = new ArrayList<>();
     private ArrayList<EventDetailModelClass> eventDetailModelClassArrayList = new ArrayList<>();
+    private ArrayList<NotificationModelClass> notificationModelClassArrayList = new ArrayList<>();
 
     private InstructorModelClass instructorModelClass = new InstructorModelClass();
     private LocationModelClass locationModelClass = new LocationModelClass();
+    private FacilityModelClass facilityModelClass = new FacilityModelClass();
     private TraineeModelClass traineeModelClass = new TraineeModelClass();
     private EventNewModelClass eventModelClass = new EventNewModelClass();
 
@@ -619,6 +638,20 @@ public class DataManager {
         return time;
     }
 
+    public String dateTimeConverter(String time) {
+
+        try {
+            final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            final Date dateObj = sdf.parse(time);
+            SimpleDateFormat dateFormat1 = new SimpleDateFormat("MMM dd, yyyy");
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("K:mm a");
+            time = dateFormat1.format(dateObj) +" at " +dateFormat2.format(dateObj);
+        } catch (final ParseException e) {
+            e.printStackTrace();
+        }
+        return time;
+    }
+
     public String differenceTwoTime(String startTime, String endTime) {
         String diffTime = null;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -629,22 +662,27 @@ public class DataManager {
             Date date2 = simpleDateFormat.parse(endTime);
 
             long difference = date2.getTime() - date1.getTime();
-            int days = (int) (difference / (1000 * 60 * 60 * 24));
-            int hours = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
-            int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hours)) / (1000 * 60);
-            hours = (hours < 0 ? -hours : hours);
-            if (hours == 0) {
-                diffTime = "" + min;
-            } else {
-                diffTime = "" + hours + ":";
-            }
+            String dif = String.valueOf(difference);
+            if(!dif.contains("-")) {
+                int days = (int) (difference / (1000 * 60 * 60 * 24));
+                int hours = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+                int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hours)) / (1000 * 60);
+                hours = (hours < 0 ? -hours : hours);
+                if (hours == 0) {
+                    diffTime = "" + min;
+                } else {
+                    diffTime = "" + hours + ":";
+                }
 
-            if (diffTime.equalsIgnoreCase("0:")) {
-                diffTime = diffTime + " min";
-            } else if (diffTime.equalsIgnoreCase("1:")) {
-                diffTime = diffTime.replace(":", " hour");
-            } else {
-                diffTime = diffTime.replace(":", " hours");
+                if (diffTime.equalsIgnoreCase("0:")) {
+                    diffTime = diffTime + " min";
+                } else if (diffTime.equalsIgnoreCase("1:")) {
+                    diffTime = diffTime.replace(":", " hour");
+                } else {
+                    diffTime = diffTime.replace(":", " hours");
+                }
+            }else {
+                diffTime = "0";
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -764,8 +802,7 @@ public class DataManager {
         this.eventDetailModelClassArrayList.clear();
     }
 
-    public List<Date> getDates(String dateString1, String dateString2)
-    {
+    public List<Date> getDates(String dateString1, String dateString2) {
         ArrayList<Date> dates = new ArrayList<Date>();
         DateFormat df1 = new SimpleDateFormat("yyyy/MM/dd");
 
@@ -773,8 +810,8 @@ public class DataManager {
         Date date2 = null;
 
         try {
-            date1 = df1 .parse(dateString1);
-            date2 = df1 .parse(dateString2);
+            date1 = df1.parse(dateString1);
+            date2 = df1.parse(dateString2);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -786,11 +823,123 @@ public class DataManager {
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(date2);
 
-        while(!cal1.after(cal2))
-        {
+        while (!cal1.after(cal2)) {
             dates.add(cal1.getTime());
             cal1.add(Calendar.DATE, 1);
         }
         return dates;
+    }
+
+    public FacilityModelClass getFacilityModelClass() {
+        return facilityModelClass;
+    }
+
+    public void setFacilityModelClass(FacilityModelClass facilityModelClass) {
+        this.facilityModelClass = facilityModelClass;
+    }
+
+    public void displayLocationSettingsRequest(final Context context, final int REQUEST_CHECK_SETTINGS) {
+        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
+                .addApi(LocationServices.API).build();
+        googleApiClient.connect();
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(10000 / 2);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+        builder.setAlwaysShow(true);
+
+        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(LocationSettingsResult result) {
+                final Status status = result.getStatus();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        Log.e("check", "All location settings are satisfied.");
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        Log.e("check", "Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
+
+                        try {
+                            // Show the dialog by calling startResolutionForResult(), and check the result
+                            // in onActivityResult().
+                            status.startResolutionForResult((Activity) context, REQUEST_CHECK_SETTINGS);
+                        } catch (IntentSender.SendIntentException e) {
+                            Log.e("check", "PendingIntent unable to execute request.");
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        Log.e("check", "Location settings are inadequate, and cannot be fixed here. Dialog not created.");
+                        break;
+                }
+            }
+        });
+    }
+
+    public ArrayList<DateModelClass> getDateModelClassArrayList() {
+        return dateModelClassArrayList;
+    }
+
+    public void setDateModelClassArrayList(ArrayList<DateModelClass> dateModelClassArrayList) {
+        this.dateModelClassArrayList = dateModelClassArrayList;
+    }
+
+    public void addDateModelClassArrayList(DateModelClass dateModelClassArrayList) {
+        this.dateModelClassArrayList.add(dateModelClassArrayList);
+    }
+
+    public void clearDateModelClassArrayList() {
+        this.dateModelClassArrayList.clear();
+    }
+
+    public boolean isFlagSettingLocation() {
+        return flagSettingLocation;
+    }
+
+    public void setFlagSettingLocation(boolean flagSettingLocation) {
+        this.flagSettingLocation = flagSettingLocation;
+    }
+
+    public ArrayList<NotificationModelClass> getNotificationModelClassArrayList() {
+        return notificationModelClassArrayList;
+    }
+
+    public void setNotificationModelClassArrayList(ArrayList<NotificationModelClass> notificationModelClassArrayList) {
+        this.notificationModelClassArrayList = notificationModelClassArrayList;
+    }
+
+    public void addNotificationModelClassArrayList(NotificationModelClass notificationModelClassArrayList) {
+        this.notificationModelClassArrayList.add(notificationModelClassArrayList);
+    }
+
+    public void clearNotificationModelClassArrayList() {
+        this.notificationModelClassArrayList.clear();
+    }
+
+    public boolean isFlagNotification() {
+        return flagNotification;
+    }
+
+    public void setFlagNotification(boolean flagNotification) {
+        this.flagNotification = flagNotification;
+    }
+
+    public String getBadgeCount() {
+        return badgeCount;
+    }
+
+    public void setBadgeCount(String badgeCount) {
+        this.badgeCount = badgeCount;
+    }
+
+    public boolean isFlagWebView() {
+        return flagWebView;
+    }
+
+    public void setFlagWebView(boolean flagWebView) {
+        this.flagWebView = flagWebView;
     }
 }

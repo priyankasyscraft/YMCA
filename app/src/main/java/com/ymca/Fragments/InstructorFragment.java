@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.ymca.Adapters.InstructorAdapter;
 import com.ymca.AppManager.DataManager;
+import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
 import com.ymca.ModelClass.InstructorModelClass;
 import com.ymca.R;
@@ -32,6 +33,7 @@ public class InstructorFragment extends Fragment {
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
     InstructorDetailFragment instructorDetailFragment = new InstructorDetailFragment();
+    private String locationid;
 
     @Nullable
     @Override
@@ -40,9 +42,14 @@ public class InstructorFragment extends Fragment {
 //        setData();
         DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
         Map<String, Object> objectMap2 = new LinkedHashMap<>();
-        objectMap2.put("type", "instructor");
+        objectMap2.put("type", "instructor"); if(SharedPreference.getSharedPrefData(getActivity(),Constant.defaultLocationId)!=null) {
+            locationid = SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocationId);
+        }else {
+            locationid = "1";
+        }
         // TODO: 26-Aug-16 Here change location id,Set default location id here.
-        objectMap2.put("location_id", "1");
+        objectMap2.put("location_id", locationid);
+        objectMap2.put("skiprecords","-1");
         JsonCaller.getInstance().getScheduleDataInstru(objectMap2);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);

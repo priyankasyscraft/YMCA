@@ -64,4 +64,17 @@ public class DateModelClass {
     public void setScheduleDateWeekDays(String scheduleDateWeekDays) {
         this.scheduleDateWeekDays = scheduleDateWeekDays;
     }
+
+    public boolean isValidSearch(String searchTerm) {
+        if (getScheduleDateName().toLowerCase().contains(searchTerm.toLowerCase()))
+            return true;
+        return false;
+    }/* public boolean isValidSearch(String searchTerm) {
+        if (getAddress().toLowerCase().contains(searchTerm.toLowerCase())
+                || getName().toLowerCase().contains(searchTerm.toLowerCase())
+                || getDescription().toLowerCase().contains(searchTerm.toLowerCase()))
+            return true;
+        return false;
+    }*/
+
 }

@@ -7,7 +7,7 @@
     android:weightSum="1">
 
     <com.ymca.CustomFont.PrimaryFontText
-        android:id="@+id/classDetailHeader"
+        android:id="@+id/areaDetailHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"

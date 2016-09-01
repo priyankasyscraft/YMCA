@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -10,76 +10,202 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:padding="@dimen/padding_common_5"
         android:weightSum="1">
 
         <com.ymca.CustomFont.PrimaryFontText
             android:layout_width="0dp"
-            android:layout_weight=".5"
             android:layout_height="match_parent"
-            android:padding="@dimen/padding_common_10"
+            android:layout_weight=".45"
+            android:gravity="center_vertical"
+            android:padding="@dimen/padding_common_5"
             android:text="@string/schedule"
             android:textAllCaps="true"
-            android:gravity="center_vertical"
             android:textColor="@color/colorScheduleBottomUnSelect"
-            android:textSize="@dimen/text_size_common_22"
+            android:textSize="@dimen/text_size_common_20"
             android:textStyle="bold"
-            app:fontName="@string/custom_primary_font"/>
-
+            app:fontName="@string/custom_primary_font" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight=".5"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:layout_weight=".55"
+            android:background="@drawable/spinenr_border">
+
+            <Spinner
+                android:id="@+id/spinnerLocation"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:popupBackground="@android:color/white"
+                android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".55"
             android:gravity="center"
+            android:orientation="horizontal"
             android:padding="@dimen/padding_common_10"
-            android:weightSum="1"
-            >
+            android:visibility="gone"
+            android:weightSum="1">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/schedule_arrow_prev"
-                android:id="@+id/prevButton"/>
+                android:src="@drawable/schedule_arrow_prev" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight=".60"
                 android:orientation="vertical"
-                android:weightSum="1"
-                android:layout_weight=".60">
+                android:weightSum="1">
 
                 <com.ymca.CustomFont.PrimaryFontText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal|bottom"
                     android:text="Sat"
                     android:textSize="@dimen/text_size_common_16"
-                    android:gravity="center_horizontal|bottom"
-                    android:id="@+id/dayTv"
                     android:textStyle="bold"
-                    app:fontName="@string/custom_primary_font"
-                    />
+                    app:fontName="@string/custom_primary_font" />
 
                 <com.ymca.CustomFont.SecondaryFontText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:gravity="top|center_horizontal"
                     android:text="Aug 22"
                     android:textSize="@dimen/text_size_common_14"
-                    android:id="@+id/dateTv"
-                    android:gravity="top|center_horizontal"
-                    app:fontName="@string/custom_secondary_font"
-                    android:layout_marginTop="-2dp"/>
+                    app:fontName="@string/custom_secondary_font" />
             </LinearLayout>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/schedule_arrow_next"
-                android:id="@+id/forwadButton"/>
+                android:src="@drawable/schedule_arrow_next" />
 
         </LinearLayout>
 
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_common_2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_border_bg_trans"
+            android:weightSum="1">
+
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".8"
+                android:background="@null"
+                android:drawableLeft="@drawable/icon_search"
+                android:drawablePadding="@dimen/padding_common_5"
+                android:gravity="center_vertical"
+                android:hint="Search"
+                android:padding="@dimen/padding_common_5"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_common_18" />
+
+            <com.ymca.CustomFont.SecondaryFontText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".2"
+                android:background="@color/colorScheduleBottomUnSelect"
+                android:gravity="center"
+                android:text="@string/search"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:id="@+id/searchButton"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_common_2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_border_bg_trans"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/prevButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/schedule_arrow_prev" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".60"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:weightSum="1">
+
+                <com.ymca.CustomFont.PrimaryFontText
+                    android:id="@+id/dayTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal|bottom"
+                    android:text="Sat"
+                    android:textSize="@dimen/text_size_common_16"
+                    android:textStyle="bold"
+                    app:fontName="@string/custom_primary_font" />
+
+                <com.ymca.CustomFont.SecondaryFontText
+                    android:id="@+id/dateTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:gravity="top|center_horizontal"
+                    android:text="Aug 22"
+                    android:textSize="@dimen/text_size_common_14"
+                    app:fontName="@string/custom_secondary_font" />
+            </LinearLayout>
+
+            <com.ymca.CustomFont.PrimaryFontText
+                android:id="@+id/dateText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin_common_5"
+                android:layout_weight=".95"
+                android:gravity="center"
+                android:padding="@dimen/padding_common_10"
+                android:text=""
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_common_18"
+                app:fontName="@string/custom_primary_font" />
+
+            <ImageView
+                android:id="@+id/forwadButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/schedule_arrow_next" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
@@ -94,24 +220,25 @@
             android:text="@string/no_record"
             android:textSize="@dimen/text_size_common_22"
             android:textStyle="bold"
-            app:fontName="@string/custom_primary_font"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            app:fontName="@string/custom_primary_font" />
 
         <com.ymca.PullListLoader.XListView
             android:id="@+id/dateScheduleListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:choiceMode="singleChoice"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:smoothScrollbar="true"
             android:divider="@null"
             android:dividerHeight="0dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:scrollbarStyle="insideOverlay"
             android:scrollbars="none"
-            android:scrollbarStyle="insideOverlay"/>
+            android:smoothScrollbar="true" />
 
 
     </RelativeLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"

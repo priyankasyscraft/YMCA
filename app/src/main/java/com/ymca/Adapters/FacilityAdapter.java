@@ -9,8 +9,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ymca.Activities.HomeActivity;
 import com.ymca.AppManager.DataManager;
+import com.ymca.Constants.Constant;
+import com.ymca.Fragments.LocationDetailFragment;
 import com.ymca.ModelClass.FacilityModelClass;
+import com.ymca.ModelClass.LocationModelClass;
 import com.ymca.R;
 
 import java.util.ArrayList;
@@ -19,20 +23,20 @@ import java.util.ArrayList;
  * Created by Soni on 03-Aug-16.
  */
 public class FacilityAdapter extends BaseAdapter {
-    private ArrayList<FacilityModelClass> facilityModelClassArrayList = new ArrayList<FacilityModelClass>();
+    private ArrayList<FacilityModelClass> locationModelClasses = new ArrayList<>();
     private LayoutInflater inflater;
     Context context;
     ViewHolder viewHolder;
 
-    public FacilityAdapter(Context context, ArrayList<FacilityModelClass> facilityModelClassArrayList) {
-        this.facilityModelClassArrayList = facilityModelClassArrayList;
+    public FacilityAdapter(Context context, ArrayList<FacilityModelClass> classesModelClassArrayList) {
+        this.locationModelClasses = classesModelClassArrayList;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
 
     public void setReloadData(boolean shouldReload) {
-        facilityModelClassArrayList = DataManager.getInstance().getFacilityModelClassArrayList();
+        locationModelClasses = DataManager.getInstance().getFacilityModelClassArrayList();
         if (shouldReload) {
             DataManager.getInstance().getAppCompatActivity().runOnUiThread(new Runnable() {
                 public void run() {
@@ -45,7 +49,7 @@ public class FacilityAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return facilityModelClassArrayList.size();
+        return locationModelClasses.size();
     }
 
     @Override
@@ -59,35 +63,53 @@ public class FacilityAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = inflater.inflate(R.layout.facility_item, null);
-//            viewHolder.facilityName = (TextView) convertView.findViewById(R.id.facilityName);
+            viewHolder.statusImg = (ImageView) convertView.findViewById(R.id.statusImg);
+            viewHolder.locationLayout = (LinearLayout) convertView.findViewById(R.id.locationLayout);
+            viewHolder.locationName = (TextView) convertView.findViewById(R.id.locationName);
+            viewHolder.locationDistance = (TextView) convertView.findViewById(R.id.locationDistance);
             viewHolder.facilityAddress = (TextView) convertView.findViewById(R.id.facilityAddress);
             viewHolder.facilityStatus = (TextView) convertView.findViewById(R.id.facilityStatus);
-            viewHolder.statusImg = (ImageView) convertView.findViewById(R.id.statusImg);
-//            viewHolder.facilityLayout = (LinearLayout) convertView.findViewById(R.id.facilityLayout);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-//        viewHolder.facilityName.setText(facilityModelClassArrayList.get(position).getFacilityName());
-        viewHolder.facilityAddress.setText(facilityModelClassArrayList.get(position).getFacilityAddress());
-        viewHolder.facilityStatus.setText(facilityModelClassArrayList.get(position).getFacilityOpenClose());
-        if (facilityModelClassArrayList.get(position).isFacilityStatus()) {
+        viewHolder.locationName.setText(locationModelClasses.get(position).getFacilityName());
+        viewHolder.locationDistance.setText(locationModelClasses.get(position).getFacilityMiles());
+        viewHolder.facilityAddress.setText(locationModelClasses.get(position).getFacilityAddress());
+        viewHolder.facilityStatus.setText(locationModelClasses.get(position).getFacilityOpenCloseTime());
+
+        if (locationModelClasses.get(position).getFacilityOpenCloseStatus().equals("1")) {
             viewHolder.statusImg.setImageResource(R.mipmap.open);
         } else {
             viewHolder.statusImg.setImageResource(R.mipmap.close);
         }
 
+        viewHolder.locationLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DataManager.getInstance().setFacilityModelClass(locationModelClasses.get(position));
+
+                ((HomeActivity) context)
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, new LocationDetailFragment(), Constant.locationDetailFragment)
+                        .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
+                        .commit();
+            }
+        });
+
         return convertView;
     }
 
     public static class ViewHolder {
-        TextView facilityName, facilityAddress, statusText, facilityStatus;
+        TextView locationName, locationDistance, facilityAddress,facilityStatus;
         ImageView statusImg;
-        LinearLayout facilityLayout;
+        LinearLayout locationLayout;
     }
 }

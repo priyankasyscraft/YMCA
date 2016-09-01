@@ -46,9 +46,9 @@ public class FacilityFragment extends Fragment {
             FacilityModelClass facilityModelClass = new FacilityModelClass();
             facilityModelClass.setFacilityName("DOWNTOWN Facility");
             facilityModelClass.setFacilityAddress("701 South 4th street");
-            facilityModelClass.setFacilityOpenClose("We are open");
-
-            facilityModelClass.setFacilityStatus(true);
+//            facilityModelClass.setFacilityOpenClose("We are open");
+//
+//            facilityModelClass.setFacilityStatus(true);
             DataManager.getInstance().addFacilityModelClassArrayList(facilityModelClass);
         }
         facilityAdapter.setReloadData(true);

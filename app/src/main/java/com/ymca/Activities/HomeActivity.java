@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -35,16 +36,18 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.ymca.Adapters.DrawerAdapter;
 import com.ymca.AppManager.DataManager;
@@ -65,6 +68,7 @@ import com.ymca.Fragments.ScheduleFragment;
 import com.ymca.Fragments.SettingFragment;
 import com.ymca.Fragments.TrainerDetailFragment;
 import com.ymca.Fragments.TrainerFragment;
+import com.ymca.Fragments.WebViewFragment;
 import com.ymca.ModelClass.DrawerModel;
 import com.ymca.R;
 import com.ymca.UserInterFace.RefreshDataListener;
@@ -131,13 +135,13 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     private int WEBVIEW_REQUEST_CODE = 1800;
     private File casted_image;
     private Bitmap bitamp;
+    private String locationid;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
-        AppEventsLogger.activateApp(this);
+
         setContentView(R.layout.activity_home);
         setData();
         JsonCaller.getInstance().setRefreshDataListener(this);
@@ -149,8 +153,11 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.e("refreshedToken: ", "device toke" + " " + refreshedToken);
+
+        displayLocationSettingsRequest(getApplicationContext(), Constant.locationRequestInt);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -161,11 +168,22 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         mDrawerList.setOnItemClickListener(this);
         toggle.syncState();
         createLocationRequest();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.content_frame, homeFragment, Constant.homeFragment)
-                .addToBackStack(getSupportFragmentManager().getClass().getName())
-                .commit();
+
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.content_frame, homeFragment, Constant.homeFragment)
+                    .addToBackStack(getSupportFragmentManager().getClass().getName())
+                    .commit();
+        if (getIntent().getExtras() != null) {
+            Bundle extras = getIntent().getExtras();
+            String newString = extras.getString("noti");
+            DataManager.getInstance().setFlagNotification(true);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, notificationFragment, Constant.notificationFragment)
+                    .commit();
+        }
     }
 
     protected void createLocationRequest() {
@@ -280,21 +298,25 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View view) {
 //                Toast.makeText(HomeActivity.this, "Fb click", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(HomeActivity.this, FacebookLogin.class);
-                startActivity(intent);
+//                Intent intent = new Intent(HomeActivity.this, FacebookLogin.class);
+//                startActivity(intent);
+
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://www.facebook.com/pages/Springfield-Illinois-YMCA/116375146481"));
+                startActivity(i);
             }
         });
 
         tweetShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    loginButtonClick();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    loginButtonClick();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
 //                Toast.makeText(HomeActivity.this, "Tweet click", Toast.LENGTH_SHORT).show();
             }
         });
@@ -303,7 +325,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View view) {
 //                String_to_File("http://www.northpennymca.org/content/wp-content/uploads/2013/01/summer-camp-1.jpg");
-                new LongOperation().execute();
+//                new LongOperation().execute();
 //                } catch (IOException e) {
 //                    e.printStackTrace();
 //                }
@@ -323,11 +345,11 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             cardShowFragment.onRefreshData(refreshable, requestCode);
         } else if (requestCode == JsonCaller.REFRESH_CODE_ALL_CARDS) {
             if (DataManager.getInstance().isFlagCheckIn()) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-                        .addToBackStack(null)
-                        .commit();
+//                getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+//                        .addToBackStack(null)
+//                        .commit();
                 myCardsFragment.onRefreshData(refreshable, requestCode);
             } else {
                 homeFragment.onRefreshData(refreshable, requestCode);
@@ -339,7 +361,6 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-                        .addToBackStack(null)
                         .commit();
                 myCardsFragment.onRefreshData(refreshable, requestCode);
             } else {
@@ -352,14 +373,34 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_AREA) {
             homeFragment.onRefreshData(refreshable, requestCode);
         } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA) {
-            homeFragment.onRefreshData(refreshable, requestCode);
+            if (DataManager.getInstance().isFlagScedule()) {
+                scheduleFragment.onRefreshData(refreshable, requestCode);
+            } else {
+                homeFragment.onRefreshData(refreshable, requestCode);
+            }
+        } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_DATE_NULL) {
+            if (DataManager.getInstance().isFlagScedule()) {
+                scheduleFragment.onRefreshData(refreshable, requestCode);
+            } else {
+                homeFragment.onRefreshData(refreshable, requestCode);
+            }
         } else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCTOR_DETAIL) {
             homeFragment.onRefreshData(refreshable, requestCode);
         } else if (requestCode == JsonCaller.REFRESH_CODE_CLASS_DETAIL) {
             homeFragment.onRefreshData(refreshable, requestCode);
-        }else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCT_CLASS_DETAIL) {
+        } else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCT_CLASS_DETAIL) {
             homeFragment.onRefreshData(refreshable, requestCode);
         } else if (requestCode == JsonCaller.REFRESH_CODE_LOCATION_LIST) {
+            if (DataManager.getInstance().isFlagLocation()) {
+                locationFragment.onRefreshData(refreshable, requestCode);
+            } else if (DataManager.getInstance().isFlagSettingLocation()) {
+                settingFragment.onRefreshData(refreshable, requestCode);
+            } else if (DataManager.getInstance().isFlagScedule()) {
+                scheduleFragment.onRefreshData(refreshable, requestCode);
+            } else {
+                homeFragment.onRefreshData(refreshable, requestCode);
+            }
+        } else if (requestCode == JsonCaller.REFRESH_CODE_FACILITY_LIST) {
             if (!DataManager.getInstance().isFlagLocation()) {
                 homeFragment.onRefreshData(refreshable, requestCode);
             } else {
@@ -371,10 +412,19 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.content_frame, eventCalenderFragment, Constant.eventCalenderFragment)
-                    .addToBackStack(null)
                     .commit();
-        }else if(requestCode == JsonCaller.REFRESH_CODE_EVENT_DETAIL){
+        } else if (requestCode == JsonCaller.REFRESH_CODE_EVENT_DETAIL) {
             eventCalenderFragment.onRefreshData(refreshable, requestCode);
+        } else if (requestCode == JsonCaller.REFRESH_CODE_TRAINER_DETAIL) {
+            trainerFragment.onRefreshData(refreshable, requestCode);
+        } else if (requestCode == JsonCaller.REFRESH_CODE_NOTIFY_LIST) {
+            if (DataManager.getInstance().isFlagNotification()) {
+                notificationFragment.onRefreshData(refreshable, requestCode);
+            } else {
+                homeFragment.onRefreshData(refreshable, requestCode);
+            }
+        } else if (requestCode == JsonCaller.REFRESH_CODE_BADGE_COUNT) {
+            homeFragment.onRefreshData(refreshable, requestCode);
         }
 
     }
@@ -489,8 +539,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             int count = fm.getBackStackEntryCount();
             Log.e("Count", String.valueOf(count));
             Fragment fr = fm.findFragmentById(R.id.content_frame);
-//        isCheck = DataManager.chkStatus(this);
-//        if (isCheck) {
+        isCheck = DataManager.chkStatus(this);
+        if (isCheck) {
             if (count > 1) {
                 if (fr.getTag().equals(Constant.dateFragment)) {
                     super.onBackPressed();
@@ -517,7 +567,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                         DataManager.getInstance().showProgressMessage(this, "Progress");
                         String deviceToken = SharedPreference.getSharedPrefData(this, Constant.deviceToken);
                         Map<String, Object> params = new LinkedHashMap<>();
-
+                        params.put("device_type", "1");
                         params.put("device_token", deviceToken);
                         JsonCaller.getInstance().getAllCard(params);
 //                        getSupportFragmentManager()
@@ -586,7 +636,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
             }
-//        }
+        }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -597,8 +647,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//        isCheck = DataManager.chkStatus(this);
-//        if (isCheck) {
+        isCheck = DataManager.chkStatus(this);
+        if (isCheck) {
         switch (position) {
             case 0:
                 break;
@@ -610,17 +660,17 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
             case 2:
                 DataManager.getInstance().setFlagCheckIn(true);
-                DataManager.getInstance().showProgressMessage(this, "Progress");
-                String deviceToken = SharedPreference.getSharedPrefData(this, Constant.deviceToken);
-                Map<String, Object> params = new LinkedHashMap<>();
-
-                params.put("device_token", deviceToken);
-                JsonCaller.getInstance().getAllCard(params);
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-//                            .addToBackStack(null)
-//                            .commit();
+//                DataManager.getInstance().showProgressMessage(this, "Progress");
+//                String deviceToken = SharedPreference.getSharedPrefData(this, Constant.deviceToken);
+//                Map<String, Object> params = new LinkedHashMap<>();
+//
+//                params.put("device_type", "1");
+//                params.put("device_token", deviceToken);
+//                JsonCaller.getInstance().getAllCard(params);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+                        .commit();
                 break;
             case 3:
 //                    getSupportFragmentManager()
@@ -631,7 +681,6 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, locationFragment, Constant.locationFramgnet)
-                        .addToBackStack(null)
                         .commit();
                 break;
             case 4:
@@ -649,17 +698,16 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 //                    ft.replace(R.id.content_frame, notificationFragment,Constant.notificationFragment);
 //                    ft.addToBackStack(fm.getClass().getName());
 //                    ft.commit();
+                DataManager.getInstance().setFlagNotification(true);
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, notificationFragment, Constant.notificationFragment)
-                        .addToBackStack(null)
                         .commit();
                 break;
             case 5:
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, settingFragment, Constant.settingFragment)
-                        .addToBackStack(null)
                         .commit();
                 break;
             case 6:
@@ -673,20 +721,26 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, scheduleFragment, Constant.scheduleFragment)
-                        .addToBackStack(null)
                         .commit();
                 break;
             case 8:
 
-                DataManager.getInstance().showIFramePopUp(this);
-//                    getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.content_frame, eventFragment, Constant.eventFragment)
-//                            .commit();
+//                DataManager.getInstance().showIFramePopUp(this);
+
+
+                DataManager.getInstance().setFlagWebView(true);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                            .commit();
                 break;
             case 9:
 
-                DataManager.getInstance().showIFramePopUp(this);
+                DataManager.getInstance().setFlagWebView(true);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                        .commit();
 //                    getSupportFragmentManager()
 //                            .beginTransaction()
 //                            .replace(R.id.content_frame, new DonateFragment(), Constant.donateFragment)
@@ -697,24 +751,39 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, trainerFragment, Constant.traineeFragment)
-                        .addToBackStack(null)
                         .commit();
                 break;
             case 11:
 
-                DataManager.getInstance().showIFramePopUp(this);
+//                DataManager.getInstance().showIFramePopUp(this);
+                DataManager.getInstance().setFlagWebView(true);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                        .commit();
                 break;
             case 12:
 
-                DataManager.getInstance().showIFramePopUp(this);
+//                DataManager.getInstance().showIFramePopUp(this);
+                DataManager.getInstance().setFlagWebView(true);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                        .commit();
                 break;
             case 13:
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
                 DataManager.getInstance().showProgressMessage(this, "Progress");
+                if (SharedPreference.getSharedPrefData(this, Constant.defaultLocationId) != null) {
+                    locationid = SharedPreference.getSharedPrefData(this, Constant.defaultLocationId);
+                } else {
+                    locationid = "1";
+                }
                 Map<String, Object> objectMap = new LinkedHashMap<>();
                 String date = df1.format(c.getTime());
                 objectMap.put("date", date);
+                objectMap.put("location_id", locationid);
 
                 JsonCaller.getInstance().getEventList(objectMap);
 
@@ -731,20 +800,30 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, donateFragment, Constant.donateFragment)
-                        .addToBackStack(null)
                         .commit();
                 break;
             case 16:
 
-                DataManager.getInstance().showIFramePopUp(this);
+//                DataManager.getInstance().showIFramePopUp(this);
+                DataManager.getInstance().setFlagWebView(true);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                        .commit();
                 break;
             case 17:
 
-                DataManager.getInstance().showIFramePopUp(this);
+//                DataManager.getInstance().showIFramePopUp(this);
+                DataManager.getInstance().setFlagWebView(true);
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                        .commit();
                 break;
 
         }
-//        }
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
@@ -805,7 +884,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         mCurrentLocation = location;
         String lat = "" + mCurrentLocation.getLatitude();
         String lon = "" + mCurrentLocation.getLongitude();
-
+        Log.e(TAG, "Firing Lat/Longs........" + lat + "........" + lon);
         SharedPreference.setDataInSharedPreference(this, Constant.lati, lat);
         SharedPreference.setDataInSharedPreference(this, Constant.longi, lon);
     }
@@ -913,6 +992,12 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 }
                 break;
+            case 10:
+                if(resultCode == Activity.RESULT_CANCELED){
+                    displayLocationSettingsRequest(this,Constant.locationRequestInt);
+                }
+
+                break;
         }
     }
 
@@ -960,4 +1045,49 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         return casted_image;
     }
+
+    public void displayLocationSettingsRequest(final Context context, final int REQUEST_CHECK_SETTINGS) {
+        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
+                .addApi(LocationServices.API).build();
+        googleApiClient.connect();
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(10000 / 2);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+        builder.setAlwaysShow(true);
+
+        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(LocationSettingsResult result) {
+                final Status status = result.getStatus();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        Log.e("check", "All location settings are satisfied.");
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        Log.e("check", "Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
+
+                        try {
+                            // Show the dialog by calling startResolutionForResult(), and check the result
+                            // in onActivityResult().
+                            status.startResolutionForResult(HomeActivity.this, REQUEST_CHECK_SETTINGS);
+                        } catch (IntentSender.SendIntentException e) {
+                            Log.e("check", "PendingIntent unable to execute request.");
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        Log.e("check", "Location settings are inadequate, and cannot be fixed here. Dialog not created.");
+                        displayLocationSettingsRequest(HomeActivity.this,Constant.locationRequestInt);
+                        break;
+                }
+            }
+        });
+    }
+
+
+
 }

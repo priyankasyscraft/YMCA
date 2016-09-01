@@ -1,17 +1,31 @@
 package com.ymca.Fragments;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.ymca.Activities.HomeActivity;
 import com.ymca.Adapters.ScreenSlidePagerAdapter;
 import com.ymca.AppManager.DataManager;
@@ -32,7 +46,9 @@ import java.util.TimerTask;
 /**
  * Created by Soni on 28-Jul-16.
  */
-public class HomeFragment extends Fragment implements View.OnClickListener {
+public class HomeFragment extends Fragment implements View.OnClickListener, LocationListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private View view;
     private ActionBar actionBar;
@@ -49,6 +65,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private CirclePageIndicator mIndicator;
     private Timer timer;
     private int count = 0;
+    TextView badgeCount;
+    LocationRequest mLocationRequest;
+    GoogleApiClient mGoogleApiClient;
+    Location mCurrentLocation;
+    private String TAG = "Home Activity";
 
     @Nullable
     @Override
@@ -131,13 +152,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         View view = inflator.inflate(R.layout.custom_layout_actionbar, null);
 
         ImageView notificationBell = (ImageView) view.findViewById(R.id.notificationBell);
+        badgeCount = (TextView) view.findViewById(R.id.badgeCount);
 
-
+        String deviceToken = SharedPreference.getSharedPrefData(getActivity(), Constant.deviceToken);
+        Map<String, Object> objectMap = new LinkedHashMap<>();
+        objectMap.put("device_type", "1");
+        objectMap.put("device_token", deviceToken);
+        JsonCaller.getInstance().getBadgeCount(objectMap);
         notificationBell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                isCheck = DataManager.chkStatus(getActivity());
 //                if (isCheck) {
+                DataManager.getInstance().setFlagNotification(false);
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
@@ -168,18 +195,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     break;
                 case R.id.myCardLayout:
                     DataManager.getInstance().setFlagCheckIn(false);
-                    DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
-                    String deviceToken = SharedPreference.getSharedPrefData(getActivity(), Constant.deviceToken);
-                    Map<String, Object> params = new LinkedHashMap<>();
-
-                    params.put("device_token", deviceToken);
-                    JsonCaller.getInstance().getAllCard(params);
-//                    getActivity()
-//                            .getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-//                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-//                            .commit();
+//                    DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
+//                    String deviceToken = SharedPreference.getSharedPrefData(getActivity(), Constant.deviceToken);
+//                    Map<String, Object> params = new LinkedHashMap<>();
+//                    params.put("device_type","1");
+//                    params.put("device_token", deviceToken);
+//                    JsonCaller.getInstance().getAllCard(params);
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                            .commit();
                     break;
                 case R.id.locationLayout:
                     DataManager.getInstance().setFlagLocation(false);
@@ -191,7 +218,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             .commit();
                     break;
                 case R.id.programLayout:
-                    DataManager.getInstance().showIFramePopUp(getActivity());
+//                    DataManager.getInstance().showIFramePopUp(getActivity());
+                    DataManager.getInstance().setFlagWebView(false);
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                            .commit();
                     break;
                 case R.id.classLayout:
 //                    getActivity()
@@ -200,12 +234,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 //                            .replace(R.id.content_frame, homeClassesFragment, Constant.homeClassFragment)
 //                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
 //                            .commit();
-
-                    DataManager.getInstance().showIFramePopUp(getActivity());
+                    DataManager.getInstance().setFlagWebView(false);
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                            .commit();
+//                    DataManager.getInstance().showIFramePopUp(getActivity());
 
                     break;
                 case R.id.blogLayout:
-                    DataManager.getInstance().showIFramePopUp(getActivity());
+                    DataManager.getInstance().setFlagWebView(false);
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                            .commit();
+//                    DataManager.getInstance().showIFramePopUp(getActivity());
                     break;
             }
         }
@@ -215,18 +262,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onRefreshData(Refreshable refreshable, int requestCode) {
         if (requestCode == JsonCaller.REFRESH_CODE_ALL_CARDS) {
             if (DataManager.getInstance().isFlagCardShowBack()) {
+                DataManager.getInstance().hideProgressMessage();
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
                         .commit();
+
             } else {
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                        .commit();
+//                getActivity()
+//                        .getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+//                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+//                        .commit();
+                myCardsFragment.onRefreshData(refreshable, requestCode);
             }
 
         } else if (requestCode == JsonCaller.REFRESH_CODE_ADD_CARD_NULL) {
@@ -238,23 +288,73 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     .commit();
         } else if (requestCode == JsonCaller.REFRESH_CODE_DELETE_CARDS) {
             myCardsFragment.onRefreshData(refreshable, requestCode);
-        }else if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_INSTRU){
+        } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_INSTRU) {
             scheduleFragment.onRefreshData(refreshable, requestCode);
-        }else if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_CLASS){
+        } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_CLASS) {
             scheduleFragment.onRefreshData(refreshable, requestCode);
-        }else if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_AREA){
+        } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_AREA) {
             scheduleFragment.onRefreshData(refreshable, requestCode);
-        }else if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA){
+        } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA) {
             scheduleFragment.onRefreshData(refreshable, requestCode);
-        }else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCTOR_DETAIL) {
+        } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_DATE_NULL) {
             scheduleFragment.onRefreshData(refreshable, requestCode);
-        }else if (requestCode == JsonCaller.REFRESH_CODE_CLASS_DETAIL) {
+        } else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCTOR_DETAIL) {
             scheduleFragment.onRefreshData(refreshable, requestCode);
-        }else if (requestCode == JsonCaller.REFRESH_CODE_LOCATION_LIST) {
+        } else if (requestCode == JsonCaller.REFRESH_CODE_CLASS_DETAIL) {
+            scheduleFragment.onRefreshData(refreshable, requestCode);
+        } else if (requestCode == JsonCaller.REFRESH_CODE_LOCATION_LIST) {
+            scheduleFragment.onRefreshData(refreshable, requestCode);
+        } else if (requestCode == JsonCaller.REFRESH_CODE_FACILITY_LIST) {
             locationFragment.onRefreshData(refreshable, requestCode);
-        }else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCT_CLASS_DETAIL) {
+        } else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCT_CLASS_DETAIL) {
             scheduleFragment.onRefreshData(refreshable, requestCode);
+        } else if (requestCode == JsonCaller.REFRESH_CODE_NOTIFY_LIST) {
+            notificationFragment.onRefreshData(refreshable, requestCode);
+        } else if (requestCode == JsonCaller.REFRESH_CODE_BADGE_COUNT) {
+            if (DataManager.getInstance().getBadgeCount().equals("0")) {
+                badgeCount.setVisibility(View.GONE);
+            } else {
+                badgeCount.setVisibility(View.VISIBLE);
+                badgeCount.setText(DataManager.getInstance().getBadgeCount());
+            }
         }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        startLocationUpdates();
+    }
+
+    protected void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+        PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+        Log.e(TAG, "Location update started ..............: ");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e(TAG, "Connection failed: " + connectionResult.toString());
+    }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.e(TAG, "Firing onLocationChanged..............................................");
+        mCurrentLocation = location;
+        String lat = "" + mCurrentLocation.getLatitude();
+        String lon = "" + mCurrentLocation.getLongitude();
+        Log.e(TAG, "Firing Lat/Longs........" + lat + "........" + lon);
+        SharedPreference.setDataInSharedPreference(getActivity(), Constant.lati, lat);
+        SharedPreference.setDataInSharedPreference(getActivity(), Constant.longi, lon);
     }
 //    }
 

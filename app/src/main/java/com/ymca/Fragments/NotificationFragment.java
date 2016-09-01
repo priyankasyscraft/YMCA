@@ -24,9 +24,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ymca.Activities.HomeActivity;
+import com.ymca.Adapters.NotificationAdapter;
 import com.ymca.AppManager.DataManager;
+import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
 import com.ymca.R;
+import com.ymca.UserInterFace.RefreshDataListener;
+import com.ymca.UserInterFace.Refreshable;
+import com.ymca.WebManager.JsonCaller;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /**
@@ -38,6 +46,7 @@ public class NotificationFragment extends Fragment {
     ListView notificationList;
     ImageButton backButton;
     ImageView callButton;
+    NotificationAdapter notificationAdapter;
 
     @Nullable
     @Override
@@ -51,6 +60,15 @@ public class NotificationFragment extends Fragment {
         notificationList = (ListView) view.findViewById(R.id.notificationList);
         callButton = (ImageView) view.findViewById(R.id.callButton);
 
+        notificationAdapter = new NotificationAdapter(getActivity(),DataManager.getInstance().getNotificationModelClassArrayList());
+        notificationList.setAdapter(notificationAdapter);
+
+        String deviceToken = SharedPreference.getSharedPrefData(getActivity(),Constant.deviceToken);
+        DataManager.getInstance().showProgressMessage(getActivity(),"Progress");
+        Map<String,Object> objectMap = new LinkedHashMap<>();
+        objectMap.put("device_type","1");
+        objectMap.put("device_token",deviceToken);
+        JsonCaller.getInstance().getAnnouncementList(objectMap);
         callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,5 +167,17 @@ public class NotificationFragment extends Fragment {
             }
         });
 
+    }
+
+    public void onRefreshData(Refreshable refreshable, int requestCode) {
+        if(requestCode == JsonCaller.REFRESH_CODE_NOTIFY_LIST){
+            notificationAdapter = new NotificationAdapter(getActivity(),DataManager.getInstance().getNotificationModelClassArrayList());
+            notificationList.setAdapter(notificationAdapter);
+            String deviceToken = SharedPreference.getSharedPrefData(getActivity(),Constant.deviceToken);
+            Map<String,Object> objectMap = new LinkedHashMap<>();
+            objectMap.put("device_type","1");
+            objectMap.put("device_token",deviceToken);
+            JsonCaller.getInstance().getAnnouncementReset(objectMap);
+        }
     }
 }

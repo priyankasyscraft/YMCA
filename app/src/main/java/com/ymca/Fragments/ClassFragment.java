@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.ymca.Adapters.ClassAdapter;
 import com.ymca.AppManager.DataManager;
+import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
 import com.ymca.ModelClass.ClassesModelClass;
 import com.ymca.PullListLoader.XListView;
@@ -30,6 +31,7 @@ public class ClassFragment extends Fragment {
     XListView classScheduleListView;
     ClassAdapter classAdapter;
     private ClassDetailFragment classDetailFragment = new ClassDetailFragment();
+    private String locationid;
 
     @Nullable
     @Override
@@ -37,8 +39,15 @@ public class ClassFragment extends Fragment {
         view = inflater.inflate(R.layout.class_fragment, container, false);
 
         DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
+        if(SharedPreference.getSharedPrefData(getActivity(),Constant.defaultLocationId)!=null) {
+            locationid = SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocationId);
+        }else {
+            locationid = "1";
+        }
         Map<String, Object> objectMap = new LinkedHashMap<>();
         objectMap.put("type", "class");
+        objectMap.put("location_id", locationid);
+        objectMap.put("skiprecords","-1");
         JsonCaller.getInstance().getScheduleDataClass(objectMap);
         classScheduleListView = (XListView) view.findViewById(R.id.classScheduleListView);
         return view;

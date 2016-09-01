@@ -71,7 +71,13 @@ public class MyCardsFragment extends Fragment implements RefreshDataListener {
             actionBarUpdateBack();
         }
 
+        DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
+        String deviceToken = SharedPreference.getSharedPrefData(getActivity(), Constant.deviceToken);
+        Map<String, Object> params = new LinkedHashMap<>();
 
+        params.put("device_type", "1");
+        params.put("device_token", deviceToken);
+        JsonCaller.getInstance().getAllCard(params);
         recyclerCardList = (ListView) view.findViewById(R.id.recyclerCardList);
 
         recyclerCardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -96,7 +102,7 @@ public class MyCardsFragment extends Fragment implements RefreshDataListener {
 
         myCardAdapter = new MyCardNewAdapter(getActivity(), DataManager.getInstance().getMyCardModelClasses());
         recyclerCardList.setAdapter(myCardAdapter);
-        DataManager.getInstance().hideProgressMessage();
+//        DataManager.getInstance().hideProgressMessage();
         addCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +110,7 @@ public class MyCardsFragment extends Fragment implements RefreshDataListener {
                         .getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, new AddCardFragment(), Constant.addMyCardFragment)
+                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
                         .commit();
             }
         });
@@ -128,8 +135,9 @@ public class MyCardsFragment extends Fragment implements RefreshDataListener {
         String deviceToken = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.deviceToken);
         Map<String, Object> params = new LinkedHashMap<>();
         String barcodeno = DataManager.getInstance().getMyCardModelClasses().get(info.position).getUserBarCodeNumber().toString().replace("CARD NUMBER:", "");
-        params.put("card_id", barcodeno);
+        params.put("card_id", barcodeno.trim());
         params.put("device_token", deviceToken);
+        params.put("device_type","1");
         JsonCaller.getInstance().getDeleteCard(params);
         DataManager.getInstance().getMyCardModelClasses().remove(info.position);
         myCardAdapter.setReloadData(true);
@@ -226,6 +234,9 @@ public class MyCardsFragment extends Fragment implements RefreshDataListener {
         if (requestCode == JsonCaller.REFRESH_CODE_DELETE_CARDS) {
             DataManager.getInstance().hideProgressMessage();
 //            myCardAdapter.setReloadData(true);
+        }else if(requestCode == JsonCaller.REFRESH_CODE_ALL_CARDS){
+            myCardAdapter.setReloadData(true);
+            DataManager.getInstance().hideProgressMessage();
         }
     }
 }
