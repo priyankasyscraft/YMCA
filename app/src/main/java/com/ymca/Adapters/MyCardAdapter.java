@@ -50,7 +50,6 @@ public class MyCardAdapter extends RecyclerView.Adapter<MyCardAdapter.MyViewHold
                     .getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.content_frame, new CardShowFragment(), Constant.cardShowFragment)
-                    .addToBackStack(((HomeActivity) context).getSupportFragmentManager().getClass().getName())
                     .commit();
 
         }

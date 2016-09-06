@@ -1,13 +1,9 @@
 package com.ymca.Fragments;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,22 +15,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ymca.Adapters.DateAdapter;
 import com.ymca.Adapters.SpinnerAdapter;
 import com.ymca.AppManager.DataManager;
 import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
-import com.ymca.ModelClass.DateModelClass;
 import com.ymca.PullListLoader.XListView;
 import com.ymca.R;
-import com.ymca.UserInterFace.RefreshDataListener;
 import com.ymca.UserInterFace.Refreshable;
 import com.ymca.WebManager.JsonCaller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -56,8 +48,6 @@ public class DateFragment extends Fragment implements View.OnClickListener , XLi
     XListView dateScheduleListView;
     DateAdapter dateAdapter;
     EditText searchEditText;
-    ArrayList<DateModelClass> dateModelArrayList = new ArrayList<>();
-    ArrayList<DateModelClass> dateModelClassArrayList = new ArrayList<>();
     Button buttonClick;
     Spinner spinnerLocation;
     SpinnerAdapter spinnerAdapter;
@@ -65,7 +55,7 @@ public class DateFragment extends Fragment implements View.OnClickListener , XLi
     int offsetValue = 0;
     String searchKey = "";
     private String locationid;
-
+    Map<String, Object> objectMap = new LinkedHashMap<>();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -119,7 +109,7 @@ public class DateFragment extends Fragment implements View.OnClickListener , XLi
         }else {
             locationid = "1";
         }
-        Map<String, Object> objectMap = new LinkedHashMap<>();
+
         objectMap.put("type", "date");
         objectMap.put("date", date);
         objectMap.put("location_id",locationid) ;
@@ -146,7 +136,7 @@ public class DateFragment extends Fragment implements View.OnClickListener , XLi
                         SharedPreference.setDataInSharedPreference(getActivity(), Constant.defaultLocationId, DataManager.getInstance().getLocationModelClasses().get(position).getLocationId());
                         DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
                         String date2 = df1.format(new Date(dateText.getText().toString()));
-                        Map<String, Object> objectMap = new LinkedHashMap<>();
+
                         objectMap.put("type", "date");
                         objectMap.put("date", date2);
                         objectMap.put("location_id", DataManager.getInstance().getLocationModelClasses().get(position).getLocationId());
@@ -192,7 +182,7 @@ public class DateFragment extends Fragment implements View.OnClickListener , XLi
                     locationid = "1";
                 }
                 String date = df1.format(c.getTime());
-                Map<String, Object> objectMap = new LinkedHashMap<>();
+
                 objectMap.put("type", "date");
                 objectMap.put("date", date);
                 objectMap.put("location_id", locationid);
@@ -219,30 +209,30 @@ public class DateFragment extends Fragment implements View.OnClickListener , XLi
                     locationid = "1";
                 }
                 String date1 = df1.format(c.getTime());
-                Map<String, Object> objectMap1 = new LinkedHashMap<>();
-                objectMap1.put("type", "date");
-                objectMap1.put("date", date1);
-                objectMap1.put("location_id", locationid);
-                objectMap1.put("skiprecords","0");
-                objectMap1.put("search_keyword",searchKey);
-                JsonCaller.getInstance().getScheduleData(objectMap1);
+
+                objectMap.put("type", "date");
+                objectMap.put("date", date1);
+                objectMap.put("location_id", locationid);
+                objectMap.put("skiprecords","0");
+                objectMap.put("search_keyword",searchKey);
+                JsonCaller.getInstance().getScheduleData(objectMap);
                 break;
             case R.id.searchButton:
-                searchKey = searchEditText.getText().toString();
+                searchKey = searchEditText.getText().toString().trim();
                 DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
                 String date2 = df1.format(new Date(dateText.getText().toString()));
-                Map<String, Object> objectMap2 = new LinkedHashMap<>();
-                objectMap2.put("type", "date");
-                objectMap2.put("date", date2);
+
+                objectMap.put("type", "date");
+                objectMap.put("date", date2);
                 if(SharedPreference.getSharedPrefData(getActivity(),Constant.defaultLocationId)!=null) {
                     locationid = SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocationId);
                 }else {
                     locationid = "1";
                 }
-                objectMap2.put("location_id", locationid);
-                objectMap2.put("skiprecords","0");
-                objectMap2.put("search_keyword",searchKey);
-                JsonCaller.getInstance().getScheduleData(objectMap2);
+                objectMap.put("location_id", locationid);
+                objectMap.put("skiprecords","0");
+                objectMap.put("search_keyword",searchKey);
+                JsonCaller.getInstance().getScheduleData(objectMap);
                 break;
         }
     }
@@ -250,13 +240,15 @@ public class DateFragment extends Fragment implements View.OnClickListener , XLi
 
     public void onRefreshData(Refreshable refreshable, int requestCode) {
         if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA) {
+            dateScheduleListView.setVisibility(View.VISIBLE);
             if(offsetValue==0) {
                 dateAdapter = new DateAdapter(getActivity(), DataManager.getInstance().getDateModelClasses());
                 dateScheduleListView.setAdapter(dateAdapter);
 //                dateAdapter.notifyDataSetChanged();
             }else {
                 dateAdapter.notifyDataSetChanged();
-            }
+            }/*
+            DataManager.getInstance().hideProgressMessage();*/
             Map<String,Object> objectMap = new LinkedHashMap<>();
             JsonCaller.getInstance().getLocationList(objectMap);
         }else if(requestCode == JsonCaller.REFRESH_CODE_LOCATION_LIST){
@@ -270,6 +262,9 @@ public class DateFragment extends Fragment implements View.OnClickListener , XLi
         }else if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_DATE_NULL){
             dateScheduleListView.setPullLoadEnable(false);
             dateScheduleListView.setPullRefreshEnable(false);
+            if(objectMap.containsValue("0")) {
+                dateScheduleListView.setVisibility(View.GONE);
+            }
             Map<String,Object> objectMap = new LinkedHashMap<>();
             JsonCaller.getInstance().getLocationList(objectMap);
         }
@@ -293,22 +288,29 @@ public class DateFragment extends Fragment implements View.OnClickListener , XLi
             @Override
             public void run() {
 //                DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
-                int size = DataManager.getInstance().getDateModelClasses().size();
 
-                if(SharedPreference.getSharedPrefData(getActivity(),Constant.defaultLocationId)!=null) {
-                    locationid = SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocationId);
-                }else {
-                    locationid = "1";
+                try {
+                    if (DataManager.getInstance().getDateModelClasses()!=null && DataManager.getInstance().getDateModelClasses().size() != 0) {
+                        int size = DataManager.getInstance().getDateModelClasses().size();
+
+                        if (SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocationId) != null) {
+                            locationid = SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocationId);
+                        } else {
+                            locationid = "1";
+                        }
+                        String date1 = df1.format(c.getTime());
+                        Map<String, Object> objectMap1 = new LinkedHashMap<>();
+                        objectMap1.put("type", "date");
+                        objectMap1.put("date", date1);
+                        objectMap1.put("location_id", locationid);
+                        objectMap1.put("skiprecords", size);
+                        objectMap1.put("search_keyword", searchKey);
+                        JsonCaller.getInstance().getScheduleData(objectMap1);
+                        onLoad();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                String date1 = df1.format(c.getTime());
-                Map<String, Object> objectMap1 = new LinkedHashMap<>();
-                objectMap1.put("type", "date");
-                objectMap1.put("date", date1);
-                objectMap1.put("location_id", locationid);
-                objectMap1.put("skiprecords",size);
-                objectMap1.put("search_keyword",searchKey);
-                JsonCaller.getInstance().getScheduleData(objectMap1);
-                onLoad();
             }
         }, 2000);
     }

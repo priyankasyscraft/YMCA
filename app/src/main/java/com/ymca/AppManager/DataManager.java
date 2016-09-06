@@ -85,6 +85,7 @@ public class DataManager {
     private boolean flagSettingLocation = false;
     private boolean flagNotification = false;
     private boolean flagWebView = false;
+    private boolean flagMyCardBack = false;
     private String memberName;
     private String memberCardNumber;
 
@@ -628,10 +629,13 @@ public class DataManager {
 
     public String hourConverter(String time) {
 
+        if(time.length()!=8){
+            time = time+":00";
+        }
         try {
             final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             final Date dateObj = sdf.parse(time);
-            time = new SimpleDateFormat("K:mm a").format(dateObj);
+            time = new SimpleDateFormat("hh:mm a").format(dateObj);
         } catch (final ParseException e) {
             e.printStackTrace();
         }
@@ -644,7 +648,7 @@ public class DataManager {
             final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             final Date dateObj = sdf.parse(time);
             SimpleDateFormat dateFormat1 = new SimpleDateFormat("MMM dd, yyyy");
-            SimpleDateFormat dateFormat2 = new SimpleDateFormat("K:mm a");
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("hh:mm a");
             time = dateFormat1.format(dateObj) +" at " +dateFormat2.format(dateObj);
         } catch (final ParseException e) {
             e.printStackTrace();
@@ -653,6 +657,7 @@ public class DataManager {
     }
 
     public String differenceTwoTime(String startTime, String endTime) {
+
         String diffTime = null;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
         Date date1 = null;
@@ -941,5 +946,13 @@ public class DataManager {
 
     public void setFlagWebView(boolean flagWebView) {
         this.flagWebView = flagWebView;
+    }
+
+    public boolean isFlagMyCardBack() {
+        return flagMyCardBack;
+    }
+
+    public void setFlagMyCardBack(boolean flagMyCardBack) {
+        this.flagMyCardBack = flagMyCardBack;
     }
 }

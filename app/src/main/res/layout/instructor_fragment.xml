@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -16,17 +16,21 @@
         android:textColor="@color/colorScheduleBottomUnSelect"
         android:textSize="@dimen/text_size_common_22"
         android:textStyle="bold"
-        app:fontNames="@string/custom_primary_font"/>
+        app:fontNames="@string/custom_primary_font" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".97"
-        android:scrollbars="none"
-        android:scrollbarStyle="insideOverlay"
-        />
+        android:layout_weight=".97">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="none" />
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

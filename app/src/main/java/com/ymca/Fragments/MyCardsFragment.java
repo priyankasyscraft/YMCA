@@ -1,45 +1,31 @@
 package com.ymca.Fragments;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.ymca.Activities.AddCardActivity;
+import com.ymca.Activities.CardShowActivity;
 import com.ymca.Activities.HomeActivity;
-import com.ymca.Adapters.MyCardAdapter;
 import com.ymca.Adapters.MyCardNewAdapter;
 import com.ymca.AppManager.DataManager;
 import com.ymca.AppManager.SharedPreference;
-import com.ymca.BarcodeGenerator.BarQrCodeGenerator;
 import com.ymca.Constants.Constant;
-import com.ymca.ModelClass.MyCardModelClass;
-import com.ymca.PullListLoader.XListView;
 import com.ymca.R;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.oned.Code128Writer;
-import com.google.zxing.qrcode.QRCodeWriter;
 import com.ymca.UserInterFace.RefreshDataListener;
 import com.ymca.UserInterFace.Refreshable;
 import com.ymca.WebManager.JsonCaller;
@@ -70,7 +56,7 @@ public class MyCardsFragment extends Fragment implements RefreshDataListener {
         } else {
             actionBarUpdateBack();
         }
-
+        DataManager.getInstance().hideProgressMessage();
         DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
         String deviceToken = SharedPreference.getSharedPrefData(getActivity(), Constant.deviceToken);
         Map<String, Object> params = new LinkedHashMap<>();
@@ -83,17 +69,20 @@ public class MyCardsFragment extends Fragment implements RefreshDataListener {
         recyclerCardList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
+//                DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
                 DataManager.getInstance().setMemberName(DataManager.getInstance().getMyCardModelClasses().get(i).getUserName());
                 DataManager.getInstance().setMemberCardNumber(DataManager.getInstance().getMyCardModelClasses().get(i).getUserBarCodeNumber().toString().replace("CARD NUMBER: ", ""));
                 DataManager.getInstance().setFlagCardShow(true);
 
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, new CardShowFragment(), Constant.cardShowFragment)
-                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                        .commit();
+//                getActivity()
+//                        .getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.content_frame, new CardShowFragment(), Constant.cardShowFragment)
+//                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+//                        .commit();
+                Intent intent = new Intent(getActivity(), CardShowActivity.class);
+                startActivity(intent);
+                getActivity().finish();
 
             }
         });
@@ -106,12 +95,15 @@ public class MyCardsFragment extends Fragment implements RefreshDataListener {
         addCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, new AddCardFragment(), Constant.addMyCardFragment)
-                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                        .commit();
+//                getActivity()
+//                        .getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.content_frame, new AddCardFragment(), Constant.addMyCardFragment)
+//                        .addToBackStack(null)
+//                        .commit();
+                Intent intent = new Intent(getActivity(), AddCardActivity.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
         return view;
@@ -131,7 +123,7 @@ public class MyCardsFragment extends Fragment implements RefreshDataListener {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-        DataManager.getInstance().showProgressMessage(DataManager.getInstance().getAppCompatActivity(), "Progress");
+
         String deviceToken = SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.deviceToken);
         Map<String, Object> params = new LinkedHashMap<>();
         String barcodeno = DataManager.getInstance().getMyCardModelClasses().get(info.position).getUserBarCodeNumber().toString().replace("CARD NUMBER:", "");
@@ -141,6 +133,8 @@ public class MyCardsFragment extends Fragment implements RefreshDataListener {
         JsonCaller.getInstance().getDeleteCard(params);
         DataManager.getInstance().getMyCardModelClasses().remove(info.position);
         myCardAdapter.setReloadData(true);
+        DataManager.getInstance().showProgressMessage(DataManager.getInstance().getAppCompatActivity(), "Progress");
+
         return true;
     }
 

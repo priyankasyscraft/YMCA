@@ -87,12 +87,10 @@ public class FireBaseIntentService extends FirebaseMessagingService {
 //        remoteViews.setTextViewText(R.id.text_message, "message");
 //        remoteViews.setImageViewResource(R.id.image_end, R.drawable.custom_marker);
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.app_icon);
-        NotificationCompat.BigPictureStyle s = new NotificationCompat.BigPictureStyle().bigPicture(largeIcon);
+//        NotificationCompat.BigPictureStyle s = new NotificationCompat.BigPictureStyle().bigPicture(largeIcon);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setContentTitle("YMCA")
                 .setContentText(messageBody)
-                .setSubText(messageBody)
-                .setStyle(s)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setLargeIcon(largeIcon)

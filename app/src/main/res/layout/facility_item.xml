@@ -37,7 +37,7 @@
             android:layout_weight=".68"
             android:focusable="false"
             android:gravity="center_vertical"
-            android:text="601,South 4th spreed filed"
+            android:text="601,South 4th spreed filed fghfhdfhfdghfdghfdgfh"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_common_12"
             app:fontNames="@string/custom_secondary_font" />
@@ -55,7 +55,7 @@
                 android:background="@drawable/text_border"
                 android:focusable="false"
                 android:gravity="center"
-                android:padding="@dimen/padding_common_2"
+                android:padding="@dimen/padding_common_5"
                 android:text="169228.23 mi"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_common_13"

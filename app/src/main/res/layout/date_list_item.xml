@@ -59,7 +59,8 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_common_13"
             android:padding="@dimen/padding_common_2"
-            app:fontNames="@string/custom_secondary_font"/>
+            app:fontNames="@string/custom_secondary_font"
+            android:visibility="gone"/>
 
         <com.ymca.CustomFont.SecondaryFontText
             android:id="@+id/dateTTimeWithDays"
@@ -67,7 +68,7 @@
             android:layout_height="wrap_content"
             android:text="Tu Th @ 7:40 pm (50 min)"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size_common_12"
+            android:textSize="@dimen/text_size_common_13"
             android:padding="@dimen/padding_common_2"
             app:fontNames="@string/custom_secondary_font"/>
 
@@ -75,7 +76,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/padding_common_2">
+            android:paddingLeft="@dimen/padding_common_2"
+            android:visibility="gone">
 
             <com.ymca.CustomFont.PrimaryFontText
                 android:id="@+id/dateGroupName"

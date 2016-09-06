@@ -76,61 +76,65 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.schedule_fragment, container, false);
-        if (DataManager.getInstance().isFlagScedule()) {
-            actionBarUpdate();
-        } else {
-            actionBarUpdateBack();
+        try {
+            view = inflater.inflate(R.layout.schedule_fragment, container, false);
+            if (DataManager.getInstance().isFlagScedule()) {
+                actionBarUpdate();
+            } else {
+                actionBarUpdateBack();
+            }
+            dateTab = (LinearLayout) view.findViewById(R.id.dateTab);
+            classTab = (LinearLayout) view.findViewById(R.id.classTab);
+            areasTab = (LinearLayout) view.findViewById(R.id.areasTab);
+            instructorTab = (LinearLayout) view.findViewById(R.id.instructorTab);
+
+            if (DataManager.getInstance().isFlagClassList()) {
+                DataManager.getInstance().setFlagClassList(false);
+                dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                classTab.setBackgroundResource(R.drawable.schedule_tabmenu);
+                instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+
+
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_child_frame, classFragment, Constant.classFragment)
+                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                        .commit();
+            } else if (DataManager.getInstance().isFlagInstructorList()) {
+                DataManager.getInstance().setFlagInstructorList(false);
+                dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu);
+                areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+
+
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_child_frame, instructorFragment, Constant.instructorFragment)
+                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                        .commit();
+            } else {
+                dateTab.setBackgroundResource(R.drawable.schedule_tabmenu);
+                classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+
+
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_child_frame, dateFragment, Constant.dateFragment)
+                        .commit();
+
+            }
+
+            dateTab.setOnClickListener(this);
+            classTab.setOnClickListener(this);
+            areasTab.setOnClickListener(this);
+            instructorTab.setOnClickListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        dateTab = (LinearLayout) view.findViewById(R.id.dateTab);
-        classTab = (LinearLayout) view.findViewById(R.id.classTab);
-        areasTab = (LinearLayout) view.findViewById(R.id.areasTab);
-        instructorTab = (LinearLayout) view.findViewById(R.id.instructorTab);
-
-        if (DataManager.getInstance().isFlagClassList()) {
-            DataManager.getInstance().setFlagClassList(false);
-            dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-            classTab.setBackgroundResource(R.drawable.schedule_tabmenu);
-            instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-            areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-
-
-            getChildFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.content_child_frame, classFragment, Constant.classFragment)
-                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                    .commit();
-        } else if (DataManager.getInstance().isFlagInstructorList()) {
-            DataManager.getInstance().setFlagInstructorList(false);
-            dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-            classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-            instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu);
-            areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-
-
-            getChildFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.content_child_frame, instructorFragment, Constant.instructorFragment)
-                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                    .commit();
-        } else {
-            dateTab.setBackgroundResource(R.drawable.schedule_tabmenu);
-            classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-            instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-            areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-
-
-            getChildFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.content_child_frame, dateFragment, Constant.dateFragment)
-                    .commit();
-
-        }
-
-        dateTab.setOnClickListener(this);
-        classTab.setOnClickListener(this);
-        areasTab.setOnClickListener(this);
-        instructorTab.setOnClickListener(this);
         return view;
     }
 
@@ -250,75 +254,79 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
     }
     @Override
     public void onClick(View view) {
-        if(SharedPreference.getSharedPrefData(getActivity(),Constant.lati)!=null) {
-            String lat = SharedPreference.getSharedPrefData(getActivity(), Constant.lati);
-            if(lat!=null || lat.length()!=0 || lat.equals("")) {
-                switch (view.getId()) {
-                    case R.id.dateTab:
+        try {
+            if(SharedPreference.getSharedPrefData(getActivity(),Constant.lati)!=null) {
+                String lat = SharedPreference.getSharedPrefData(getActivity(), Constant.lati);
+                if(lat!=null || lat.length()!=0 || lat.equals("")) {
+                    switch (view.getId()) {
+                        case R.id.dateTab:
 
-                        dateTab.setBackgroundResource(R.drawable.schedule_tabmenu);
-                        classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                        instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                        areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                            dateTab.setBackgroundResource(R.drawable.schedule_tabmenu);
+                            classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                            instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                            areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
 
-                        getChildFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.content_child_frame, dateFragment, Constant.dateFragment)
-                                .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                                .commit();
+                            getChildFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.content_child_frame, dateFragment, Constant.dateFragment)
+                                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                                    .commit();
 
-                        break;
-                    case R.id.classTab:
+                            break;
+                        case R.id.classTab:
 
-                        dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                        classTab.setBackgroundResource(R.drawable.schedule_tabmenu);
-                        instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                        areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                            dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                            classTab.setBackgroundResource(R.drawable.schedule_tabmenu);
+                            instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                            areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
 
 
-                        getChildFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.content_child_frame, classFragment, Constant.classFragment)
-                                .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                                .commit();
-                        break;
-                    case R.id.instructorTab:
+                            getChildFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.content_child_frame, classFragment, Constant.classFragment)
+                                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                                    .commit();
+                            break;
+                        case R.id.instructorTab:
 
-                        dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                        classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                        instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu);
-                        areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                            dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                            classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                            instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu);
+                            areasTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
 
-//                DataManager.getInstance().showProgressMessage(getActivity(),"Progress");
-//                Map<String,Object> objectMap2 = new LinkedHashMap<>();
-//                objectMap2.put("type","instructor");
-//                JsonCaller.getInstance().getScheduleDataInstru(objectMap2);
+    //                DataManager.getInstance().showProgressMessage(getActivity(),"Progress");
+    //                Map<String,Object> objectMap2 = new LinkedHashMap<>();
+    //                objectMap2.put("type","instructor");
+    //                JsonCaller.getInstance().getScheduleDataInstru(objectMap2);
 
-                        getChildFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.content_child_frame, instructorFragment, Constant.instructorFragment)
-                                .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                                .commit();
-                        break;
-                    case R.id.areasTab:
+                            getChildFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.content_child_frame, instructorFragment, Constant.instructorFragment)
+                                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                                    .commit();
+                            break;
+                        case R.id.areasTab:
 
-                        dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                        classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                        instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
-                        areasTab.setBackgroundResource(R.drawable.schedule_tabmenu);
-                        getChildFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.content_child_frame, areaFragment, Constant.areaFragment)
-                                .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                                .commit();
-                        break;
+                            dateTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                            classTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                            instructorTab.setBackgroundResource(R.drawable.schedule_tabmenu_selected);
+                            areasTab.setBackgroundResource(R.drawable.schedule_tabmenu);
+                            getChildFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.content_child_frame, areaFragment, Constant.areaFragment)
+                                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                                    .commit();
+                            break;
+                    }
+                }else {
+                    startInstalledAppDetailsActivity(getActivity());
                 }
             }else {
+
                 startInstalledAppDetailsActivity(getActivity());
             }
-        }else {
-
-            startInstalledAppDetailsActivity(getActivity());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -429,6 +437,12 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
             dateFragment.onRefreshData(refreshable, requestCode);
         }else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_DATE_NULL) {
             dateFragment.onRefreshData(refreshable, requestCode);
+        }else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_AREA_NULL) {
+            areaFragment.onRefreshData(refreshable, requestCode);
+        }else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_CLASS_NULL) {
+            classFragment.onRefreshData(refreshable, requestCode);
+        }else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_INSTRU_NULL) {
+            instructorFragment.onRefreshData(refreshable, requestCode);
         }else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCTOR_DETAIL) {
             instructorFragment.onRefreshData(refreshable, requestCode);
         }else if (requestCode == JsonCaller.REFRESH_CODE_CLASS_DETAIL) {

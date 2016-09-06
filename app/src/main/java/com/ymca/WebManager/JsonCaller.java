@@ -2,9 +2,11 @@ package com.ymca.WebManager;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.ymca.Activities.CardShowActivity;
 import com.ymca.AppManager.DataManager;
 import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
@@ -72,11 +74,11 @@ public class JsonCaller {
     private HttpCaller httpCaller = new HttpCaller();
 
     public void setRefreshDataListener(RefreshDataListener refreshDataListene) {
-//        this.refreshDataListeners.add(refreshDataListener);
-//
-//        for (int i = 0; i < refreshDataListeners.size(); i++) {
+        this.refreshDataListeners.add(refreshDataListener);
+
+        for (int i = 0; i < refreshDataListeners.size(); i++) {
             this.refreshDataListener = refreshDataListene;
-//        }
+        }
 
     }
 
@@ -121,8 +123,11 @@ public class JsonCaller {
     public static final int REFRESH_CODE_SCHEDULE_DATA_NULL = 600;
     public static final int REFRESH_CODE_SCHEDULE_DATA_DATE_NULL = 6000;
     public static final int REFRESH_CODE_SCHEDULE_DATA_CLASS = 7;
+    public static final int REFRESH_CODE_SCHEDULE_DATA_CLASS_NULL = 70;
     public static final int REFRESH_CODE_SCHEDULE_DATA_INSTRU = 8;
+    public static final int REFRESH_CODE_SCHEDULE_DATA_INSTRU_NULL = 80;
     public static final int REFRESH_CODE_SCHEDULE_DATA_AREA = 9;
+    public static final int REFRESH_CODE_SCHEDULE_AREA_NULL = 90;
     public static final int REFRESH_CODE_INSTRUCTOR_DETAIL = 10;
     public static final int REFRESH_CODE_CLASS_DETAIL = 11;
     public static final int REFRESH_CODE_LOCATION_LIST = 12;
@@ -131,12 +136,14 @@ public class JsonCaller {
     public static final int REFRESH_CODE_TRAINER_LIST_NULL = 1400;
     public static final int REFRESH_CODE_TRAINER_DETAIL = 15;
     public static final int REFRESH_CODE_EVENT_LIST = 16;
+    public static final int REFRESH_CODE_EVENT_NULL = 160;
     public static final int REFRESH_CODE_EVENT_LIST_NULL = 1600;
     public static final int REFRESH_CODE_EVENT_DETAIL = 17;
     public static final int REFRESH_CODE_INSTRUCT_CLASS_DETAIL = 18;
     public static final int REFRESH_CODE_FACILITY_LIST = 19;
     public static final int REFRESH_CODE_NOTIFY_LIST = 20;
     public static final int REFRESH_CODE_BADGE_COUNT = 21;
+    public static final int REFRESH_CODE_ADD_CARD_NEW = 22;
 
     public void getErrorCode(Map<String, Object> params) {
 
@@ -146,6 +153,7 @@ public class JsonCaller {
     }
 
     public void getAddCard(Map<String, Object> params) {
+        DataManager.getInstance().showProgressMessage(DataManager.getInstance().getAppCompatActivity(), "Progress");
         SoapCaller soapCaller = new SoapCaller();
         soapCaller.setAddCard(params);
         soapCaller.execute(ParseOp.ADD_CARD);
@@ -545,7 +553,11 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
-                                                sendRefreshData(null, REFRESH_CODE_ADD_CARD);
+                                                Intent intent = new Intent(DataManager.getInstance().getAppCompatActivity(),CardShowActivity.class);
+                                                DataManager.getInstance().getAppCompatActivity().startActivity(intent);
+                                                DataManager.getInstance().getAppCompatActivity().finish();
+                                                DataManager.getInstance().hideProgressMessage();
+//                                                sendRefreshData(null, REFRESH_CODE_ADD_CARD_NEW);
                                             }
                                         });
                                         builder.show();
@@ -565,6 +577,7 @@ public class JsonCaller {
                                     public void onClick(DialogInterface dialog, int which) {
 
                                         dialog.dismiss();
+                                        DataManager.getInstance().hideProgressMessage();
                                         sendRefreshData(null, REFRESH_CODE_ADD_CARD);
                                     }
                                 });
@@ -597,7 +610,7 @@ public class JsonCaller {
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
                                         String msg = jsonObject2.getString("message");
-                                        String type = jsonObject1.getString("messagetype");
+                                        String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
                                         builder.setCancelable(false);
@@ -607,7 +620,8 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
-                                                sendRefreshData(null, REFRESH_CODE_ADD_CARD_NULL);
+                                                DataManager.getInstance().hideProgressMessage();
+//                                                sendRefreshData(null, REFRESH_CODE_ADD_CARD_NULL);
                                             }
                                         });
                                         builder.show();
@@ -666,6 +680,7 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
+                                                DataManager.getInstance().hideProgressMessage();
                                                 sendRefreshData(null, REFRESH_CODE_ADD_CARD);
                                             }
                                         });
@@ -684,6 +699,7 @@ public class JsonCaller {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
+                                        DataManager.getInstance().hideProgressMessage();
                                         sendRefreshData(null, REFRESH_CODE_DELETE_CARDS);
                                     }
                                 });
@@ -836,6 +852,7 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
+                                                DataManager.getInstance().hideProgressMessage();
                                                 sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_DATE_NULL);
                                             }
                                         });
@@ -857,14 +874,18 @@ public class JsonCaller {
                                     dateModelClass.setScheduleDateNameWith(jsonObject.optString("schedule_instructor_name"));
 
                                     String startTime = jsonObject.optString("schedule_start_time");
-                                    String endTime = jsonObject.optString("schedule_end_time");
+                                    String endTime = DataManager.getInstance().hourConverter(jsonObject.optString("schedule_end_time"));
                                     String timeDiff = DataManager.getInstance().differenceTwoTime(startTime, endTime);
+                                    if(!jsonObject.optString("schedule_start_time").equals("")) {
+                                        String time = DataManager.getInstance().hourConverter(jsonObject.optString("schedule_start_time"));
+                                        dateModelClass.setScheduleDateWeekDays(time + " - " + endTime);
+                                        dateModelClass.setScheduleDateTime(time);
+                                    }else {
 
-                                    String time = DataManager.getInstance().hourConverter(jsonObject.optString("schedule_start_time"));
-                                    dateModelClass.setScheduleDateWeekDays(jsonObject.optString("schedule_weekdays") + " " + "@" + time + " (" + timeDiff + ")");
-                                    dateModelClass.setScheduleDateTime(time);
-                                    dateModelClass.setScheduleDatePlace("in " + jsonObject.optString("schedule_date_group"));
-                                    DataManager.getInstance().addDateModelClasses(dateModelClass);
+                                    }
+                                        dateModelClass.setScheduleDatePlace("in " + jsonObject.optString("schedule_date_group"));
+                                        DataManager.getInstance().addDateModelClasses(dateModelClass);
+
                                 }
                                 sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA);
                             }
@@ -905,7 +926,8 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
-                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
+                                                DataManager.getInstance().hideProgressMessage();
+                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_CLASS_NULL);
                                             }
                                         });
                                         builder.show();
@@ -962,7 +984,8 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
-                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
+                                                DataManager.getInstance().hideProgressMessage();
+                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_INSTRU_NULL);
                                             }
                                         });
                                         builder.show();
@@ -1021,7 +1044,7 @@ public class JsonCaller {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
                                                 DataManager.getInstance().hideProgressMessage();
-//                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
+                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_AREA_NULL);
                                             }
                                         });
                                         builder.show();
@@ -1070,7 +1093,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("messsage");
+                                        String msg = jsonObject2.getString("message");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1135,7 +1158,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("messsage");
+                                        String msg = jsonObject2.getString("message");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1146,6 +1169,7 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
+                                                DataManager.getInstance().hideProgressMessage();
                                                 sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
                                             }
                                         });
@@ -1242,7 +1266,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("messsage");
+                                        String msg = jsonObject2.getString("message");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1253,30 +1277,13 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
-                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
+                                                DataManager.getInstance().hideProgressMessage();
+
                                             }
                                         });
                                         builder.show();
                                     }
                                 }
-
-
-                            } else if (!errorStr.equals("")) {
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
-                                builder.setTitle("Alert");
-                                builder.setCancelable(false);
-                                builder.setMessage(errorStr);
-                                builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        DataManager.getInstance().hideProgressMessage();
-                                        sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
-                                    }
-                                });
-                                builder.show();
 
 
                             } else {
@@ -1368,7 +1375,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("messsage");
+                                        String msg = jsonObject2.getString("message");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1379,6 +1386,7 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
+                                                DataManager.getInstance().hideProgressMessage();
                                                 sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
                                             }
                                         });
@@ -1414,8 +1422,18 @@ public class JsonCaller {
                                     locationModelClass.setLocationId(jsonObject.optString("location_id"));
                                     locationModelClass.setLocationName(jsonObject.optString("location_name"));
                                     locationModelClass.setLocationAddress(jsonObject.optString("location_address"));
-                                    String lat1 = jsonObject.getString("location_lat");
-                                    String lon1 = jsonObject.getString("location_long");
+                                    String lat1;
+                                    String lon1;
+                                    if(!jsonObject.getString("location_lat").equals("")) {
+                                        lat1 = jsonObject.getString("location_lat");
+                                        lon1 = jsonObject.getString("location_long");
+                                    }else if(jsonObject.getString("location_lat").contains("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+|")) {
+                                        lat1 = ""+00.00;
+                                        lon1 = ""+00.00;
+                                    }else {
+                                        lat1 = ""+00.00;
+                                        lon1 = ""+00.00;
+                                    }
                                     String openTime = jsonObject.optString("opening_time");
                                     String closeTime = jsonObject.optString("closing_time");
 //                                    String time = DataManager.getInstance().differenceTwoTime(closeTime, openTime);
@@ -1462,7 +1480,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("messsage");
+                                        String msg = jsonObject2.getString("message");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1564,7 +1582,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("messsage");
+                                        String msg = jsonObject2.getString("message");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1575,6 +1593,7 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
+                                                DataManager.getInstance().hideProgressMessage();
                                                 sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
                                             }
                                         });
@@ -1642,7 +1661,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("messsage");
+                                        String msg = jsonObject2.getString("message");
                                         String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1653,6 +1672,7 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
+                                                DataManager.getInstance().hideProgressMessage();
                                                 sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
                                             }
                                         });
@@ -1725,8 +1745,8 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("messsage");
-                                        String type = jsonObject1.getString("messagetype");
+                                        String msg = jsonObject2.getString("message");
+                                        String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
                                         builder.setCancelable(false);
@@ -1736,7 +1756,8 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
-                                                sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
+                                                DataManager.getInstance().hideProgressMessage();
+                                                sendRefreshData(null, REFRESH_CODE_EVENT_NULL);
                                             }
                                         });
                                         builder.show();
@@ -1756,7 +1777,7 @@ public class JsonCaller {
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
                                         DataManager.getInstance().hideProgressMessage();
-                                        sendRefreshData(null, REFRESH_CODE_EVENT_LIST_NULL);
+                                        sendRefreshData(null, REFRESH_CODE_EVENT_NULL);
                                     }
                                 });
                                 builder.show();
@@ -1813,7 +1834,7 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("messsage");
+                                        String msg = jsonObject2.getString("message");
                                         String type = jsonObject1.getString("messagetype");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
@@ -1824,6 +1845,7 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
+                                                DataManager.getInstance().hideProgressMessage();
                                                 sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
                                             }
                                         });
@@ -1899,8 +1921,8 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("messsage");
-                                        String type = jsonObject1.getString("messagetype");
+                                        String msg = jsonObject2.getString("message");
+                                        String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
                                         builder.setCancelable(false);
@@ -1910,6 +1932,7 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
+                                                DataManager.getInstance().hideProgressMessage();
                                                 sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
                                             }
                                         });
@@ -1927,8 +1950,22 @@ public class JsonCaller {
                                     facilityModelClass.setFacilityId(jsonObject.optString("facility_id"));
                                     facilityModelClass.setFacilityName(jsonObject.optString("facility_name"));
                                     facilityModelClass.setFacilityAddress(jsonObject.optString("facility_address"));
-                                    String lat1 = jsonObject.getString("facility_lat");
-                                    String lon1 = jsonObject.getString("facility_lon");
+                                    facilityModelClass.setFacilityCall(jsonObject.optString("phonenumber"));
+                                    facilityModelClass.setFacilityEmail(jsonObject.optString("email"));
+                                    String lat1;
+                                    String lon1;
+
+                                    if(!jsonObject.optString("facility_lat").equals("")) {
+                                        lat1 = jsonObject.optString("facility_lat");
+                                        lon1 = jsonObject.optString("facility_lon");
+                                    }else if(jsonObject.getString("facility_lat").contains("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+|")) {
+                                        lat1 = ""+00.00;
+                                        lon1 = ""+00.00;
+                                    }else {
+                                        lat1 = ""+00.00;
+                                        lon1 = ""+00.00;
+                                    }
+
                                     String openTime = jsonObject.optString("opening_time");
                                     String closeTime = jsonObject.optString("closing_time");
                                     String weekDays = jsonObject.optString("week_days");
@@ -1951,12 +1988,21 @@ public class JsonCaller {
 
                                     String openCloseTime = DataManager.getInstance().hourConverter(openTime) + " " + "to" + " " + DataManager.getInstance().hourConverter(closeTime);
                                     facilityModelClass.setFacilityOpenCloseTime(openCloseTime);
-                                    double currentLat = Double.parseDouble(SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.lati));
-                                    double currentLong = Double.parseDouble(SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.longi));
+                                    if(SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.lati)!=null) {
+                                        double currentLat = Double.parseDouble(SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.lati));
+                                        double currentLong = Double.parseDouble(SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.longi));
 
-                                    double miles = DataManager.getInstance().distance(currentLat, currentLong, Double.parseDouble(lat1), Double.parseDouble(lon1));
-                                    String milesDouble = String.format("%.2f", miles);
-                                    facilityModelClass.setFacilityMiles(milesDouble + " Mi");
+                                        double miles = DataManager.getInstance().distance(currentLat, currentLong, Double.parseDouble(lat1), Double.parseDouble(lon1));
+                                        String milesDouble = String.format("%.2f", miles);
+                                        facilityModelClass.setFacilityMiles(milesDouble + " Mi");
+                                    }else {
+                                        double currentLat = 00.00;
+                                        double currentLong = 00.00;
+
+                                        double miles = DataManager.getInstance().distance(currentLat, currentLong, Double.parseDouble(lat1), Double.parseDouble(lon1));
+                                        String milesDouble = String.format("%.2f", miles);
+                                        facilityModelClass.setFacilityMiles(milesDouble + " Mi");
+                                    }
                                     DataManager.getInstance().addFacilityModelClassArrayList(facilityModelClass);
                                 }
                                 sendRefreshData(null, REFRESH_CODE_FACILITY_LIST);
@@ -1988,8 +2034,8 @@ public class JsonCaller {
                                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                                     String code = jsonObject2.getString("code");
                                     if (code.equals(errorStr)) {
-                                        String msg = jsonObject2.getString("messsage");
-                                        String type = jsonObject1.getString("messagetype");
+                                        String msg = jsonObject2.getString("message");
+                                        String type = jsonObject1.getString("type");
                                         AlertDialog.Builder builder = new AlertDialog.Builder(DataManager.getInstance().getAppCompatActivity());
                                         builder.setTitle(type);
                                         builder.setCancelable(false);
@@ -1999,6 +2045,7 @@ public class JsonCaller {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
+                                                DataManager.getInstance().hideProgressMessage();
                                                 sendRefreshData(null, REFRESH_CODE_SCHEDULE_DATA_NULL);
                                             }
                                         });

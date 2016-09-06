@@ -162,15 +162,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
         notificationBell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                isCheck = DataManager.chkStatus(getActivity());
-//                if (isCheck) {
+                isCheck = DataManager.chkStatus(getActivity());
+                if (isCheck) {
                 DataManager.getInstance().setFlagNotification(false);
                 getActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, notificationFragment, Constant.notificationFragment)
+                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
                         .commit();
-//                }
+                }
 
             }
         });
@@ -189,7 +190,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
                             .getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, scheduleFragment, Constant.scheduleFragment)
-                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                            .addToBackStack(null)
                             .commit();
 
                     break;
@@ -214,7 +215,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
                             .getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, locationFragment, Constant.locationFramgnet)
-                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                            .addToBackStack(null)
                             .commit();
                     break;
                 case R.id.programLayout:
@@ -224,7 +225,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
                             .getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
-                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                            .addToBackStack(null)
                             .commit();
                     break;
                 case R.id.classLayout:
@@ -239,7 +240,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
                             .getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
-                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                            .addToBackStack(null)
                             .commit();
 //                    DataManager.getInstance().showIFramePopUp(getActivity());
 
@@ -250,7 +251,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
                             .getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
-                            .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+                            .addToBackStack(null)
                             .commit();
 //                    DataManager.getInstance().showIFramePopUp(getActivity());
                     break;
@@ -261,31 +262,34 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
 
     public void onRefreshData(Refreshable refreshable, int requestCode) {
         if (requestCode == JsonCaller.REFRESH_CODE_ALL_CARDS) {
-            if (DataManager.getInstance().isFlagCardShowBack()) {
-                DataManager.getInstance().hideProgressMessage();
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-                        .commit();
-
-            } else {
-//                getActivity()
-//                        .getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-//                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-//                        .commit();
-                myCardsFragment.onRefreshData(refreshable, requestCode);
-            }
+//            if (DataManager.getInstance().isFlagCardShowBack()) {
+//
+////                DataManager.getInstance().hideProgressMessage();
+////                getActivity()
+////                        .getSupportFragmentManager()
+////                        .beginTransaction()
+////                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+////                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+////                        .commit();
+//
+//            } else {
+////                getActivity()
+////                        .getSupportFragmentManager()
+////                        .beginTransaction()
+////                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+////                        .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+////                        .commit();
+//                myCardsFragment.onRefreshData(refreshable, requestCode);
+//            }
+            myCardsFragment.onRefreshData(refreshable, requestCode);
 
         } else if (requestCode == JsonCaller.REFRESH_CODE_ADD_CARD_NULL) {
-            getActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
-                    .commit();
+//            getActivity()
+//                    .getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+//                    .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
+//                    .commit();
         } else if (requestCode == JsonCaller.REFRESH_CODE_DELETE_CARDS) {
             myCardsFragment.onRefreshData(refreshable, requestCode);
         } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_INSTRU) {
@@ -297,6 +301,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
         } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA) {
             scheduleFragment.onRefreshData(refreshable, requestCode);
         } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_DATE_NULL) {
+            scheduleFragment.onRefreshData(refreshable, requestCode);
+        } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_INSTRU_NULL) {
+            scheduleFragment.onRefreshData(refreshable, requestCode);
+        }  else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_CLASS_NULL) {
+            scheduleFragment.onRefreshData(refreshable, requestCode);
+        }  else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_AREA_NULL) {
             scheduleFragment.onRefreshData(refreshable, requestCode);
         } else if (requestCode == JsonCaller.REFRESH_CODE_INSTRUCTOR_DETAIL) {
             scheduleFragment.onRefreshData(refreshable, requestCode);

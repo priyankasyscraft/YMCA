@@ -1,12 +1,15 @@
 package com.ymca.Fragments;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -47,6 +50,8 @@ public class NotificationFragment extends Fragment {
     ImageButton backButton;
     ImageView callButton;
     NotificationAdapter notificationAdapter;
+    private Dialog popupView;
+
 
     @Nullable
     @Override
@@ -72,7 +77,13 @@ public class NotificationFragment extends Fragment {
         callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopUp();
+//                DataManager.getInstance().getAppCompatActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+                        showPopUp(getActivity());
+//                    }
+//                });
+
             }
         });
 
@@ -125,27 +136,33 @@ public class NotificationFragment extends Fragment {
 
     }
 
-    public void showPopUp() {
-        LayoutInflater layoutInflater = (LayoutInflater) getActivity()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public void showPopUp(Context context) {
 
-        View popupView = layoutInflater.inflate(R.layout.call_pop_up, null);
-        final PopupWindow popupWindow = new PopupWindow(popupView,
+        final PopupWindow popupWindow;
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        final View popupView = layoutInflater.inflate(R.layout.dialoh_layout, null);
+          popupWindow = new PopupWindow(popupView,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT,
-                true);
+                false);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.caldroid_transparent)));
         popupWindow.setTouchable(true);
         popupWindow.setFocusable(true);
 
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
+//         popupView = new Dialog(context);
+//
+//        // Include dialog.xml file
+//        popupView.setContentView(R.layout.dialoh_layout);
+//        popupView.show();
         LinearLayout callNumer1, callNumer2;
         final TextView nember1, nember2;
-
+//
         callNumer1 = (LinearLayout) popupView.findViewById(R.id.callNumer1);
         callNumer2 = (LinearLayout) popupView.findViewById(R.id.callNumer2);
         nember1 = (TextView) popupView.findViewById(R.id.nember1);
         nember2 = (TextView) popupView.findViewById(R.id.nember2);
-
         callNumer1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

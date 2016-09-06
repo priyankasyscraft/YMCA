@@ -14,6 +14,8 @@ public class FacilityModelClass {
     private String facilityAddress;
     private String facilityOpenCloseTime;
     private String facilityOpenCloseStatus;
+    private String facilityCall;
+    private String facilityEmail;
     private ArrayList<String> facilityWeekDays = new ArrayList<>();
 
     public FacilityModelClass() {
@@ -82,5 +84,21 @@ public class FacilityModelClass {
 
     public void clearFacilityWeekDays() {
         this.facilityWeekDays.clear();
+    }
+
+    public String getFacilityCall() {
+        return facilityCall;
+    }
+
+    public void setFacilityCall(String facilityCall) {
+        this.facilityCall = facilityCall;
+    }
+
+    public String getFacilityEmail() {
+        return facilityEmail;
+    }
+
+    public void setFacilityEmail(String facilityEmail) {
+        this.facilityEmail = facilityEmail;
     }
 }

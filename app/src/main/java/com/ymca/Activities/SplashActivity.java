@@ -116,14 +116,36 @@ public class SplashActivity extends BaseActivity {
 
 
             String deviceToken = SharedPreference.getSharedPrefData(this,Constant.deviceToken);
-            DataManager.getInstance().showProgressMessage(this, "Progress");
-            Map<String, Object> objectsMap = new LinkedHashMap<>();
 
-            objectsMap.put("device_token",deviceToken);
-            objectsMap.put("device_type","1");
-            objectsMap.put("device_token_FCM",refreshedToken);
+            if((refreshedToken!=null && !refreshedToken.equals("")) && (deviceToken!=null && !deviceToken.equals(""))) {
+                DataManager.getInstance().showProgressMessage(this, "Progress");
+                Map<String, Object> objectsMap = new LinkedHashMap<>();
 
-            JsonCaller.getInstance().getErrorCode(objectsMap);
+                objectsMap.put("device_token", deviceToken);
+                objectsMap.put("device_type", "1");
+                objectsMap.put("device_token_FCM", refreshedToken);
+
+                JsonCaller.getInstance().getErrorCode(objectsMap);
+            }else{
+                try {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Error");
+                    builder.setMessage("Server connection failed, Please try again later.");
+                    builder.setCancelable(false);
+                    builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SplashActivity.this.finish();
+                            dialog.dismiss();
+
+                        }
+                    });
+                    builder.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         } else {
             try {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);

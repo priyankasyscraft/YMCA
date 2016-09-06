@@ -102,6 +102,7 @@ public class EventCalenderFragment extends Fragment implements View.OnClickListe
                                 EventNewModelClass eventDetailModelClass = new EventNewModelClass();
                                 eventDetailModelClass.setEventId(DataManager.getInstance().getEventModelClasses().get(i).getEventId());
                                 eventDetailModelClass.setEventName(DataManager.getInstance().getEventModelClasses().get(i).getEventName());
+                                eventDetailModelClass.setEventStartDates(DataManager.getInstance().getEventModelClasses().get(i).getEventStratEndTime());
                                 DataManager.getInstance().addEventNewModelClassArrayList(eventDetailModelClass);
                             }
                         }
@@ -171,21 +172,23 @@ public class EventCalenderFragment extends Fragment implements View.OnClickListe
 
     private void setCustomResourceForDates() {
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-        for (int i = 0; i < DataManager.getInstance().getEventModelClasses().size(); i++) {
-            try {
-                for (int j = 0; j < DataManager.getInstance().getEventModelClasses().get(i).getStartDates().size(); j++) {
-                    Date date = format.parse(DataManager.getInstance().getEventModelClasses().get(i).getStartDates().get(j));
-                    dates.add(i, date);
-                    if (caldroidFragment != null) {
-                        ColorDrawable blue = new ColorDrawable(getResources().getColor(R.color.colorPrimary));
-                        caldroidFragment.setThemeResource(R.style.AppTheme);
-                        caldroidFragment.setBackgroundDrawableForDate(blue, date);
-                        caldroidFragment.setShowsDialog(true);
+        if(DataManager.getInstance().getEventModelClasses()!=null && DataManager.getInstance().getEventModelClasses().size()!=0) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            for (int i = 0; i < DataManager.getInstance().getEventModelClasses().size(); i++) {
+                try {
+                    for (int j = 0; j < DataManager.getInstance().getEventModelClasses().get(i).getStartDates().size(); j++) {
+                        Date date = format.parse(DataManager.getInstance().getEventModelClasses().get(i).getStartDates().get(j));
+                        dates.add(i, date);
+                        if (caldroidFragment != null) {
+                            ColorDrawable blue = new ColorDrawable(getResources().getColor(R.color.colorPrimary));
+                            caldroidFragment.setThemeResource(R.style.AppTheme);
+                            caldroidFragment.setBackgroundDrawableForDate(blue, date);
+                            caldroidFragment.setShowsDialog(true);
+                        }
                     }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-            } catch (ParseException e) {
-                e.printStackTrace();
             }
         }
         DataManager.getInstance().hideProgressMessage();

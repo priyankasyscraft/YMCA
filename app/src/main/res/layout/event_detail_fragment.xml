@@ -52,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/event_detail_icon"
+                android:drawablePadding="@dimen/padding_common_5"
                 android:gravity="center"
                 android:text="xxxxxxxxx"
                 android:textColor="@color/colorScheduleBottomSelect"

@@ -57,6 +57,7 @@ public class ClassFragment extends Fragment {
         if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_CLASS) {
             classScheduleListView = (XListView) view.findViewById(R.id.classScheduleListView);
             classAdapter = new ClassAdapter(getActivity(), DataManager.getInstance().getClassesModelClassArrayList());
+            classScheduleListView.setVisibility(View.VISIBLE);
             classScheduleListView.setAdapter(classAdapter);
         } else if (requestCode == JsonCaller.REFRESH_CODE_CLASS_DETAIL) {
             getActivity()
@@ -65,6 +66,8 @@ public class ClassFragment extends Fragment {
                     .replace(R.id.content_frame, classDetailFragment, Constant.classDetailFragment)
                     .addToBackStack(getActivity().getSupportFragmentManager().getClass().getName())
                     .commit();
+        }else if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_CLASS_NULL){
+            classScheduleListView.setVisibility(View.GONE);
         }
     }
 }

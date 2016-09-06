@@ -105,7 +105,7 @@
                 android:gravity="center_horizontal"
                 android:padding="@dimen/padding_common_5"
                 android:text="@string/class_description"
-                android:textColor="@android:color/white"
+                android:textColor="@color/white"
                 android:textSize="@dimen/text_size_common_16"
                 android:textStyle="bold"
                 app:fontNames="@string/custom_primary_font" />

@@ -22,8 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import com.ymca.PullListLoader.XListViewFooter;
-import com.ymca.PullListLoader.XListViewHeader;
 import com.ymca.R;
 
 public class XListView extends ListView implements OnScrollListener {
@@ -156,12 +154,12 @@ public class XListView extends ListView implements OnScrollListener {
 			//make sure "pull up" don't show a line in bottom when listview with one page  
 			setFooterDividersEnabled(true);
 			// both "pull up" and "click" will invoke load more.
-			mFooterView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					startLoadMore();
-				}
-			});
+//			mFooterView.setOnClickListener(new OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					startLoadMore();
+//				}
+//			});
 		}
 	}
 

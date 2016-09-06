@@ -3,33 +3,22 @@ package com.ymca.Fragments;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ymca.Activities.HomeActivity;
 import com.ymca.AppManager.DataManager;
-import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
 import com.ymca.R;
-import com.ymca.UserInterFace.RefreshDataListener;
-import com.ymca.UserInterFace.Refreshable;
-import com.ymca.WebManager.JsonCaller;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 
 /**
@@ -66,6 +55,9 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cancelButton:
+//                getActivity().getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.content_frame,new MyCardsFragment(),Constant.myCardFragment)
+//                        .commit();
                 getActivity().onBackPressed();
                 break;
             case R.id.addCardButton:
@@ -159,6 +151,9 @@ public class AddCardFragment extends Fragment implements View.OnClickListener {
         image_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                getActivity().getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.content_frame,new MyCardsFragment(),Constant.myCardFragment)
+//                        .commit();
                 getActivity().onBackPressed();
             }
         });

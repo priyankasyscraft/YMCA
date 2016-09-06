@@ -1,5 +1,7 @@
 package com.ymca.Fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,7 +27,7 @@ import com.ymca.R;
 public class LocationDetailFragment extends Fragment {
 
     private View view;
-    TextView openCloseText,locationDetailHeader, locationDetailAddress, locationOpenTime;
+    TextView openCloseText,emailButton,callButton,locationDetailHeader, locationDetailAddress, locationOpenTime;
     ListView listViewWeekDays;
     LocationDetailAdapter locationDetailAdapter;
 
@@ -34,6 +36,8 @@ public class LocationDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.location_detail_fragment, container, false);
         actionBarUpdate();
+        emailButton = (TextView) view.findViewById(R.id.emailButton);
+        callButton = (TextView) view.findViewById(R.id.callButton);
         locationDetailHeader = (TextView) view.findViewById(R.id.locationDetailHeader);
         locationDetailAddress = (TextView) view.findViewById(R.id.locationDetailAddress);
         locationOpenTime = (TextView) view.findViewById(R.id.locationOpenTime);
@@ -55,8 +59,29 @@ public class LocationDetailFragment extends Fragment {
             openCloseText.setText("Close");
             openCloseText.setTextColor(getResources().getColor(R.color.colorTextRed));
         }
+        setListViewHeightBasedOnChildren(listViewWeekDays);
 
+        emailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plan");
+                intent.putExtra(Intent.EXTRA_EMAIL, DataManager.getInstance().getFacilityModelClass().getFacilityEmail());
+//                intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+//                intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
 
+                startActivity(Intent.createChooser(intent, "Send Email"));
+            }
+        });
+        callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:" + DataManager.getInstance().getFacilityModelClass().getFacilityCall()));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 

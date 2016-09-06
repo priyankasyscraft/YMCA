@@ -57,6 +57,8 @@ public class DateAdapter extends BaseAdapter {
     @Override
     public int getCount() {
 
+        if(dateModelClasses.size()==0)
+            return 0;
         return dateModelClasses.size();
     }
 
@@ -72,9 +74,9 @@ public class DateAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        viewHolder = new ViewHolder();
         if (convertView == null) {
-            viewHolder = new ViewHolder();
+
             convertView = inflater.inflate(R.layout.date_list_item, null);
             viewHolder.dateTimeTv = (TextView) convertView.findViewById(R.id.dateTimeTv);
             viewHolder.dateName = (TextView) convertView.findViewById(R.id.dateName);
@@ -86,12 +88,6 @@ public class DateAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-//        String time = DataManager.getInstance().getNotifyDate(dateModelClasses.get(position).getScheduleDateAppointmentTime());
-//        if(!time.equals("") && time!=null && !time.equals("null")) {
-//            viewHolder.dateTimeTv.setText(time);
-//        }else {
-//            viewHolder.dateTimeTv.setText("");
-//        }
         viewHolder.dateTimeTv.setText(dateModelClasses.get(position).getScheduleDateTime());
         viewHolder.dateName.setText(dateModelClasses.get(position).getScheduleDateName());
         viewHolder.dateSubName.setText(dateModelClasses.get(position).getScheduleDateNameWith());
@@ -103,7 +99,7 @@ public class DateAdapter extends BaseAdapter {
 
 
     public static class ViewHolder {
-        TextView dateTimeTv, dateName, dateSubName, dateTTimeWithDays, dateGroupName;
+       private TextView dateTimeTv, dateName, dateSubName, dateTTimeWithDays, dateGroupName;
     }
 
 

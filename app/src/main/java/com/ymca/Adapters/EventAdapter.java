@@ -86,6 +86,7 @@ public class EventAdapter extends BaseAdapter {
 
 //        if (eventModelClassArrayList.get(position).getEventStartDates().equals(date)) {
             viewHolder.eventName.setText(eventModelClassArrayList.get(position).getEventName());
+            viewHolder.eventDay.setText(eventModelClassArrayList.get(position).getEventStartDates());
 //        } else if (eventModelClassArrayList.get(position).getEventEndDates().equals(date)) {
 //            viewHolder.eventName.setText(eventModelClassArrayList.get(position).getEventName());
 //        }else {

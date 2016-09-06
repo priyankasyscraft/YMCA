@@ -28,19 +28,26 @@
         android:textStyle="bold"
         app:fontName="@string/custom_primary_font" />
 
-    <com.ymca.PullListLoader.XListView
-        android:id="@+id/areaList"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".97"
-        android:choiceMode="singleChoice"
-        android:dividerHeight="3dp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:scrollbarStyle="insideOverlay"
-        android:scrollbars="none"
-        android:smoothScrollbar="true"
-        android:divider="@null"/>
+        android:orientation="vertical">
+
+        <com.ymca.PullListLoader.XListView
+            android:id="@+id/areaList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".97"
+            android:choiceMode="singleChoice"
+            android:divider="@null"
+            android:dividerHeight="3dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="none"
+            android:smoothScrollbar="true" />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

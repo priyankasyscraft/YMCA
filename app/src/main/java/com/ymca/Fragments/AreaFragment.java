@@ -50,11 +50,15 @@ public class AreaFragment extends Fragment  {
         c = Calendar.getInstance();
         df = new SimpleDateFormat("yyyy/MM/dd");
 
-        if(SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocation)!=null) {
+        if(SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocation)!=null && DataManager.getInstance().getLocationModelClasses().size()!=0) {
             int  position = Integer.parseInt(SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocation));
             areaDetailHeader.setText(DataManager.getInstance().getLocationModelClasses().get(position).getLocationName());
         }else {
-            areaDetailHeader.setText(DataManager.getInstance().getLocationModelClasses().get(0).getLocationName());
+            if(DataManager.getInstance().getLocationModelClasses()!=null && DataManager.getInstance().getLocationModelClasses().get(0).getLocationName()!=null && !DataManager.getInstance().getLocationModelClasses().get(0).getLocationName().equals("")) {
+                areaDetailHeader.setText(DataManager.getInstance().getLocationModelClasses().get(0).getLocationName());
+            }else {
+                areaDetailHeader.setText("");
+            }
         }
         String date = df.format(c.getTime());
         DataManager.getInstance().showProgressMessage(getActivity(),"Progress");
@@ -89,7 +93,11 @@ public class AreaFragment extends Fragment  {
     public void onRefreshData(Refreshable refreshable, int requestCode) {
 
         if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_AREA){
+            areaList.setVisibility(View.VISIBLE);
             areaAdapter.setReloadData(true);
+
+        }else if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_AREA_NULL){
+            areaList.setVisibility(View.GONE);
         }
     }
 }

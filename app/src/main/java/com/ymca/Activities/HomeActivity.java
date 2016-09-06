@@ -22,6 +22,7 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -105,18 +106,13 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
     // TODO: 08-Aug-16 Left Menu All Fragments
-    private EventFragment eventFragment = new EventFragment();
     private HomeFragment homeFragment = new HomeFragment();
     private NotificationFragment notificationFragment = new NotificationFragment();
     private MyCardsFragment myCardsFragment = new MyCardsFragment();
     private ScheduleFragment scheduleFragment = new ScheduleFragment();
-    private FacilityFragment facilityFragment = new FacilityFragment();
     private LocationFragment locationFragment = new LocationFragment();
-    private CampFragment campFragment = new CampFragment();
     private SettingFragment settingFragment = new SettingFragment();
     private EventCalenderFragment eventCalenderFragment = new EventCalenderFragment();
-    private DonateFragment donateFragment = new DonateFragment();
-    private AddCardFragment addCardFragment = new AddCardFragment();
     private CardShowFragment cardShowFragment = new CardShowFragment();
     private TrainerFragment trainerFragment = new TrainerFragment();
 
@@ -170,11 +166,11 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         createLocationRequest();
 
 
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.content_frame, homeFragment, Constant.homeFragment)
-                    .addToBackStack(getSupportFragmentManager().getClass().getName())
-                    .commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.content_frame, homeFragment, Constant.homeFragment)
+                .addToBackStack(getSupportFragmentManager().getClass().getName())
+                .commit();
         if (getIntent().getExtras() != null) {
             Bundle extras = getIntent().getExtras();
             String newString = extras.getString("noti");
@@ -182,6 +178,15 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.content_frame, notificationFragment, Constant.notificationFragment)
+                    .commit();
+        }else if(DataManager.getInstance().isFlagMyCardBack()){
+//            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            DataManager.getInstance().setFlagCheckIn(true);
+            DataManager.getInstance().setFlagMyCardBack(false);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+                    .addToBackStack(getSupportFragmentManager().getClass().getName())
                     .commit();
         }
     }
@@ -347,8 +352,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             if (DataManager.getInstance().isFlagCheckIn()) {
 //                getSupportFragmentManager()
 //                        .beginTransaction()
-//                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-//                        .addToBackStack(null)
+//                        .replace(R.id.content_frame, myCardsFragment,Constant.myCardFragment)
 //                        .commit();
                 myCardsFragment.onRefreshData(refreshable, requestCode);
             } else {
@@ -358,20 +362,32 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             homeFragment.onRefreshData(refreshable, requestCode);
         } else if (requestCode == JsonCaller.REFRESH_CODE_ADD_CARD_NULL) {
             if (DataManager.getInstance().isFlagCheckIn()) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-                        .commit();
+//                getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+//                        .commit();
                 myCardsFragment.onRefreshData(refreshable, requestCode);
             } else {
                 homeFragment.onRefreshData(refreshable, requestCode);
             }
         } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_INSTRU) {
-            homeFragment.onRefreshData(refreshable, requestCode);
+            if (DataManager.getInstance().isFlagScedule()) {
+                scheduleFragment.onRefreshData(refreshable, requestCode);
+            } else {
+                homeFragment.onRefreshData(refreshable, requestCode);
+            }
         } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_CLASS) {
-            homeFragment.onRefreshData(refreshable, requestCode);
+            if (DataManager.getInstance().isFlagScedule()) {
+                scheduleFragment.onRefreshData(refreshable, requestCode);
+            } else {
+                homeFragment.onRefreshData(refreshable, requestCode);
+            }
         } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_AREA) {
-            homeFragment.onRefreshData(refreshable, requestCode);
+            if (DataManager.getInstance().isFlagScedule()) {
+                scheduleFragment.onRefreshData(refreshable, requestCode);
+            } else {
+                homeFragment.onRefreshData(refreshable, requestCode);
+            }
         } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA) {
             if (DataManager.getInstance().isFlagScedule()) {
                 scheduleFragment.onRefreshData(refreshable, requestCode);
@@ -379,6 +395,24 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 homeFragment.onRefreshData(refreshable, requestCode);
             }
         } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_DATE_NULL) {
+            if (DataManager.getInstance().isFlagScedule()) {
+                scheduleFragment.onRefreshData(refreshable, requestCode);
+            } else {
+                homeFragment.onRefreshData(refreshable, requestCode);
+            }
+        } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_INSTRU_NULL) {
+            if (DataManager.getInstance().isFlagScedule()) {
+                scheduleFragment.onRefreshData(refreshable, requestCode);
+            } else {
+                homeFragment.onRefreshData(refreshable, requestCode);
+            }
+        } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_CLASS_NULL) {
+            if (DataManager.getInstance().isFlagScedule()) {
+                scheduleFragment.onRefreshData(refreshable, requestCode);
+            } else {
+                homeFragment.onRefreshData(refreshable, requestCode);
+            }
+        } else if (requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_AREA_NULL) {
             if (DataManager.getInstance().isFlagScedule()) {
                 scheduleFragment.onRefreshData(refreshable, requestCode);
             } else {
@@ -409,9 +443,21 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         } else if (requestCode == JsonCaller.REFRESH_CODE_TRAINER_LIST) {
             trainerFragment.onRefreshData(refreshable, requestCode);
         } else if (requestCode == JsonCaller.REFRESH_CODE_EVENT_LIST) {
+            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.content_frame, eventCalenderFragment, Constant.eventCalenderFragment)
+                    .addToBackStack(getSupportFragmentManager().getClass().getName())
+                    .commit();
+        } else if (requestCode == JsonCaller.REFRESH_CODE_EVENT_NULL) {
+            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, eventCalenderFragment, Constant.eventCalenderFragment)
+                    .addToBackStack(getSupportFragmentManager().getClass().getName())
                     .commit();
         } else if (requestCode == JsonCaller.REFRESH_CODE_EVENT_DETAIL) {
             eventCalenderFragment.onRefreshData(refreshable, requestCode);
@@ -539,104 +585,81 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             int count = fm.getBackStackEntryCount();
             Log.e("Count", String.valueOf(count));
             Fragment fr = fm.findFragmentById(R.id.content_frame);
-        isCheck = DataManager.chkStatus(this);
-        if (isCheck) {
-            if (count > 1) {
-                if (fr.getTag().equals(Constant.dateFragment)) {
-                    super.onBackPressed();
-                } else if (fr.getTag().equals(Constant.classFragment)) {
-
-                    super.onBackPressed();
-                } else if (fr.getTag().equals(Constant.eventFragment)) {
-                    super.onBackPressed();
-                } else if (fr.getTag().equals(Constant.classDetailFragment)) {
-                    super.onBackPressed();
-                } else if (fr.getTag().equals(Constant.instructorDetailFrag)) {
-                    super.onBackPressed();
-                } else if (fr.getTag().equals(Constant.scheduleFragment)) {
-                    super.onBackPressed();
-                } else if (fr.getTag().equals(Constant.homeClassFragment)) {
-                    super.onBackPressed();
-                } else if (fr.getTag().equals(Constant.homeClassDetailFragment)) {
-                    super.onBackPressed();
-                } else if (fr.getTag().equals(Constant.cardShowFragment)) {
-                    if (DataManager.getInstance().isFlagCardShow()) {
-//                        DataManager.getInstance().setFlagCardShow(false);
+            isCheck = DataManager.chkStatus(this);
+            if (isCheck) {
+                if (count > 1) {
+                    if (fr.getTag().equals(Constant.dateFragment)) {
                         super.onBackPressed();
-                    } else {
-                        DataManager.getInstance().showProgressMessage(this, "Progress");
-                        String deviceToken = SharedPreference.getSharedPrefData(this, Constant.deviceToken);
-                        Map<String, Object> params = new LinkedHashMap<>();
-                        params.put("device_type", "1");
-                        params.put("device_token", deviceToken);
-                        JsonCaller.getInstance().getAllCard(params);
+                    } else if (fr.getTag().equals(Constant.classFragment)) {
+                        super.onBackPressed();
+                    } else if (fr.getTag().equals(Constant.eventFragment)) {
+                        super.onBackPressed();
+                    } else if (fr.getTag().equals(Constant.addMyCardFragment)) {
+                        super.onBackPressed();
+                    } else if (fr.getTag().equals(Constant.classDetailFragment)) {
+                        super.onBackPressed();
+                    } else if (fr.getTag().equals(Constant.instructorDetailFrag)) {
+                        super.onBackPressed();
+                    } else if (fr.getTag().equals(Constant.scheduleFragment)) {
+                        super.onBackPressed();
+                    } else if (fr.getTag().equals(Constant.homeClassFragment)) {
+                        super.onBackPressed();
+                    } else if (fr.getTag().equals(Constant.homeClassDetailFragment)) {
+                        super.onBackPressed();
+                    } else if (fr.getTag().equals(Constant.cardShowFragment)) {
+                        if (DataManager.getInstance().isFlagCardShow()) {
+                            super.onBackPressed();
+                        } else {
+                            super.onBackPressed();
+                        }
+                    } else if (fr.getTag().equals(Constant.myCardFragment)) {
+                        super.onBackPressed();
+//                        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 //                        getSupportFragmentManager()
 //                                .beginTransaction()
-//                                .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+//                                .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
+//                                .addToBackStack(getSupportFragmentManager().getClass().getName())
 //                                .commit();
-                    }
-                } else if (fr.getTag().equals(Constant.myCardFragment)) {
-//                    fm.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-//                    FragmentManager fragmentManager = getSupportFragmentManager();
-////                    fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//                    FragmentTransaction ft = fragmentManager.beginTransaction();
-//                    ft.add(R.id.content_frame, homeFragment,Constant.homeFragment);
-//                    ft.addToBackStack(getSupportFragmentManager().getClass().getName());
-//                    ft.commit();
-
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
-                            .addToBackStack(null)
-                            .commit();
-                } else if (fr.getTag().contains(Constant.homeFragment)) {
-                    if (doubleBackToExitPressedOnce) {
+                    } else if (fr.getTag().contains(Constant.homeFragment)) {
+                        if (doubleBackToExitPressedOnce) {
 //                        super.onBackPressed();
-                        HomeActivity.this.finish();
-                        return;
+                            HomeActivity.this.finish();
+                        } else {
+                            this.doubleBackToExitPressedOnce = true;
+                            new Handler().postDelayed(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    doubleBackToExitPressedOnce = false;
+                                }
+                            }, 2000);
+                            Toast.makeText(this, "Please click Back again to exit", Toast.LENGTH_SHORT).show();
+                        }
+
                     } else {
-                        this.doubleBackToExitPressedOnce = true;
-                        new Handler().postDelayed(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                doubleBackToExitPressedOnce = false;
-                            }
-                        }, 2000);
-                        Toast.makeText(this, "Please click Back again to exit", Toast.LENGTH_SHORT).show();
-                    }
-
-                } else {
-                    super.onBackPressed();
-                }
-            } else {
-                if (fr.getTag().contains(Constant.homeFragment)) {
-                    if (doubleBackToExitPressedOnce) {
                         super.onBackPressed();
-                        HomeActivity.this.finish();
-                        return;
-                    } else {
-                        this.doubleBackToExitPressedOnce = true;
-                        new Handler().postDelayed(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                doubleBackToExitPressedOnce = false;
-                            }
-                        }, 2000);
-                        Toast.makeText(this, "Please click Back again to exit", Toast.LENGTH_SHORT).show();
                     }
+                } else if (count == 1) {
+                    if(!fr.getTag().contains(Constant.homeFragment)){
+                        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
+                                .addToBackStack(getSupportFragmentManager().getClass().getName())
+                                .commit();
+                    }else {
+                        HomeActivity.this.finish();
+                    }
+
+
                 } else {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
-                            .commit();
+                    HomeActivity.this.finish();
                 }
 
 
+//            }
             }
-        }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -649,17 +672,17 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         isCheck = DataManager.chkStatus(this);
         if (isCheck) {
-        switch (position) {
-            case 0:
-                break;
-            case 1:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
-                        .commit();
-                break;
-            case 2:
-                DataManager.getInstance().setFlagCheckIn(true);
+            switch (position) {
+                case 0:
+                    break;
+                case 1:
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, homeFragment, Constant.homeFragment)
+                            .commit();
+                    break;
+                case 2:
+                    DataManager.getInstance().setFlagCheckIn(true);
 //                DataManager.getInstance().showProgressMessage(this, "Progress");
 //                String deviceToken = SharedPreference.getSharedPrefData(this, Constant.deviceToken);
 //                Map<String, Object> params = new LinkedHashMap<>();
@@ -667,23 +690,29 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 //                params.put("device_type", "1");
 //                params.put("device_token", deviceToken);
 //                JsonCaller.getInstance().getAllCard(params);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
-                        .commit();
-                break;
-            case 3:
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, myCardsFragment, Constant.myCardFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
+                    break;
+                case 3:
 //                    getSupportFragmentManager()
 //                            .beginTransaction()
 //                            .replace(R.id.content_frame, new EventCalenderFragment(), Constant.eventCalenderFragment)
 //                            .commit();
-                DataManager.getInstance().setFlagLocation(true);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, locationFragment, Constant.locationFramgnet)
-                        .commit();
-                break;
-            case 4:
+                    DataManager.getInstance().setFlagLocation(true);
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, locationFragment, Constant.locationFramgnet)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
+                    break;
+                case 4:
 //                    FragmentManager fragmentManager = getSupportFragmentManager();
 //
 //                    FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -698,131 +727,172 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 //                    ft.replace(R.id.content_frame, notificationFragment,Constant.notificationFragment);
 //                    ft.addToBackStack(fm.getClass().getName());
 //                    ft.commit();
-                DataManager.getInstance().setFlagNotification(true);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, notificationFragment, Constant.notificationFragment)
-                        .commit();
-                break;
-            case 5:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, settingFragment, Constant.settingFragment)
-                        .commit();
-                break;
-            case 6:
+                    DataManager.getInstance().setFlagNotification(true);
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, notificationFragment, Constant.notificationFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
+                    break;
+                case 5:
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, settingFragment, Constant.settingFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
+
+//                FragmentManager fm = getSupportFragmentManager();
+//                fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                FragmentTransaction ft = fm.beginTransaction();
+//
+//                ft.replace(R.id.content_frame, settingFragment, Constant.settingFragment);
+//
+//                ft.addToBackStack(fm.getClass().getName());
+//                ft.commit();
+                    break;
+                case 6:
 //                    getSupportFragmentManager()
 //                            .beginTransaction()
 //                            .replace(R.id.content_frame, facilityFragment, Constant.facilityFragment)
 //                            .commit();
-                break;
-            case 7:
-                DataManager.getInstance().setFlagScedule(true);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, scheduleFragment, Constant.scheduleFragment)
-                        .commit();
-                break;
-            case 8:
+                    break;
+                case 7:
+                    DataManager.getInstance().setFlagScedule(true);
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, scheduleFragment, Constant.scheduleFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
+                    break;
+                case 8:
 
 //                DataManager.getInstance().showIFramePopUp(this);
 
 
-                DataManager.getInstance().setFlagWebView(true);
+                    DataManager.getInstance().setFlagWebView(true);
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
                             .commit();
-                break;
-            case 9:
+                    break;
+                case 9:
 
-                DataManager.getInstance().setFlagWebView(true);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
-                        .commit();
+                    DataManager.getInstance().setFlagWebView(true);
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
 //                    getSupportFragmentManager()
 //                            .beginTransaction()
 //                            .replace(R.id.content_frame, new DonateFragment(), Constant.donateFragment)
 //                            .commit();
-                break;
-            case 10:
+                    break;
+                case 10:
 
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, trainerFragment, Constant.traineeFragment)
-                        .commit();
-                break;
-            case 11:
-
-//                DataManager.getInstance().showIFramePopUp(this);
-                DataManager.getInstance().setFlagWebView(true);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
-                        .commit();
-                break;
-            case 12:
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, trainerFragment, Constant.traineeFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
+                    break;
+                case 11:
 
 //                DataManager.getInstance().showIFramePopUp(this);
-                DataManager.getInstance().setFlagWebView(true);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
-                        .commit();
-                break;
-            case 13:
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
-                DataManager.getInstance().showProgressMessage(this, "Progress");
-                if (SharedPreference.getSharedPrefData(this, Constant.defaultLocationId) != null) {
-                    locationid = SharedPreference.getSharedPrefData(this, Constant.defaultLocationId);
-                } else {
-                    locationid = "1";
-                }
-                Map<String, Object> objectMap = new LinkedHashMap<>();
-                String date = df1.format(c.getTime());
-                objectMap.put("date", date);
-                objectMap.put("location_id", locationid);
+                    DataManager.getInstance().setFlagWebView(true);
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
+                    break;
+                case 12:
 
-                JsonCaller.getInstance().getEventList(objectMap);
+//                DataManager.getInstance().showIFramePopUp(this);
+                    DataManager.getInstance().setFlagWebView(true);
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
+                    break;
+                case 13:
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat df1 = new SimpleDateFormat("yyyy/MM/dd");
+                    DataManager.getInstance().showProgressMessage(this, "Progress");
+                    if (SharedPreference.getSharedPrefData(this, Constant.defaultLocationId) != null) {
+                        locationid = SharedPreference.getSharedPrefData(this, Constant.defaultLocationId);
+                    } else {
+                        locationid = "1";
+                    }
+                    Map<String, Object> objectMap = new LinkedHashMap<>();
+                    String date = df1.format(c.getTime());
+                    objectMap.put("date", date);
+
+                    JsonCaller.getInstance().getEventList(objectMap);
 
 //                    getSupportFragmentManager()
 //                            .beginTransaction()
 //                            .replace(R.id.content_frame, eventCalenderFragment, Constant.eventCalenderFragment)
 //                            .addToBackStack(null)
 //                            .commit();
-                break;
-            case 14:
+                    break;
+                case 14:
 
-                break;
-            case 15:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, donateFragment, Constant.donateFragment)
-                        .commit();
-                break;
-            case 16:
-
-//                DataManager.getInstance().showIFramePopUp(this);
-                DataManager.getInstance().setFlagWebView(true);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
-                        .commit();
-                break;
-            case 17:
+                    break;
+                case 15:
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
+                    break;
+                case 16:
 
 //                DataManager.getInstance().showIFramePopUp(this);
-                DataManager.getInstance().setFlagWebView(true);
+                    DataManager.getInstance().setFlagWebView(true);
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
+                    break;
+                case 17:
 
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
-                        .commit();
-                break;
+//                DataManager.getInstance().showIFramePopUp(this);
+                    DataManager.getInstance().setFlagWebView(true);
 
-        }
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getSupportFragmentManager().beginTransaction().remove(settingFragment).commit();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.content_frame, new WebViewFragment(), Constant.webViewFragment)
+                            .addToBackStack(getSupportFragmentManager().getClass().getName())
+                            .commit();
+                    break;
+
+            }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -993,8 +1063,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
                 break;
             case 10:
-                if(resultCode == Activity.RESULT_CANCELED){
-                    displayLocationSettingsRequest(this,Constant.locationRequestInt);
+                if (resultCode == Activity.RESULT_CANCELED) {
+                    displayLocationSettingsRequest(this, Constant.locationRequestInt);
                 }
 
                 break;
@@ -1081,13 +1151,12 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                         Log.e("check", "Location settings are inadequate, and cannot be fixed here. Dialog not created.");
-                        displayLocationSettingsRequest(HomeActivity.this,Constant.locationRequestInt);
+                        displayLocationSettingsRequest(HomeActivity.this, Constant.locationRequestInt);
                         break;
                 }
             }
         });
     }
-
 
 
 }

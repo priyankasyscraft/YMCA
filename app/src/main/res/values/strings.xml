@@ -58,7 +58,7 @@
     <string name="fun">Fun Fact</string>
     <string name="card_name">CARD NAME</string>
     <string name="enter_number">ENTER BAR CODE NUMBER</string>
-    <string name="add_card_text">You can find your barcode number on the back of your member card.</string>
+    <string name="add_card_text">You can find your card number on the back of your membership card.</string>
     <string name="cancel">@android:string/cancel</string>
     <string name="welcome">WELCOME TO</string>
     <string name="center">CNETER  #01</string>

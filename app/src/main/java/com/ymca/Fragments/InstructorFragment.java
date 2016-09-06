@@ -64,6 +64,7 @@ public class InstructorFragment extends Fragment {
             mAdapter = new InstructorAdapter(getActivity(), DataManager.getInstance().getInstructorModelClassArrayList());
             mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
             mRecyclerView.setHasFixedSize(true);
+            mRecyclerView.setVisibility(View.VISIBLE);
             mLayoutManager = new GridLayoutManager(getActivity(), 3);
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(mAdapter);
@@ -78,6 +79,8 @@ public class InstructorFragment extends Fragment {
 //            instructorDetailFragment.onRefreshData(refreshable, requestCode);
         }else if(requestCode == JsonCaller.REFRESH_CODE_INSTRUCT_CLASS_DETAIL){
             instructorDetailFragment.onRefreshData(refreshable, requestCode);
+        }else if(requestCode == JsonCaller.REFRESH_CODE_SCHEDULE_DATA_INSTRU_NULL){
+            mRecyclerView.setVisibility(View.GONE);
         }
     }
 }

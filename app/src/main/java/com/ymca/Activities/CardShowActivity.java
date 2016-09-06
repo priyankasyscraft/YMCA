@@ -1,5 +1,7 @@
-package com.ymca.Fragments;
+package com.ymca.Activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -11,6 +13,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +23,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.Code128Writer;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.ymca.Activities.HomeActivity;
 import com.ymca.AppManager.DataManager;
 import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
@@ -33,86 +36,46 @@ import java.util.Map;
 /**
  * Created by Soni on 03-Aug-16.
  */
-public class CardShowFragment extends Fragment {
+public class CardShowActivity extends Activity {
 
     private View view;
     TextView memberName,barCodeNo;
-    ImageView barCodeImg, qrCodeImg;
+    ImageView barCodeImg, qrCodeImg,backButton;
     private Bitmap barCodeBitmap, qrBitmap;
 
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.card_show_fragment, container, false);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 0);
+        setContentView(R.layout.card_show_fragment);
 
-        memberName = (TextView) view.findViewById(R.id.memberName);
-        barCodeNo = (TextView) view.findViewById(R.id.barCodeNo);
-        barCodeImg = (ImageView) view.findViewById(R.id.barCodeImg);
-        qrCodeImg = (ImageView) view.findViewById(R.id.qrCodeImg);
-        actionBarUpdate();
-        memberName.setText(DataManager.getInstance().getMemberName());
-        createEAN13Code(DataManager.getInstance().getMemberCardNumber());
-        return view;
-    }
+        memberName = (TextView) findViewById(R.id.memberName);
+        barCodeNo =  (TextView) findViewById(R.id.barCodeNo);
+        barCodeImg = (ImageView)findViewById(R.id.barCodeImg);
+        qrCodeImg = (ImageView) findViewById(R.id.qrCodeImg);
+        backButton = (ImageView) findViewById(R.id.backButton);
 
-
-    public void onRefreshData(Refreshable refreshable, int requestCode) {
-
-    }
-
-    private void actionBarUpdate() {
-        // TODO Auto-generated method stub
-
-
-        ActionBar actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
-
-
-        actionBar = ((HomeActivity) getActivity()).getSupportActionBar();
-        actionBar.setHomeButtonEnabled(false);
-        actionBar.setDisplayShowTitleEnabled(false);
-//        actionBar.setTitle("");
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowHomeEnabled(false);
-//        actionBar.setHomeAsUpIndicator(R.drawable.menu_icon);
-        actionBar.setDisplayShowTitleEnabled(false);
-
-//        Drawable actionBar_bg = getResources().getDrawable(
-//                R.drawable.tool_bar_bg);
-//        actionBar.setBackgroundDrawable(actionBar_bg);
-
-//        actionBar.setDisplayShowCustomEnabled(true);
-        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
-                ActionBar.LayoutParams.MATCH_PARENT,
-                ActionBar.LayoutParams.MATCH_PARENT);
-        layoutParams.gravity = Gravity.START;
-        layoutParams.leftMargin = -50;
-
-        LayoutInflater inflator = getActivity().getLayoutInflater();
-        View v = inflator.inflate(R.layout.custom_layout_back_button, null);
-        ImageView image_action = (ImageView) v.findViewById(R.id.custom_img_action_profile);
-        image_action.setImageResource(R.drawable.bt_back_white);
-        image_action.setVisibility(View.VISIBLE);
-        image_action.setOnClickListener(new View.OnClickListener() {
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().onBackPressed();
+//                onBackPressed();
+                DataManager.getInstance().setFlagMyCardBack(true);
+                Intent intent = new Intent(CardShowActivity.this,HomeActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
-
-        actionBar.setCustomView(v, layoutParams);
-
-
+        memberName.setText(DataManager.getInstance().getMemberName());
+        createEAN13Code(DataManager.getInstance().getMemberCardNumber());
     }
+
 
     public void createEAN13Code(String s) {
         if (s == null) return;
 
-//        BarQrCodeGenerator bb = new BarQrCodeGenerator(s);
-
-//        double miles = distance(22.719568,75.857727,22.9612,76.0514);
-//        String milesDouble = String.format("%.2f", miles);
-//        barCodeNo.setText(milesDouble);
         barCodeNo.setText(s);
         generateBarCode(s);
         generateQRCode(s);
@@ -162,5 +125,14 @@ public class CardShowFragment extends Fragment {
             barCodeImg.setImageBitmap(barCodeBitmap);
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        DataManager.getInstance().setFlagMyCardBack(true);
+        Intent intent = new Intent(CardShowActivity.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

@@ -125,7 +125,7 @@ public class HttpCaller {
             conn.setRequestMethod(methodName);
             conn.setDoInput(true);
             conn.setDoOutput(true);
-            // conn.setConnectTimeout(20000); // 20 sec = 20000 milliSecond
+             conn.setConnectTimeout(30000); // 20 sec = 20000 milliSecond
             conn.setRequestProperty("Authorization", basicAuth);
 
             StringBuilder postData = new StringBuilder();

@@ -195,6 +195,7 @@ public class SettingFragment extends Fragment {
 
     public void onRefreshData(Refreshable refreshable, int requestCode) {
         if (requestCode == JsonCaller.REFRESH_CODE_LOCATION_LIST) {
+            DataManager.getInstance().hideProgressMessage();
             spinnerAdapter.notifyDataSetChanged();
 
             if(SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocation)!=null) {
