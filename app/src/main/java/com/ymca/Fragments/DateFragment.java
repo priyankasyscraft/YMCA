@@ -253,6 +253,7 @@ public class DateFragment extends Fragment implements View.OnClickListener , XLi
             JsonCaller.getInstance().getLocationList(objectMap);
         }else if(requestCode == JsonCaller.REFRESH_CODE_LOCATION_LIST){
             spinnerAdapter.notifyDataSetChanged();
+            DataManager.getInstance().setFlagScedule(false);
             if(SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocation)!=null) {
                 int position = Integer.parseInt(SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocation));
                 Log.e("onRefreshData: ", "" + position);

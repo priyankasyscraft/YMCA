@@ -58,4 +58,5 @@ public class Constant {
     public static String defaultLocation = "dafault_location";
     public static String defaultLocationId = "dafault_location_id";
     public static String webViewFragment = "webview_fragment";
+    public static String locationResposne = "location_response";
 }

@@ -2,7 +2,6 @@ package com.ymca.Fragments;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.Gravity;
@@ -35,9 +34,8 @@ public class LocationFragment extends Fragment {
     FacilityAdapter facilityAdapter;
     private String locationid;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.location_fragment,container,false );
         if (DataManager.getInstance().isFlagLocation()) {
             actionBarUpdate();
@@ -53,7 +51,9 @@ public class LocationFragment extends Fragment {
 
 
         DataManager.getInstance().showProgressMessage(getActivity(),"Progress");
-        Map<String,Object> objectMap = new LinkedHashMap<>(); if(SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocationId)!=null) {
+        Map<String,Object> objectMap = new LinkedHashMap<>();
+
+        if(SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocationId)!=null) {
             locationid = SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocationId);
         }else {
             locationid = "1";

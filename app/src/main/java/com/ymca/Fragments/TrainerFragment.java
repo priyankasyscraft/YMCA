@@ -2,7 +2,6 @@ package com.ymca.Fragments;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,6 +15,7 @@ import com.ymca.Activities.HomeActivity;
 import com.ymca.Adapters.InstructorAdapter;
 import com.ymca.Adapters.TraineeAdapter;
 import com.ymca.AppManager.DataManager;
+import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
 import com.ymca.ModelClass.InstructorModelClass;
 import com.ymca.ModelClass.TraineeModelClass;
@@ -37,9 +37,10 @@ public class TrainerFragment extends Fragment {
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
     private TrainerDetailFragment trainerDetailFragment = new TrainerDetailFragment();
-    @Nullable
+    private String locationid;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.trainee_fragment, container, false);
         actionBarUpdate();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
@@ -50,8 +51,12 @@ public class TrainerFragment extends Fragment {
 
         // TODO: 8/25/2016 Here add static location id ,Change when filter location list data come.
         DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
-        Map<String, Object> objectMap = new LinkedHashMap<>();
-        objectMap.put("location_id", "1");
+        Map<String,Object> objectMap = new LinkedHashMap<>(); if(SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocationId)!=null) {
+            locationid = SharedPreference.getSharedPrefData(getActivity(), Constant.defaultLocationId);
+        }else {
+            locationid = "1";
+        }
+        objectMap.put("location_id",locationid);
         JsonCaller.getInstance().getTrainerLIst(objectMap);
 
 //        setData();

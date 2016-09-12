@@ -14,7 +14,6 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -61,7 +60,7 @@ public class SplashActivity extends BaseActivity {
     private String regId;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 0);
@@ -102,9 +101,6 @@ public class SplashActivity extends BaseActivity {
 
     private void setUpPane() {
 
-//        if (marshMallowPermission.checkPermissionsLocation()) {
-//            if (marshMallowPermission.checkPermissionsExternalStorage()) {
-//                if (marshMallowPermission.checkPermissionsCall()) {
         final ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         if (connMgr.getActiveNetworkInfo() != null
@@ -360,16 +356,9 @@ public class SplashActivity extends BaseActivity {
 
 
         } else if (requestCode == JsonCaller.REFRESH_CODE_SLIDER_IMAGES) {
-            DataManager.getInstance().hideProgressMessage();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                /* Create an Intent that will start the Menu-Activity. */
-                    Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
-                    startActivity(mainIntent);
-                    finish();
-                }
-            }, SPLASH_DISPLAY_LENGTH);
+
+            Map<String, Object> objectMap = new LinkedHashMap<>();
+            JsonCaller.getInstance().getLocationList(objectMap);
 
 
         } else if (requestCode == JsonCaller.REFRESH_CODE_SLIDER_IMAGES_NULL) {
@@ -391,6 +380,16 @@ public class SplashActivity extends BaseActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }else if(requestCode == JsonCaller.REFRESH_CODE_LOCATION_LIST){
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                /* Create an Intent that will start the Menu-Activity. */
+                    Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+                    startActivity(mainIntent);
+                    finish();
+                }
+            }, SPLASH_DISPLAY_LENGTH);
         }
     }
 

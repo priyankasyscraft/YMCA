@@ -86,6 +86,8 @@ public class DataManager {
     private boolean flagNotification = false;
     private boolean flagWebView = false;
     private boolean flagMyCardBack = false;
+    private boolean flagTrainer = false;
+    private boolean flagHomeLocation = false;
     private String memberName;
     private String memberCardNumber;
 
@@ -954,5 +956,21 @@ public class DataManager {
 
     public void setFlagMyCardBack(boolean flagMyCardBack) {
         this.flagMyCardBack = flagMyCardBack;
+    }
+
+    public boolean isFlagTrainer() {
+        return flagTrainer;
+    }
+
+    public void setFlagTrainer(boolean flagTrainer) {
+        this.flagTrainer = flagTrainer;
+    }
+
+    public boolean isFlagHomeLocation() {
+        return flagHomeLocation;
+    }
+
+    public void setFlagHomeLocation(boolean flagHomeLocation) {
+        this.flagHomeLocation = flagHomeLocation;
     }
 }

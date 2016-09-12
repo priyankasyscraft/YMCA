@@ -96,7 +96,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
         mPager.setAdapter(viewPagerAdapter);
         mIndicator = (CirclePageIndicator) view.findViewById(R.id.sliderIndicator);
         mIndicator.setViewPager(mPager);
-
+//        DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
+//        Map<String, Object> objectMap = new LinkedHashMap<>();
+//        JsonCaller.getInstance().getLocationList(objectMap);
 
         if (timer == null) {
             timer = new Timer();

@@ -23,10 +23,15 @@ import com.ymca.Adapters.SpinnerAdapter;
 import com.ymca.AppManager.DataManager;
 import com.ymca.AppManager.SharedPreference;
 import com.ymca.Constants.Constant;
+import com.ymca.ModelClass.LocationModelClass;
 import com.ymca.R;
 import com.ymca.UserInterFace.RefreshDataListener;
 import com.ymca.UserInterFace.Refreshable;
 import com.ymca.WebManager.JsonCaller;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -60,6 +65,7 @@ public class SettingFragment extends Fragment {
 
 
         DataManager.getInstance().setFlagSettingLocation(true);
+//        getLocationSpinnerData();
         DataManager.getInstance().showProgressMessage(getActivity(), "Progress");
         Map<String, Object> objectMap = new LinkedHashMap<>();
         JsonCaller.getInstance().getLocationList(objectMap);
@@ -152,6 +158,52 @@ public class SettingFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void getLocationSpinnerData() throws JSONException {
+        String data = SharedPreference.getSharedPrefData(getActivity(),Constant.locationResposne);
+        JSONArray jsonArray = new JSONArray(data);
+        DataManager.getInstance().clearLocationModelClasses();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            LocationModelClass locationModelClass = new LocationModelClass();
+            locationModelClass.setLocationId(jsonObject.optString("location_id"));
+            locationModelClass.setLocationName(jsonObject.optString("location_name"));
+            locationModelClass.setLocationAddress(jsonObject.optString("location_address"));
+
+            if(SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(),Constant.defaultLocationId)==null) {
+                SharedPreference.setDataInSharedPreference(DataManager.getInstance().getAppCompatActivity(), Constant.defaultLocation, "" + 0);
+                SharedPreference.setDataInSharedPreference(DataManager.getInstance().getAppCompatActivity(), Constant.defaultLocationId, DataManager.getInstance().getLocationModelClasses().get(0).getLocationId());
+            }
+            String lat1;
+            String lon1;
+            if(!jsonObject.getString("location_lat").equals("")) {
+                lat1 = jsonObject.getString("location_lat");
+                lon1 = jsonObject.getString("location_long");
+            }else if(jsonObject.getString("location_lat").contains("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+|")) {
+                lat1 = ""+00.00;
+                lon1 = ""+00.00;
+            }else {
+                lat1 = ""+00.00;
+                lon1 = ""+00.00;
+            }
+            String openTime = jsonObject.optString("opening_time");
+            String closeTime = jsonObject.optString("closing_time");
+//                                    String time = DataManager.getInstance().differenceTwoTime(closeTime, openTime);
+//                                    if (!time.contains("0")) {
+            locationModelClass.setLocationOpenCloseStatus("1");
+//                                    } else {
+//                                        locationModelClass.setLocationOpenCloseStatus("2");
+//                                    }
+
+            String openCloseTime = DataManager.getInstance().hourConverter(openTime) + " " + "to" + " " + DataManager.getInstance().hourConverter(closeTime);
+            locationModelClass.setLocationOpenCloseTime(openCloseTime);
+
+            double miles = DataManager.getInstance().distance(Double.parseDouble(lat1), Double.parseDouble(lon1), Double.parseDouble(lat1), Double.parseDouble(lon1));
+            String milesDouble = String.format("%.2f", miles);
+            locationModelClass.setLocationMiles(milesDouble + " Mi");
+            DataManager.getInstance().addLocationModelClasses(locationModelClass);
+        }
     }
 
 

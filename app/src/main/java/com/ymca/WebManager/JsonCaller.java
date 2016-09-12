@@ -1363,7 +1363,7 @@ public class JsonCaller {
                         if (response.equals("") || response.contains("<div") || response.contains("java.net.")) {
                             DataManager.getInstance().showServerErrorPopUp(DataManager.getInstance().getAppCompatActivity());
                         } else {
-
+//                            SharedPreference.setDataInSharedPreference(DataManager.getInstance().getAppCompatActivity(),Constant.locationResposne,response);
                             JSONObject jsonObject1 = new JSONObject(response);
                             String errorStr = jsonObject1.getString("error");
                             String message = jsonObject1.getString("message");
@@ -1422,6 +1422,11 @@ public class JsonCaller {
                                     locationModelClass.setLocationId(jsonObject.optString("location_id"));
                                     locationModelClass.setLocationName(jsonObject.optString("location_name"));
                                     locationModelClass.setLocationAddress(jsonObject.optString("location_address"));
+
+                                    if(SharedPreference.getSharedPrefData(DataManager.getInstance().getAppCompatActivity(), Constant.defaultLocationId)==null) {
+                                        String locationId  = jsonArray.getJSONObject(0).getString("location_id");
+                                        SharedPreference.setDataInSharedPreference(DataManager.getInstance().getAppCompatActivity(),Constant.defaultLocationId,locationId);
+                                    }
                                     String lat1;
                                     String lon1;
                                     if(!jsonObject.getString("location_lat").equals("")) {
@@ -1628,7 +1633,14 @@ public class JsonCaller {
                                     TraineeModelClass traineeModelClass = new TraineeModelClass();
                                     traineeModelClass.setTraineeId(jsonObject.optString("trainer_id"));
                                     traineeModelClass.setTraineeImg(jsonObject.optString("trainer_img"));
-                                    traineeModelClass.setTraineeName(jsonObject.optString("trainer_name"));
+
+                                    if(jsonObject.optString("trainer_name").contains(" ")) {
+                                        String[] parts = jsonObject.optString("trainer_name").split(" ");
+                                        String part1 = parts[0];
+                                        traineeModelClass.setTraineeName(part1);
+                                    }else {
+                                        traineeModelClass.setTraineeName(jsonObject.optString("trainer_name"));
+                                    }
 
                                     DataManager.getInstance().addTraineeModelClasses(traineeModelClass);
                                 }
